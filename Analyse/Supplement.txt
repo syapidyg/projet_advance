@@ -1,0 +1,22 @@
+Commande
+role
+utitlisateur
+produit(Article)
+client
+caisse
+Reglement
+Etat
+fournisseur
+depot
+ligneDeCommande 
+
+idclient idUtilisateur idCommande idCaisse Montant date de l'operation
+
+gestion deabilitations
+
+transfert de stock
+
+depot
+	Magasin
+	le pharmacie
+

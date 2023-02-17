@@ -1,0 +1,24 @@
+Liste des annotations Java SPRINGBOOT
+
+@Data: Cette annotation génère automatiquement les getters, setters, equals, hashCode, toString, et une méthode de constructeur sans arguments pour une classe.
+
+@Getter: Cette annotation génère automatiquement les getters pour les propriétés de classe.
+
+@Setter: Cette annotation génère automatiquement les setters pour les propriétés de classe.
+
+@ToString: Cette annotation génère automatiquement la méthode toString pour une classe.
+
+@EqualsAndHashCode: Cette annotation génère automatiquement les méthodes equals et hashCode pour une classe.
+
+@NoArgsConstructor: Cette annotation génère automatiquement un constructeur sans argument pour une classe.
+
+@AllArgsConstructor: Cette annotation génère automatiquement un constructeur qui accepte toutes les propriétés de la classe en argument.
+
+@Bean 
+
+@Autowired Injection d'une classe sans passer par le constructeur (Pour avoir acces a ses methodes)
+
+
+@Deprecated Methode qui ne sont plus conseillé d'etre utilisé du fait que de nouvelles methodes ont ete crée
+
+
