@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
+//    @Autowired
 //    private UtilisateurService utilisateurService;
 
     @Override
@@ -25,10 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs",
                         "/**/swagger-resources/**",
                         "/configuration/ui",
-                        "/webjars/**",
-                        "/produit/**",
-                        "/client/**",
-                        "/utilisateur/**")
+                        "/webjars/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
@@ -39,18 +36,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        return bcrypt.matches(clear, crypt);
 //    }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
 
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(null).passwordEncoder(passwordEncoder());
-//        A revenir service a la place de null
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(null).passwordEncoder(passwordEncoder());
+////        A revenir service a la place de null
+//    }
 
     @Override
     @Bean
