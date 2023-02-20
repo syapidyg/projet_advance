@@ -3,8 +3,8 @@ package com.advance.pharmacie.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,15 +17,8 @@ public class Depot extends AuditEntity {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(name = "STOCK_ARTICLE",
-            joinColumns = @JoinColumn(name = "stock_id"),
-            inverseJoinColumns = @JoinColumn(name = "produit_id"))
-    private Set<Produit> produits = new HashSet<>();
+    @OneToMany(mappedBy = "depot")
+    private List<StockArticle> stockArticles = new ArrayList<>();
 
 }
 

@@ -4,7 +4,9 @@ package com.advance.pharmacie.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,15 +20,6 @@ public class Caisse {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(name = "REGLEMENT",
-            joinColumns = @JoinColumn(name = "caisse_id"),
-            inverseJoinColumns = @JoinColumn(name = "utilisateur_id")
-
-    )
-    private Set<Utilisateur> utilisateurs = new HashSet<>();
+    @OneToMany(mappedBy = "caisse")
+    private List<Reglement> reglements = new ArrayList<>();
 }

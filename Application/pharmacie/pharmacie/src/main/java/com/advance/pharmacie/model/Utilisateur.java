@@ -5,7 +5,9 @@ import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,17 +36,8 @@ public class Utilisateur extends AuditEntity {
     @JoinColumn(name = "employer_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_employer_utilisateur"))
     private Employer employer;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(name = "REGLEMENT",
-            joinColumns = @JoinColumn(name = "utilisateur_id"),
-            inverseJoinColumns = @JoinColumn(name = "commande_id")
-
-    )
-    private Set<Commande> commandes = new HashSet<>();
+    @OneToMany(mappedBy = "utilisateur")
+    private List<Reglement> reglements = new ArrayList<>();
 
 
 

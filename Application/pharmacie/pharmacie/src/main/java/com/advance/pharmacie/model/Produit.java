@@ -4,8 +4,8 @@ package com.advance.pharmacie.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -32,20 +32,10 @@ public class Produit {
     private Famille famille;
 
 
-    @ManyToMany(mappedBy = "produits"
-            ,fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    private Set<Depot> depots = new HashSet<>();
+    @OneToMany(mappedBy = "produit")
+    private List<StockArticle> stockArticles = new ArrayList<>();
 
 
-    @ManyToMany(mappedBy = "produits"
-            ,fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    private Set<Commande> commandes = new HashSet<>();
+    @OneToMany(mappedBy = "produit")
+    private List<LigneCommande> ligneCommandes = new ArrayList<>();
 }

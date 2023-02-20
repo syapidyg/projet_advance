@@ -4,8 +4,8 @@ package com.advance.pharmacie.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -28,25 +28,9 @@ public class Commande {
     @JoinColumn(name ="id_client", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_client_commande"))
     private Client client;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(name = "LIGNE_COMMANDE",
-            joinColumns = @JoinColumn(name = "commande_id"),
-            inverseJoinColumns = @JoinColumn(name = "produit_id"))
-    private Set<Produit> produits = new HashSet<>();
+    @OneToMany(mappedBy = "commande")
+    private List<LigneCommande> ligneCommandesommande = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(name = "REGLEMENT",
-            joinColumns = @JoinColumn(name = "commande_id"),
-            inverseJoinColumns = @JoinColumn(name = "caisse_id")
-
-    )
-    private Set<Caisse> caisses = new HashSet<>();
+    @OneToMany(mappedBy = "commande")
+    private List<Reglement> reglements = new ArrayList<>();
 }
