@@ -20,4 +20,33 @@ public class Role extends AuditEntity {
 
     @OneToMany(mappedBy = "role")
     private List<Utilisateur> utilisateurs;
+
+    public static final class RoleBuilder {
+        private Long id;
+        private String name;
+
+        private RoleBuilder() {
+        }
+
+        public static RoleBuilder aRole() {
+            return new RoleBuilder();
+        }
+
+        public RoleBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public RoleBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Role build() {
+            Role role = new Role();
+            role.setId(id);
+            role.setName(name);
+            return role;
+        }
+    }
 }

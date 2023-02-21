@@ -14,6 +14,8 @@ public class Reglement extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long montant;
+
     @ManyToOne(targetEntity = Utilisateur.class)
     @JoinColumn(name = "utilisateur_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_utilisateur_reglement"))
     private Utilisateur utilisateur;
@@ -25,4 +27,56 @@ public class Reglement extends AuditEntity {
     @ManyToOne(targetEntity = Caisse.class)
     @JoinColumn(name = "caisse_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_caisse_reglement"))
     private Caisse caisse;
+
+    public static final class ReglementBuilder {
+        private Long id;
+        private Utilisateur utilisateur;
+        private Commande commande;
+        private Caisse caisse;
+        private Long montant;
+
+
+        private ReglementBuilder() {
+        }
+
+        public static ReglementBuilder aReglement() {
+            return new ReglementBuilder();
+        }
+
+        public ReglementBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public ReglementBuilder montant(Long montant) {
+            this.montant = montant;
+            return this;
+        }
+
+        public ReglementBuilder utilisateur(Utilisateur utilisateur) {
+            this.utilisateur = utilisateur;
+            return this;
+        }
+
+        public ReglementBuilder commande(Commande commande) {
+            this.commande = commande;
+            return this;
+        }
+
+        public ReglementBuilder caisse(Caisse caisse) {
+            this.caisse = caisse;
+            return this;
+        }
+
+        public Reglement build() {
+            Reglement reglement = new Reglement();
+            reglement.setId(id);
+            reglement.setMontant(montant);
+            reglement.setUtilisateur(utilisateur);
+            reglement.setCommande(commande);
+            reglement.setCaisse(caisse);
+            return reglement;
+        }
+    }
 }
+
