@@ -13,12 +13,12 @@ public class ClientResponseDto {
     private Long number;
     private String email;
 
-    public Client entityToDto(ClientResponseDto dto) {
-        return Client.ClientBuilder.aClient()
-                .id(dto.getId())
-                .name(dto.getName())
-                .email(dto.getEmail())
-                .number(dto.getNumber())
+    public static ClientResponseDto entityToDto(Client client) {
+        return ClientResponseDto.builder()
+                .id(client.getId())
+                .name(client.getName())
+                .number(client.getNumber())
+                .email(client.getEmail())
                 .build();
     }
 

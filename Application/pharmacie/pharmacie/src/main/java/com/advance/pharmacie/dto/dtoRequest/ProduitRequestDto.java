@@ -5,10 +5,6 @@ import com.advance.pharmacie.model.Produit;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 @Data
 @Builder
 public class ProduitRequestDto {

@@ -11,10 +11,10 @@ public class DepotResponseDto {
     private Long id;
     private String name;
 
-    public Depot entityToDto(DepotResponseDto dto) {
-        return Depot.DepotBuilder.aDepot()
-                .id(dto.getId())
-                .name(dto.getName())
+    public static DepotResponseDto entityToDto(Depot depot) {
+        return DepotResponseDto.builder()
+                .id(depot.getId())
+                .name(depot.getName())
                 .build();
     }
 

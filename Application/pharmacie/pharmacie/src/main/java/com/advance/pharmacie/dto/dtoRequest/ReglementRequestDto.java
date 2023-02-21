@@ -18,7 +18,7 @@ public class ReglementRequestDto {
 
 
     private Long id;
-    private Utilisateur utilisateur;
+    private Long idUtilisateur;
     private Long idCommande;
     private Long idCaisse;
 

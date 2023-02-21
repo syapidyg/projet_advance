@@ -13,16 +13,14 @@ public class FournisseurResponseDto {
     private String name;
     private Long number;
     private String adress;
-//    private List<Commande> commandes = new ArrayList<>();
 
-    public Fournisseur entityToDto(FournisseurResponseDto dto) {
-        return Fournisseur.FournisseurBuilder.aFournisseur()
-                .id(dto.getId())
-                .email(dto.getEmail())
-                .adress(dto.getAdress())
-                .name(dto.getName())
-                .number(dto.getNumber())
-//                .commandes(dto.getCommandes())
+    public static FournisseurResponseDto entityToDto(Fournisseur fournisseur) {
+        return FournisseurResponseDto.builder()
+                .id(fournisseur.getId())
+                .email(fournisseur.getEmail())
+                .adress(fournisseur.getAdress())
+                .name(fournisseur.getName())
+                .number(fournisseur.getNumber())
                 .build();
     }
 

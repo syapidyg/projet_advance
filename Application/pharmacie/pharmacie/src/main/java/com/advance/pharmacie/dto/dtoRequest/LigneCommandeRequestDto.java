@@ -6,10 +6,6 @@ import com.advance.pharmacie.model.Produit;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 @Data
 @Builder
 public class LigneCommandeRequestDto {
@@ -19,7 +15,7 @@ public class LigneCommandeRequestDto {
     private Long idCommande;
     private Long idProduit;
 
-    public LigneCommande dtoToEntity(LigneCommandeRequestDto dto, Commande commande, Produit produit) {
+    public static LigneCommande dtoToEntity(LigneCommandeRequestDto dto, Commande commande, Produit produit) {
 
 //        CommandeRequestDto commandedto = new CommandeRequestDto();
 //        ProduitRequestDto produitdto = new ProduitRequestDto();

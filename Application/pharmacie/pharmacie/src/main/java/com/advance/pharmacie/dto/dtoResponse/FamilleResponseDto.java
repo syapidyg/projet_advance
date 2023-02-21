@@ -12,11 +12,11 @@ public class FamilleResponseDto {
     private String name;
     private String description;
 
-    public Famille entityToDto(FamilleResponseDto dto) {
-        return Famille.FamilleBuilder.aFamille()
-                .id(dto.getId())
-                .name(dto.getName())
-                .description(dto.getDescription())
+    public static FamilleResponseDto entityToDto(Famille famille) {
+        return FamilleResponseDto.builder()
+                .id(famille.getId())
+                .name(famille.getName())
+                .description(famille.getDescription())
                 .build();
     }
 

@@ -10,7 +10,7 @@ public class CaisseRequestDto {
     private Long id;
     private String name;
 
-    public Caisse dtoToEntity(CaisseRequestDto dto) {
+    public static Caisse dtoToEntity(CaisseRequestDto dto) {
         return Caisse.CaisseBuilder.aCaisse()
                 .id(dto.getId())
                 .name(dto.getName())

@@ -20,7 +20,7 @@ public class CommandeRequestDto {
     private Long idFournisseur;
     private Long idClient;
 
-    public Commande dtoToEntity(CommandeRequestDto dto, Client client, Fournisseur fournisseur) {
+    public static Commande dtoToEntity(CommandeRequestDto dto, Client client, Fournisseur fournisseur) {
         return Commande.CommandeBuilder.aCommande()
                 .id(dto.getId())
                 .statut(dto.getStatut())

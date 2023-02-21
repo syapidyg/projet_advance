@@ -14,16 +14,16 @@ public class ReglementResponseDto {
 
 
     private Long id;
-    private Utilisateur utilisateur;
-    private Long idCommande;
-    private Long idCaisse;
+    private UtilisateurResponseDto utilisateur;
+    private CommandeResponseDto commande;
+    private CaisseResponseDto caisse;
 
-    public Reglement entityToDto(ReglementResponseDto dto, Utilisateur utilisateur, Caisse caisse, Commande commande) {
-        return Reglement.ReglementBuilder.aReglement()
-                .id(dto.getId())
-                .utilisateur(utilisateur)
-                .caisse(caisse)
-                .commande(commande)
+    public ReglementResponseDto entityToDto(Reglement reglement) {
+        return ReglementResponseDto.builder()
+                .id(reglement.getId())
+                .utilisateur(UtilisateurResponseDto.entityToDto(reglement.getUtilisateur()))
+                .caisse(CaisseResponseDto.entityToDto(reglement.getCaisse()))
+                .commande(CommandeResponseDto.entityToDto(reglement.getCommande()))
                 .build();
     }
 

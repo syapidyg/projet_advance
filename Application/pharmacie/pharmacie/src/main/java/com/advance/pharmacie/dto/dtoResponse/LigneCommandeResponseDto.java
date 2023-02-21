@@ -1,5 +1,6 @@
 package com.advance.pharmacie.dto.dtoResponse;
 
+import com.advance.pharmacie.dto.dtoRequest.ProduitRequestDto;
 import com.advance.pharmacie.model.Commande;
 import com.advance.pharmacie.model.LigneCommande;
 import com.advance.pharmacie.model.Produit;
@@ -12,19 +13,19 @@ public class LigneCommandeResponseDto {
 
     private Long id;
     private String status;
-    private Long idCommande;
-    private Long idProduit;
+    private CommandeResponseDto commande;
+    private ProduitResponseDto produit;
 
-    public LigneCommande entityToDto(LigneCommandeResponseDto dto, Commande commande, Produit produit) {
+    public LigneCommandeResponseDto entityToDto(LigneCommande ligneCommande) {
 
 //        CommandeRequestDto commandedto = new CommandeRequestDto();
 //        ProduitRequestDto produitdto = new ProduitRequestDto();
 
-        return LigneCommande.LigneCommandeBuilder.aLigneCommande()
-                .id(dto.getId())
-                .status(dto.getStatus())
-                .commande(commande)
-                .produit(produit)
+        return LigneCommandeResponseDto.builder()
+                .id(ligneCommande.getId())
+                .status(ligneCommande.getStatus())
+                .commande(CommandeResponseDto.entityToDto(ligneCommande.getCommande()))
+                .produit(ProduitResponseDto.entityToDto(ligneCommande.getProduit()))
                 .build();
 
 

@@ -8,26 +8,30 @@ import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
+import java.util.Date;
 
 @Data
 @Builder
 public class EmployerRequestDto {
 
     private Long id;
-    private String username;
+    private String nom;
+    private String prenom;
+    private Date birthday;
     private String email;
     private Long number;
     private String password;
-    private Long idUtillisateur;
+    private Long idUtilisateur;
 
-    public Employer dtoToEntity(EmployerRequestDto dto, Utilisateur utilisateur) {
+    public static Employer dtoToEntity(EmployerRequestDto dto) {
         return Employer.EmployerBuilder.anEmployer()
                 .id(dto.getId())
+                .nom(dto.getNom())
+                .prenom(dto.getPrenom())
+                .birthday(dto.getBirthday())
                 .email(dto.getEmail())
-                .username(dto.getUsername())
                 .number(dto.getNumber())
-                .password(dto.getPassword())
-                .utilisateur(utilisateur)
                 .build();
+
     }
 }

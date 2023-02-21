@@ -6,6 +6,7 @@ import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.Date;
 
 @Entity
 @Data
@@ -15,8 +16,11 @@ public class Employer extends AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String nom;
+    private String prenom;
 
-    private String username;
+    private Date birthday;
+
 
     @Email
     private String email;
@@ -30,9 +34,12 @@ public class Employer extends AuditEntity {
     @JoinColumn(name = "utilisateur_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_employer_utilisateur"))
     private Utilisateur utilisateur;
 
+
     public static final class EmployerBuilder {
         private Long id;
-        private String username;
+        private String nom;
+        private String prenom;
+        private Date birthday;
         private @Email String email;
         private Long number;
         private String password;
@@ -50,8 +57,18 @@ public class Employer extends AuditEntity {
             return this;
         }
 
-        public EmployerBuilder username(String username) {
-            this.username = username;
+        public EmployerBuilder nom(String nom) {
+            this.nom = nom;
+            return this;
+        }
+
+        public EmployerBuilder prenom(String prenom) {
+            this.prenom = prenom;
+            return this;
+        }
+
+        public EmployerBuilder birthday(Date birthday) {
+            this.birthday = birthday;
             return this;
         }
 
@@ -78,7 +95,9 @@ public class Employer extends AuditEntity {
         public Employer build() {
             Employer employer = new Employer();
             employer.setId(id);
-            employer.setUsername(username);
+            employer.setNom(nom);
+            employer.setPrenom(prenom);
+            employer.setBirthday(birthday);
             employer.setEmail(email);
             employer.setNumber(number);
             employer.setPassword(password);

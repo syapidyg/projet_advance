@@ -5,10 +5,7 @@ import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
@@ -18,7 +15,11 @@ public class Utilisateur extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    private String nom;
+
+    private String prenom;
+
+    private Date birthday;
 
     @Email
     private String email;
@@ -38,14 +39,16 @@ public class Utilisateur extends AuditEntity {
     @OneToMany(mappedBy = "utilisateur")
     private List<Reglement> reglements = new ArrayList<>();
 
-
     public static final class UtilisateurBuilder {
         private Long id;
-        private String username;
+        private String nom;
+        private String prenom;
+        private Date birthday;
         private @Email String email;
         private Long number;
         private String password;
         private Role role;
+        private Employer employer;
 
         private UtilisateurBuilder() {
         }
@@ -59,8 +62,18 @@ public class Utilisateur extends AuditEntity {
             return this;
         }
 
-        public UtilisateurBuilder username(String username) {
-            this.username = username;
+        public UtilisateurBuilder nom(String nom) {
+            this.nom = nom;
+            return this;
+        }
+
+        public UtilisateurBuilder prenom(String prenom) {
+            this.prenom = prenom;
+            return this;
+        }
+
+        public UtilisateurBuilder birthday(Date birthday) {
+            this.birthday = birthday;
             return this;
         }
 
@@ -84,14 +97,22 @@ public class Utilisateur extends AuditEntity {
             return this;
         }
 
+        public UtilisateurBuilder employer(Employer employer) {
+            this.employer = employer;
+            return this;
+        }
+
         public Utilisateur build() {
             Utilisateur utilisateur = new Utilisateur();
             utilisateur.setId(id);
-            utilisateur.setUsername(username);
+            utilisateur.setNom(nom);
+            utilisateur.setPrenom(prenom);
+            utilisateur.setBirthday(birthday);
             utilisateur.setEmail(email);
             utilisateur.setNumber(number);
             utilisateur.setPassword(password);
             utilisateur.setRole(role);
+            utilisateur.setEmployer(employer);
             return utilisateur;
         }
     }

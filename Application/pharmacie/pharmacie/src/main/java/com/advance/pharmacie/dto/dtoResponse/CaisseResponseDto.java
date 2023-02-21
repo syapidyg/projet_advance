@@ -10,10 +10,10 @@ public class CaisseResponseDto {
     private Long id;
     private String name;
 
-    public Caisse entityToDto(CaisseResponseDto dtoResponse) {
-        return Caisse.CaisseBuilder.aCaisse()
-                .id(dtoResponse.getId())
-                .name(dtoResponse.getName())
+    public static CaisseResponseDto entityToDto(Caisse caisse) {
+        return CaisseResponseDto.builder()
+                .id(caisse.getId())
+                .name(caisse.getName())
                 .build();
     }
 }

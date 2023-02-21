@@ -12,7 +12,7 @@ public class FamilleRequestDto {
     private String name;
     private String description;
 
-    public Famille dtoToEntity(FamilleRequestDto dto) {
+    public static Famille dtoToEntity(FamilleRequestDto dto) {
         return Famille.FamilleBuilder.aFamille()
                 .id(dto.getId())
                 .name(dto.getName())

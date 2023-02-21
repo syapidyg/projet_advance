@@ -12,10 +12,10 @@ public class RoleResponseDto {
     private Long id;
     private String name;
 
-    public Role entityToDto(RoleResponseDto dto) {
-        return Role.RoleBuilder.aRole()
-                .id(dto.getId())
-                .name(dto.getName())
+    public RoleResponseDto entityToDto(Role role) {
+        return RoleResponseDto.builder()
+                .id(role.getId())
+                .name(role.getName())
                 .build();
     }
 

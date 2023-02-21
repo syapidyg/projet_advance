@@ -11,15 +11,15 @@ import lombok.Data;
 public class StockArticleResponseDto {
 
     private Long id;
-    private Long idDepot;
-    private Long idProduit;
+    private DepotResponseDto depot;
+    private ProduitResponseDto produit;
 
-    public StockArticle entityToDto(StockArticleResponseDto dto, Depot depot, Produit produit){
+    public StockArticleResponseDto entityToDto(StockArticle stockArticle){
 
-        return StockArticle.StockArticleBuilder.aStockArticle()
-                        .id(dto.getId())
-                        .depot(depot)
-                        .produit(produit)
+        return StockArticleResponseDto.builder()
+                        .id(stockArticle.getId())
+                        .depot(DepotResponseDto.entityToDto(stockArticle.getDepot()))
+                        .produit(ProduitResponseDto.entityToDto(stockArticle.getProduit()))
                         .build();
     }
 }

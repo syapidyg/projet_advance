@@ -16,7 +16,7 @@ public class ClientRequestDto {
     private Long number;
     private String email;
 
-    public Client dtoToEntity(ClientRequestDto dto) {
+    public static Client dtoToEntity(ClientRequestDto dto) {
         return Client.ClientBuilder.aClient()
                 .id(dto.getId())
                 .name(dto.getName())

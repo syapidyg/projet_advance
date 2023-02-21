@@ -21,7 +21,7 @@ public class FournisseurRequestDto {
     private String adress;
 //    private List<Commande> commandes = new ArrayList<>();
 
-    public Fournisseur dtoToEntity(FournisseurRequestDto dto) {
+    public static Fournisseur dtoToEntity(FournisseurRequestDto dto) {
         return Fournisseur.FournisseurBuilder.aFournisseur()
                 .id(dto.getId())
                 .email(dto.getEmail())

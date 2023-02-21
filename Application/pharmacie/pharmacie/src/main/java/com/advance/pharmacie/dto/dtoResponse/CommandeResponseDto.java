@@ -13,16 +13,16 @@ public class CommandeResponseDto {
     private Long id;
     private String type;
     private String statut;
-    private Long idFournisseur;
-    private Long idClient;
+    private FournisseurResponseDto fournisseur;
+    private ClientResponseDto client;
 
-    public Commande entityToDto(CommandeResponseDto dto, Client client, Fournisseur fournisseur) {
-        return Commande.CommandeBuilder.aCommande()
-                .id(dto.getId())
-                .statut(dto.getStatut())
-                .type(dto.getType())
-                .fournisseur(fournisseur)
-                .client(client)
+    public static CommandeResponseDto entityToDto(Commande commande) {
+        return CommandeResponseDto.builder()
+                .id(commande.getId())
+                .statut(commande.getStatut())
+                .type(commande.getType())
+                .fournisseur(FournisseurResponseDto.entityToDto(commande.getFournisseur()))
+                .client(ClientResponseDto.entityToDto(commande.getClient()))
                 .build();
 
     }

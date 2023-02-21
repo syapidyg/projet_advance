@@ -16,18 +16,18 @@ public class ProduitResponseDto {
     private String rayon;
     private Long pa;
     private Long pv;
-    private Long idfamille;
+    private FamilleResponseDto famille;
 
-    public Produit dtoToEntity(ProduitResponseDto dto, Famille famille) {
-        return Produit.ProduitBuilder.aProduit()
-                .id(dto.getId())
-                .dci(dto.getDci())
-                .dosage(dto.getDosage())
-                .forme(dto.getForme())
-                .rayon(dto.getRayon())
-                .pa(dto.getPa())
-                .pv(dto.getPv())
-                .famille(famille)
+    public static ProduitResponseDto entityToDto(Produit produit) {
+        return ProduitResponseDto.builder()
+                .id(produit.getId())
+                .dci(produit.getDci())
+                .dosage(produit.getDosage())
+                .forme(produit.getForme())
+                .rayon(produit.getRayon())
+                .pa(produit.getPa())
+                .pv(produit.getPv())
+                .famille(FamilleResponseDto.entityToDto(produit.getFamille()))
                 .build();
     }
 }
