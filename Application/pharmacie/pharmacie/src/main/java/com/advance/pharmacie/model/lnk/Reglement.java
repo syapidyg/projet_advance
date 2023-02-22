@@ -1,6 +1,10 @@
-package com.advance.pharmacie.model;
+package com.advance.pharmacie.model.lnk;
 
 
+import com.advance.pharmacie.model.AuditEntity;
+import com.advance.pharmacie.model.Caisse;
+import com.advance.pharmacie.model.Commande;
+import com.advance.pharmacie.model.Utilisateur;
 import lombok.Data;
 
 import javax.persistence.*;

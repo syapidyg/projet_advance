@@ -18,7 +18,7 @@ public class ProduitRequestDto {
     private Long pv;
     private Long idfamille;
 
-    public Produit dtoToEntity(ProduitRequestDto dto, Famille famille) {
+    public static Produit dtoToEntity(ProduitRequestDto dto, Famille famille) {
         return Produit.ProduitBuilder.aProduit()
                 .id(dto.getId())
                 .dci(dto.getDci())

@@ -25,7 +25,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs",
                         "/**/swagger-resources/**",
                         "/configuration/ui",
-                        "/webjars/**")
+                        "/webjars/**",
+                        "/caisse/**",
+                        "/client/**",
+                        "/depot/**",
+                        "/produit/**",
+                        "/famille/**",
+                        "/utilisateur/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
@@ -40,7 +46,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    public PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder();
 //    }
-
 
 
 //    @Override

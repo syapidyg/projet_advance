@@ -1,5 +1,8 @@
-package com.advance.pharmacie.model;
+package com.advance.pharmacie.model.lnk;
 
+import com.advance.pharmacie.model.AuditEntity;
+import com.advance.pharmacie.model.Commande;
+import com.advance.pharmacie.model.Produit;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "LNK_LIGNE_COMMANDE")
-public class LigneCommande extends AuditEntity{
+public class LigneCommande extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

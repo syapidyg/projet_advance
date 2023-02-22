@@ -3,14 +3,10 @@ package com.advance.pharmacie.dto.dtoRequest;
 
 import com.advance.pharmacie.model.Caisse;
 import com.advance.pharmacie.model.Commande;
-import com.advance.pharmacie.model.Reglement;
+import com.advance.pharmacie.model.lnk.Reglement;
 import com.advance.pharmacie.model.Utilisateur;
 import lombok.Builder;
 import lombok.Data;
-
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Data
 @Builder

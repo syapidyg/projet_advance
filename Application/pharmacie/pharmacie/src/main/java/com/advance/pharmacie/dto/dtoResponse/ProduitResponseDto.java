@@ -1,9 +1,13 @@
 package com.advance.pharmacie.dto.dtoResponse;
 
+import com.advance.pharmacie.model.Caisse;
 import com.advance.pharmacie.model.Famille;
 import com.advance.pharmacie.model.Produit;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -29,5 +33,9 @@ public class ProduitResponseDto {
                 .pv(produit.getPv())
                 .famille(FamilleResponseDto.entityToDto(produit.getFamille()))
                 .build();
+    }
+
+    public static List<ProduitResponseDto> entityToDtoList(List<Produit> produitList){
+        return produitList.stream().map(ProduitResponseDto::entityToDto).collect(Collectors.toList());
     }
 }

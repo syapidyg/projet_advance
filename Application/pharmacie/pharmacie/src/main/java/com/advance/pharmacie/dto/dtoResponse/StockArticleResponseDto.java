@@ -1,8 +1,6 @@
 package com.advance.pharmacie.dto.dtoResponse;
 
-import com.advance.pharmacie.model.Depot;
-import com.advance.pharmacie.model.Produit;
-import com.advance.pharmacie.model.StockArticle;
+import com.advance.pharmacie.model.lnk.StockArticle;
 import lombok.Builder;
 import lombok.Data;
 

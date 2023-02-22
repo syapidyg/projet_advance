@@ -1,6 +1,6 @@
-package com.advance.pharmacie.repository;
+package com.advance.pharmacie.repository.lnk;
 
-import com.advance.pharmacie.model.StockArticle;
+import com.advance.pharmacie.model.lnk.StockArticle;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StockArticleRepository extends JpaRepository<StockArticle, Long> {

@@ -1,5 +1,6 @@
 package com.advance.pharmacie.model;
 
+import com.advance.pharmacie.model.lnk.StockArticle;
 import lombok.Data;
 
 import javax.persistence.*;

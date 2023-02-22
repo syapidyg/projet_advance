@@ -2,13 +2,9 @@ package com.advance.pharmacie.dto.dtoRequest;
 
 import com.advance.pharmacie.model.Depot;
 import com.advance.pharmacie.model.Produit;
-import com.advance.pharmacie.model.StockArticle;
+import com.advance.pharmacie.model.lnk.StockArticle;
 import lombok.Builder;
 import lombok.Data;
-
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Data
 @Builder

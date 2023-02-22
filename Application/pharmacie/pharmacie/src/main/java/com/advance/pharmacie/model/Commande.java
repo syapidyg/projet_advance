@@ -1,6 +1,8 @@
 package com.advance.pharmacie.model;
 
 
+import com.advance.pharmacie.model.lnk.LigneCommande;
+import com.advance.pharmacie.model.lnk.Reglement;
 import lombok.Data;
 
 import javax.persistence.*;

@@ -4,6 +4,9 @@ import com.advance.pharmacie.model.Caisse;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @Builder
 public class CaisseResponseDto {
@@ -16,4 +19,9 @@ public class CaisseResponseDto {
                 .name(caisse.getName())
                 .build();
     }
+
+    public static List<CaisseResponseDto> entityToDtoList(List<Caisse> caisseList){
+        return caisseList.stream().map(CaisseResponseDto::entityToDto).collect(Collectors.toList());
+    }
+
 }

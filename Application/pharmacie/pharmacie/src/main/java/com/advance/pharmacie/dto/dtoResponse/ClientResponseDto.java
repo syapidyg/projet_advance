@@ -4,6 +4,9 @@ import com.advance.pharmacie.model.Client;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @Builder
 public class ClientResponseDto {
@@ -22,4 +25,7 @@ public class ClientResponseDto {
                 .build();
     }
 
+    public static List<ClientResponseDto> entityToDtoList(List<Client> clientList){
+        return clientList.stream().map(ClientResponseDto::entityToDto).collect(Collectors.toList());
+    }
 }

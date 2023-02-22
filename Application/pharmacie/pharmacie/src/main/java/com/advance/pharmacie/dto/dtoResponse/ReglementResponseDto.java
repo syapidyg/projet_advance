@@ -1,10 +1,7 @@
 package com.advance.pharmacie.dto.dtoResponse;
 
 
-import com.advance.pharmacie.model.Caisse;
-import com.advance.pharmacie.model.Commande;
-import com.advance.pharmacie.model.Reglement;
-import com.advance.pharmacie.model.Utilisateur;
+import com.advance.pharmacie.model.lnk.Reglement;
 import lombok.Builder;
 import lombok.Data;
 

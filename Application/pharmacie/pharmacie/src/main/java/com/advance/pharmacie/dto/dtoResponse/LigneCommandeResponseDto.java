@@ -1,9 +1,6 @@
 package com.advance.pharmacie.dto.dtoResponse;
 
-import com.advance.pharmacie.dto.dtoRequest.ProduitRequestDto;
-import com.advance.pharmacie.model.Commande;
-import com.advance.pharmacie.model.LigneCommande;
-import com.advance.pharmacie.model.Produit;
+import com.advance.pharmacie.model.lnk.LigneCommande;
 import lombok.Builder;
 import lombok.Data;
 
