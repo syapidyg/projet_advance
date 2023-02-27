@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = {"*"})
 @RequestMapping("/caisse")
 
 public class CaisseController {
@@ -22,7 +22,7 @@ public class CaisseController {
 
 
     @ApiOperation("Creation et Mise a jour d'une caisse")
-    @PostMapping("/Create")
+    @PostMapping("/create")
     public ResponseEntity<ApiResponse<CaisseResponseDto>> create(@RequestBody CaisseRequestDto dto){
         return ResponseEntity.ok(
                 ApiResponse.<CaisseResponseDto>builder()

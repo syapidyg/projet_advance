@@ -11,6 +11,7 @@ import java.util.Date;
 @Builder
 public class UtilisateurResponseDto {
 
+    private String resultat;
     private Long id;
     private String nom;
     private String prenom;

@@ -19,6 +19,8 @@ public class Caisse extends AuditEntity {
 
     private String name;
 
+    private String description;
+
     @OneToMany(mappedBy = "caisse")
     private List<Reglement> reglements = new ArrayList<>();
 
@@ -26,6 +28,7 @@ public class Caisse extends AuditEntity {
     public static final class CaisseBuilder {
         private Long id;
         private String name;
+        private String description;
         private List<Reglement> reglements;
 
         private CaisseBuilder() {
@@ -45,6 +48,10 @@ public class Caisse extends AuditEntity {
             return this;
         }
 
+        public CaisseBuilder description(String description) {
+            this.description = description;
+            return this;
+        }
         public CaisseBuilder reglements(List<Reglement> reglements) {
             this.reglements = reglements;
             return this;
@@ -54,6 +61,7 @@ public class Caisse extends AuditEntity {
             Caisse caisse = new Caisse();
             caisse.setId(id);
             caisse.setName(name);
+            caisse.setDescription(description);
             caisse.setReglements(reglements);
             return caisse;
         }

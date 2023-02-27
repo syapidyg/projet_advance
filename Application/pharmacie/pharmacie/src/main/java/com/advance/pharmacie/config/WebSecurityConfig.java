@@ -1,5 +1,6 @@
 package com.advance.pharmacie.config;
 
+import com.advance.pharmacie.service.Auth.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,12 +11,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 @EnableWebSecurity
 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    private UtilisateurService utilisateurService;
+    @Autowired
+    private UtilisateurService utilisateurService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -37,27 +39,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated();
     }
 
-//    public static boolean comparePassword(String clear, String crypt) {
-//        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-//        return bcrypt.matches(clear, crypt);
-//    }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    public static boolean comparePassword(String clear, String crypt) {
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        return bcrypt.matches(clear, crypt);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(null).passwordEncoder(passwordEncoder());
-////        A revenir service a la place de null
-//    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(utilisateurService).passwordEncoder(passwordEncoder());
+    }
 
     @Override
     @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
+
+
 }
 

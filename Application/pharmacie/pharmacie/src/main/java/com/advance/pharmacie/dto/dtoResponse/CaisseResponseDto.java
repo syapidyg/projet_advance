@@ -12,11 +12,13 @@ import java.util.stream.Collectors;
 public class CaisseResponseDto {
     private Long id;
     private String name;
+    private String description;
 
     public static CaisseResponseDto entityToDto(Caisse caisse) {
         return CaisseResponseDto.builder()
                 .id(caisse.getId())
                 .name(caisse.getName())
+                .description(caisse.getDescription())
                 .build();
     }
 

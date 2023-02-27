@@ -2,12 +2,9 @@ package com.advance.pharmacie.dto.dtoRequest;
 
 
 import com.advance.pharmacie.model.Utilisateur;
+import com.advance.pharmacie.util.GeneralUtil;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.format.annotation.NumberFormat;
-
-import javax.persistence.OneToOne;
-import javax.validation.constraints.Email;
 import java.util.Date;
 
 @Data
@@ -22,12 +19,13 @@ public class UtilisateurRequestDto {
     private Long number;
     private String password;
 
-    public Utilisateur dtoToEntity(UtilisateurRequestDto dto) {
+    public static Utilisateur dtoToEntity(UtilisateurRequestDto dto) {
         return Utilisateur.UtilisateurBuilder.anUtilisateur()
                 .id(dto.getId())
                 .nom(dto.getNom())
                 .prenom(dto.getPrenom())
                 .birthday(dto.getBirthday())
+                .password(GeneralUtil.genererPasswordUser(dto.getPassword()))
                 .email(dto.getEmail())
                 .number(dto.getNumber())
                 .build();

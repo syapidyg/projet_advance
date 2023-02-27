@@ -28,7 +28,6 @@ public class EmployerResponseDto {
                 .email(employer.getEmail())
                 .number(employer.getNumber())
                 .utilisateur(UtilisateurResponseDto.entityToDto(employer.getUtilisateur()))
-
                 .build();
     }
 }

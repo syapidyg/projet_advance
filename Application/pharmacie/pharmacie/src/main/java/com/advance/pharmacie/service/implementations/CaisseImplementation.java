@@ -25,6 +25,7 @@ public class CaisseImplementation implements CaisseService {
         if (Objects.nonNull(dtoCaisse.getId()) && dtoCaisse.getId() > 0) {
             Caisse caisse = caisseRepository.findById(dtoCaisse.getId()).map(p -> {
                 p.setName(dtoCaisse.getName());
+                p.setDescription(dtoCaisse.getDescription());
                 return caisseRepository.save(p);
             }).orElseThrow(() -> new RuntimeException("Aucune caisse trouvé"));
 
