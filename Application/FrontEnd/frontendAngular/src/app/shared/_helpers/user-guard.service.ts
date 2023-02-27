@@ -26,9 +26,10 @@ export class UserGuardService implements CanActivate {
       }
     } else {
       this.notifService.warning('Accès refusé')
+      this.router.navigate(['/session/login']);
+
     }
 
-    this.router.navigate(['/session/login'], { queryParams: { returnUrl: state.url }});
     return true;
   }
 }

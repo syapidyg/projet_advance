@@ -13,6 +13,7 @@ import { LoginComponent } from './session/login/login.component';
 import { ToastrModule } from 'ngx-toastr';
 import { authInterceptorProviders } from './shared/_helpers/auth.interceptor';
 import { UserGuardService } from './shared/_helpers/user-guard.service';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { UserGuardService } from './shared/_helpers/user-guard.service';
     MainComponent,
     CaisseComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

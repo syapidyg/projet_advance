@@ -9,12 +9,12 @@ import { UserGuardService } from './shared/_helpers/user-guard.service';
 const routes: Routes = [
   { path: 'session/login', component: LoginComponent },
   {
-    path: '', component: MainComponent,
+    path: '', component: MainComponent, canActivate: [UserGuardService],
     children: [
       { path: '', component: DashboardComponent },
       {
         path: 'caisseList', component: CaisseComponent,
-        // canActivate: [UserGuardService]
+       
       }
     ]
   },
