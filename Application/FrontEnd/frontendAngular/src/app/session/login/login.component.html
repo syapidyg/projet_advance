@@ -44,8 +44,7 @@
                                     <div class="form-group">
                                         <div class="form-label-group">
                                             <label class="form-label" for="password">Mot de Passe</label>
-                                            <a class="link link-primary link-sm"
-                                                href="#">Mot de passe oublié?</a>
+                                            <a class="link link-primary link-sm" href="#">Mot de passe oublié?</a>
                                         </div>
                                         <div class="form-control-wrap">
                                             <a href="#" class="form-icon form-icon-right passcode-switch lg"
@@ -59,17 +58,19 @@
                                             <span
                                                 *ngIf="(submitted || form.controls.password.touched) && form.controls.password.errors "
                                                 style="color: rgb(255, 75, 75);">Le
-                                                Mot de passe est requis 
+                                                Mot de passe est requis
                                             </span>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <button class="btn btn-lg btn-primary btn-block" (click)="login()">Login
-                                            <div *ngIf="isLoading" class="spinner-border m-5" role="status">
-                                                <span class="visually-hidden">Loading...</span>
+                                            <div *ngIf="isLoading" class="d-flex justify-content-center">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true">
+                                                </span>
                                             </div>
                                         </button>
-                                        
+
                                     </div>
                                 </form>
                                 <div class="form-note-s2 text-center pt-4"> Nouveau sur la plate-forme? Contactez votre
