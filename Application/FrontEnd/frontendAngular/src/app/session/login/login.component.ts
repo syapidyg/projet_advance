@@ -41,14 +41,16 @@ export class LoginComponent implements OnInit {
       this.initFormLogin();
     }
   }
+
+  get f() { return this.form.controls; }
+
   private initFormLogin() {
     this.form = this.fb.group({
-      nom: ['', Validators.required],
+      username: ['', Validators.required],
       password: ['', [Validators.required]],
     });
   }
 
-  get f() { return this.form.controls; }
 
   login() {
     this.submitted = true;
@@ -58,12 +60,13 @@ export class LoginComponent implements OnInit {
       return;
     }
     let dto;
-    dto = new UserRequestModel(this.f.nom.value, this.f.password.value);
+    dto = new UserRequestModel(this.f.username.value, this.f.password.value);
     console.log(dto);
     this.authService.login(dto)
       .subscribe((result: any)  => {
         console.log('result', result)
-        this.tokenStorage.saveToken(result.token);
+        this.tokenStorage.saveToken(result.data.token);
+        this.tokenStorage.saveUser(result.data.utilisateur);
         this.isLoading = !this.isLoading;
         this.notif.success('Connexion avec sucsess ')
         if (this.tokenStorage.getUser() || this.tokenStorage.getToken()) {
@@ -75,5 +78,6 @@ export class LoginComponent implements OnInit {
         this.isLoading = !this.isLoading;
         this.isLoginFailed = true;
       })
+
   }
 }

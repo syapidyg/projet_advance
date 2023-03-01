@@ -18,14 +18,14 @@ export class UserGuardService implements CanActivate {
               ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    
+
     if (this.tokenStorage.getToken()) {
       const helper = new JwtHelperService();
       if (this.tokenStorage.getUser()) {
         return !helper.isTokenExpired(this.tokenStorage.getToken());
       }
     } else {
-      this.notifService.warning('Accès refusé')
+      // this.notifService.warning('Accès refusé');
       this.router.navigate(['/session/login']);
 
     }

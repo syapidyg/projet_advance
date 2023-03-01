@@ -20,6 +20,8 @@ public class Utilisateur extends AuditEntity {
 
     private String prenom;
 
+    private String username;
+
     private Date birthday;
 
     @Email
@@ -44,6 +46,7 @@ public class Utilisateur extends AuditEntity {
         private Long id;
         private String nom;
         private String prenom;
+        private String username;
         private Date birthday;
         private @Email String email;
         private Long number;
@@ -70,6 +73,11 @@ public class Utilisateur extends AuditEntity {
 
         public UtilisateurBuilder prenom(String prenom) {
             this.prenom = prenom;
+            return this;
+        }
+
+        public UtilisateurBuilder username(String username) {
+            this.username = username;
             return this;
         }
 
@@ -108,6 +116,7 @@ public class Utilisateur extends AuditEntity {
             utilisateur.setId(id);
             utilisateur.setNom(nom);
             utilisateur.setPrenom(prenom);
+            utilisateur.setUsername(username);
             utilisateur.setBirthday(birthday);
             utilisateur.setEmail(email);
             utilisateur.setNumber(number);

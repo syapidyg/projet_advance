@@ -5,6 +5,7 @@ import com.advance.pharmacie.dto.dtoAuth.AuthenticationRequestDto;
 import com.advance.pharmacie.dto.dtoAuth.AuthenticationResponseDto;
 import com.advance.pharmacie.dto.dtoRequest.UtilisateurRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.UtilisateurResponseDto;
+
 import com.advance.pharmacie.service.Auth.UtilisateurService;
 import com.advance.pharmacie.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +35,31 @@ public class UtilisateurController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponseDto> login(@RequestBody AuthenticationRequestDto request){
+    public ResponseEntity<ApiResponse<AuthenticationResponseDto>> login(@RequestBody AuthenticationRequestDto request){
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            request.getNom(),
+                            request.getUsername(),
                             request.getPassword()
                     )
             );
 
-            final UserDetails userDetails = utilisateurService.loadUserByUsername(request.getNom());
+            final UserDetails userDetails = utilisateurService.loadUserByUsername(request.getUsername());
             final String jwt = JwtUtil.generateToken(userDetails.getUsername());
-            return ResponseEntity.ok(AuthenticationResponseDto.builder().token(jwt).build());
+
+            utilisateurService.findByUsername(request.getUsername());
+            AuthenticationResponseDto data = AuthenticationResponseDto
+                    .builder()
+                    .token(jwt)
+                    .utilisateur(utilisateurService.findByUsername(request.getUsername()))
+                    .build();
+            return ResponseEntity.ok(ApiResponse
+                   .< AuthenticationResponseDto>
+                            builder()
+                            .success(true)
+                            .message("Authentification reuissie")
+                            .data(data)
+                            .build());
         }catch (Exception e){
             e.printStackTrace();
             throw e;

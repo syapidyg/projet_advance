@@ -11,10 +11,10 @@ import java.util.Date;
 @Builder
 public class UtilisateurResponseDto {
 
-    private String resultat;
     private Long id;
     private String nom;
     private String prenom;
+    private String username;
     private Date birthday;
     private String email;
     private Long number;
@@ -25,6 +25,7 @@ public class UtilisateurResponseDto {
                 .id(utilisateur.getId())
                 .nom(utilisateur.getNom())
                 .prenom(utilisateur.getPrenom())
+                .username(utilisateur.getUsername())
                 .birthday(utilisateur.getBirthday())
                 .email(utilisateur.getEmail())
                 .number(utilisateur.getNumber())

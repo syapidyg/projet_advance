@@ -21,7 +21,7 @@ export class AuthService {
 
   public login(credentials: UserRequestModel): Observable<any> {
     return this.http.post(`${AUTH}`,
-      new UserRequestModel(credentials.nom, credentials.password), httpOptions);
+      new UserRequestModel(credentials.username, credentials.password), httpOptions);
   }
 
   getCurrentUser(): Observable<any> {

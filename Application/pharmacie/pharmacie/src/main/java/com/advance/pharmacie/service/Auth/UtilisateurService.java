@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
+
 public class UtilisateurService implements UserDetailsService {
 
 
@@ -27,29 +28,30 @@ public class UtilisateurService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Utilisateur utilisateur = utilsateurRepository
-                .findByNom(username)
+                .findByUsername(username)
                 .orElseThrow(()->new RuntimeException("Could not find"));
 
-        return new User(utilisateur.getNom(), utilisateur.getPassword(), Collections.emptyList());
+        return new User(utilisateur.getUsername(), utilisateur.getPassword(), Collections.emptyList());
     }
 
-    UtilisateurResponseDto findByName(String username){
-        Utilisateur utilisateur =  utilsateurRepository.findByNom(username).orElse(null);
 
-        return UtilisateurResponseDto.builder().resultat((utilisateur == null)? null:utilisateur.getEmail()).build();
-    }
+    public UtilisateurResponseDto findByUsername(String username){
+        Utilisateur utilisateur =  utilsateurRepository.findByUsername(username).orElse(null);
 
-    public boolean existsByEmail(String email){
-        return utilsateurRepository.existsByEmail(email);
+        return UtilisateurResponseDto.entityToDto(utilisateur);
+                }
+
+    public boolean existsByEmail(String username){
+        return utilsateurRepository.existsByUsername(username);
     }
 
     public UtilisateurResponseDto register(UtilisateurRequestDto signinDto){
 
-        if (utilsateurRepository.existsByEmail(signinDto.getEmail())){
-            throw new RuntimeException("Cette adresse mail existe deja");
+        if (utilsateurRepository.existsByUsername(signinDto.getUsername())){
+            throw new RuntimeException("Cet Username existe deja");
         }
 
-        Utilisateur reponse = utilsateurRepository.save(UtilisateurRequestDto.dtoToEntity(signinDto));
-        return UtilisateurResponseDto.builder().resultat(reponse.getEmail()).build();
+        Utilisateur utilisateur = utilsateurRepository.save(UtilisateurRequestDto.dtoToEntity(signinDto));
+        return UtilisateurResponseDto.entityToDto(utilisateur);
     }
 }

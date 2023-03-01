@@ -14,6 +14,7 @@ public class UtilisateurRequestDto {
     private Long id;
     private String nom;
     private String prenom;
+    private String username;
     private Date birthday;
     private String email;
     private Long number;
@@ -24,6 +25,7 @@ public class UtilisateurRequestDto {
                 .id(dto.getId())
                 .nom(dto.getNom())
                 .prenom(dto.getPrenom())
+                .username(dto.getUsername())
                 .birthday(dto.getBirthday())
                 .password(GeneralUtil.genererPasswordUser(dto.getPassword()))
                 .email(dto.getEmail())

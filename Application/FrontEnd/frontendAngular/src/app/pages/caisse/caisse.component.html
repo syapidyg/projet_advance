@@ -12,8 +12,11 @@
                         <p>Le tableau suivant listes <strong class="text-primary">les caisses et ses differentes
                                 operations</strong>.</p>
                     </div>
-                    <div class="d-flex flex-row-reverse"> <a href="#" class="btn btn-l btn-primary">Ajouter</a></div>
-
+                    <div class="d-flex flex-row-reverse">
+                        <a class="btn btn-l btn-primary" data-bs-toggle="modal" data-bs-target="#modalForm">
+                            Ajouter
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="card card-bordered card-preview">
@@ -25,11 +28,11 @@
                                 <span class="tb-tnx-desc d-none d-sm-inline-block">
                                     <span>Name</span>
                                 </span>
+
                                 <span class="tb-tnx-date d-md-inline-block d-none">
                                     <span class="d-md-none">Date</span>
                                     <span class="d-none d-md-block">
-                                        <span>Issue Date</span>
-                                        <span>Due Date</span>
+                                        <span>Description</span>
                                     </span>
                                 </span>
                             </th>
@@ -45,8 +48,7 @@
                                     <span class="title">{{caisse?.name}}</span>
                                 </div>
                                 <div class="tb-tnx-date">
-                                    <span class="date">10-05-2019</span>
-                                    <span class="date">10-13-2019</span>
+                                    <span class="title">{{caisse?.description}}</span>
                                 </div>
                             </td>
                             <td class="tb-tnx-action">
@@ -56,8 +58,8 @@
                                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
                                         <ul class="link-list-plain">
                                             <li><a href="#">View</a></li>
-                                            <li><a href="#">Edit</a></li>
-                                            <li><a href="#">Remove</a></li>
+                                            <li><a href="">Edit</a></li>
+                                            <li><a href="#" (click)="deleteCaisse(caisse)">Remove</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -70,3 +72,53 @@
 
     </div>
 </div>
+<!-- Caisse Modal -->
+<div class="modal fade" id="modalForm">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Caisse</h5>
+                <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <em class="icon ni ni-cross"></em>
+                </a>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="form" class="form-validate is-alter">
+                    <div class="form-group">
+                        <label class="form-label" for="nom">Nom de la caisse</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control" formControlName="nom" id="nom" required>
+                            <span *ngIf="(submitted || form.controls.nom.touched) && form.controls.nom.errors "
+                                style="color: rgb(255, 75, 75);">
+                                Le nom de la caisse est requis
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="description">Description de la caisse</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control" formControlName="description" id="description">
+                            <span
+                                *ngIf="(submitted || form.controls.description.touched) && form.controls.description.errors "
+                                style="color: rgb(255, 75, 75);">
+                                La description est requise
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-lg btn-primary" (click)="save()">
+                            Sauvegarder
+                            <div *ngIf="isLoading" class="d-flex justify-content-center">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-light">
+                <span class="sub-text">Ajouter une caisse</span>
+            </div>
+        </div>
+    </div>
+</div><!-- Caisse Modal -->

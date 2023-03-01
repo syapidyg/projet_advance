@@ -1,7 +1,7 @@
 export class UserRequestModel { 
 
     constructor(
-        public nom: string,
+        public username: string,
         public password: string
     ){}
 }
