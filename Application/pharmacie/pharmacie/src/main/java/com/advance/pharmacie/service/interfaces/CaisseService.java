@@ -11,6 +11,8 @@ public interface CaisseService {
 
     List<CaisseResponseDto> read();
 
+    CaisseResponseDto readOne(Long id);
+
     String delete(Long id);
 
 

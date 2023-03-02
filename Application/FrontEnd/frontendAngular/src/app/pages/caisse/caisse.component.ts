@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DELETE_CAISSE, READ_CAISSE } from 'src/app/shared/_elements/api_constant';
+import { ADD_CAISSE, DELETE_CAISSE, READ_CAISSE, READ_ONE_CAISSE } from 'src/app/shared/_elements/api_constant';
 import { CaisseRequestModel } from 'src/app/shared/_models/requests/caisse-request.model';
 import { CaisseResponseModel } from 'src/app/shared/_models/responses/caisse-response.model';
 import { CaisseService } from 'src/app/shared/_services/caisse-service';
@@ -20,15 +20,14 @@ export class CaisseComponent implements OnInit {
 
 
 
-  public caisses: CaisseResponseModel[] = [];
-  Swal: any;
+  public data: CaisseResponseModel[] = [];
   currentUser!: any;
   form!: FormGroup;
   formdr!: FormGroup;
   caisse!: any;
   isLoading!: boolean;
   submitted!: boolean;
-
+  i !: number;
 
   constructor(
     private caisseService: CaisseService,
@@ -42,46 +41,73 @@ export class CaisseComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCaisse();
-    this.initFormLogin();
+    this.initFormLogin(null);
   }
 
   // tslint:disable-next-line: typedef
   getCaisse() {
     this.caisseService.get(READ_CAISSE).then((response: any) => {
-      this.caisses = response.data;
+      this.data = response.data;
+      console.log(response);
+    });
+  }
+
+  // tslint:disable-next-line: typedef
+  readOneCaisse(caisse: CaisseResponseModel) {
+    this.caisseService.get(READ_ONE_CAISSE + '/' + caisse.id).then((response: any) => {
       console.log(response);
     });
   }
 
   // tslint:disable-next-line: typedef
   deleteCaisse(caisse: CaisseResponseModel) {
-    this.Swal.fire({
+    Swal.fire({
       title: 'Êtes-vous sûr?',
-      text: 'Vous ne pourrez pas annuler cela!',
+      text: 'Vous êtes sur le point de supprimer cet élément.',
       icon: 'warning',
+      iconColor: 'rgb(250, 214, 53)',
       showCancelButton: true,
-      confirmButtonText: 'Oui, supprimez-le!',
-      cancelButtonText: 'Non, annuler'
-    }).then((result: any) => {
+      confirmButtonText: 'Oui, supprimer',
+      cancelButtonText: 'Annuler',
+      confirmButtonColor: '#28a746e1',
+      cancelButtonColor: '#6c757dbe'
+    }).then((result) => {
       if (result.isConfirmed) {
-          this.caisseService.delete(DELETE_CAISSE + '/' + caisse.id).then((response: any) => {
-          this.caisses = response.data;
+        this.caisseService.delete(DELETE_CAISSE + '/' + caisse.id).then((response: any) => {
+          this.data = response.data;
           console.log(response);
+          Swal.fire({
+            title: 'Supprimé!',
+            text: 'L\'élément a été supprimé avec succès.',
+            icon: 'success',
+            confirmButtonColor: '#28a745'
+          });
           this.getCaisse();
         });
-      } else if (result.isDenied) {
-          this.getCaisse();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Une erreur est survenue lors de la suppression de l\'élément.',
+          confirmButtonColor: '#28a745',
+          confirmButtonText: 'OK'
+        });
+        this.getCaisse();
       }
-    })
+    });
   }
 
+  // tslint:disable-next-line: typedef
+  editCaisse(caisse: CaisseResponseModel) {
+    this.initFormLogin(caisse);
+  }
 
   // tslint:disable-next-line: typedef
-  private initFormLogin() {
+  private initFormLogin(data: any) {
     this.form = this.fb.group({
-      id: [null],
-      nom: ['', Validators.required],
-      description: ['', Validators.required]
+      id: [data ? data.id : null],
+      nom: [data ? data.name : ' ', Validators.required],
+      description: [data ? data.description : ' ', Validators.required]
     });
   }
 
@@ -107,9 +133,10 @@ export class CaisseComponent implements OnInit {
         window.location.reload();
       }, err => {
         console.log(err);
-        this.notif.danger('Echec lors de lenregistrement ');
+        this.notif.danger('Echec lors de l\'enregistrement ');
         this.isLoading = !this.isLoading;
       });
 
   }
+
 }

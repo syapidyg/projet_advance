@@ -21,7 +21,6 @@ public class CaisseResponseDto {
                 .description(caisse.getDescription())
                 .build();
     }
-
     public static List<CaisseResponseDto> entityToDtoList(List<Caisse> caisseList){
         return caisseList.stream().map(CaisseResponseDto::entityToDto).collect(Collectors.toList());
     }

@@ -19,56 +19,41 @@
                     </div>
                 </div>
             </div>
-            <div class="card card-bordered card-preview">
-                <table class="table table-tranx">
-                    <thead>
-                        <tr class="tb-tnx-head">
-                            <th class="tb-tnx-id"><span class="">#</span></th>
-                            <th class="tb-tnx-info">
-                                <span class="tb-tnx-desc d-none d-sm-inline-block">
-                                    <span>Name</span>
-                                </span>
 
-                                <span class="tb-tnx-date d-md-inline-block d-none">
-                                    <span class="d-md-none">Date</span>
-                                    <span class="d-none d-md-block">
-                                        <span>Description</span>
-                                    </span>
-                                </span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let caisse of caisses" class="tb-tnx-item">
-                            <td class="tb-tnx-id">
-                                <a href="#"><span>{{caisse?.id}}</span></a>
-                            </td>
-                            <td class="tb-tnx-info">
-                                <div class="tb-tnx-desc">
-                                    <span class="title">{{caisse?.name}}</span>
-                                </div>
-                                <div class="tb-tnx-date">
-                                    <span class="title">{{caisse?.description}}</span>
-                                </div>
-                            </td>
-                            <td class="tb-tnx-action">
-                                <div class="dropdown">
-                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
-                                        data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
-                                        <ul class="link-list-plain">
-                                            <li><a href="#">View</a></li>
-                                            <li><a href="">Edit</a></li>
-                                            <li><a href="#" (click)="deleteCaisse(caisse)">Remove</a></li>
-                                        </ul>
+            <div class="card card-bordered card-preview">
+                <div class="card-inner">
+                    <table class="datatable-init table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="data-target">
+                                <td class="data-bs-target"> {{ i+1 }} </td>
+                                <td class="data-bs-target"> f</td>
+                                <td class="data-bs-target">d </td>
+                                <td class="tb-tnx-action">
+                                    <div class="dropdown">
+                                        <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
+                                                class="icon ni ni-more-h"></em></a>
+                                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                            <ul class="link-list-plain">
+                                                <li><a (click)="readOneCaisse(caisse)">View</a></li>
+                                                <li data-bs-toggle="modal" data-bs-target="#modalForm"><a (click)="editCaisse(caisse)">Edit</a></li>
+                                                <li><a (click)="deleteCaisse(caisse)">Remove </a> </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>           
+                        </tbody>
+                    </table>
             </div><!-- .card-preview -->
-        </div>
+        </div> 
 
     </div>
 </div>
@@ -88,6 +73,7 @@
                         <label class="form-label" for="nom">Nom de la caisse</label>
                         <div class="form-control-wrap">
                             <input type="text" class="form-control" formControlName="nom" id="nom" required>
+                            <!-- <input type="text" class="form-control" formControlName="nom" id="nom" *ngIf="caisse?.id" value={{caisse?.nom}} required> -->
                             <span *ngIf="(submitted || form.controls.nom.touched) && form.controls.nom.errors "
                                 style="color: rgb(255, 75, 75);">
                                 Le nom de la caisse est requis

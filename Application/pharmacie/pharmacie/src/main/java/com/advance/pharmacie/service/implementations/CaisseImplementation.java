@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 
@@ -38,6 +39,12 @@ public class CaisseImplementation implements CaisseService {
     @Override
     public List<CaisseResponseDto> read() {
         return CaisseResponseDto.entityToDtoList(caisseRepository.findAll());
+    }
+
+    @Override
+    public CaisseResponseDto readOne(Long id) {
+        Caisse caisse = caisseRepository.findById(id).orElseThrow(() -> new RuntimeException("Aucune caisse trouvé"));
+        return CaisseResponseDto.entityToDto(caisse);
     }
 
     @Override

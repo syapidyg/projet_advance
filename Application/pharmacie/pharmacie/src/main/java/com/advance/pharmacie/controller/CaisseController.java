@@ -24,11 +24,12 @@ public class CaisseController {
     @ApiOperation("Creation et Mise a jour d'une caisse")
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<CaisseResponseDto>> create(@RequestBody CaisseRequestDto dto){
+       CaisseResponseDto data = caisseService.createOrUpdate(dto);
         return ResponseEntity.ok(
                 ApiResponse.<CaisseResponseDto>builder()
                         .success(true)
                         .message("Opereation reussie")
-                        .data(caisseService.createOrUpdate(dto))
+                        .data(data)
                         .build());
     }
 
@@ -40,6 +41,17 @@ public class CaisseController {
                         .success(true)
                         .message("Opereation reussie")
                         .data(caisseService.read())
+                        .build());
+    }
+
+    @ApiOperation("Listing d'une caisse")
+    @GetMapping("/readOne/{id}")
+    public ResponseEntity<ApiResponse<CaisseResponseDto>> readOne(@PathVariable Long id){
+        return ResponseEntity.ok(
+                ApiResponse.<CaisseResponseDto>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(caisseService.readOne(id))
                         .build());
     }
 
