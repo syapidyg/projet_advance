@@ -1,7 +1,7 @@
 package com.advance.pharmacie.dto.dtoResponse;
 
 
-import com.advance.pharmacie.model.Utilisateur;
+import com.advance.pharmacie.model.auth.Utilisateur;
 import lombok.Builder;
 import lombok.Data;
 

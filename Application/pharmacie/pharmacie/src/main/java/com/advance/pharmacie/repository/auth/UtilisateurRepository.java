@@ -1,6 +1,6 @@
-package com.advance.pharmacie.repository;
+package com.advance.pharmacie.repository.auth;
 
-import com.advance.pharmacie.model.Utilisateur;
+import com.advance.pharmacie.model.auth.Utilisateur;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

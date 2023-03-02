@@ -1,7 +1,7 @@
 package com.advance.pharmacie.dto.dtoRequest;
 
 
-import com.advance.pharmacie.model.Role;
+import com.advance.pharmacie.model.auth.Role;
 import lombok.Builder;
 import lombok.Data;
 

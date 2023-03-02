@@ -1,7 +1,6 @@
 package com.advance.pharmacie.dto.dtoResponse;
 
 import com.advance.pharmacie.model.Employer;
-import com.advance.pharmacie.model.Utilisateur;
 import lombok.Builder;
 import lombok.Data;
 

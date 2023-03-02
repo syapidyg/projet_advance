@@ -1,13 +1,9 @@
 package com.advance.pharmacie.dto.dtoRequest;
 
 import com.advance.pharmacie.model.Employer;
-import com.advance.pharmacie.model.Utilisateur;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.format.annotation.NumberFormat;
 
-import javax.persistence.OneToOne;
-import javax.validation.constraints.Email;
 import java.util.Date;
 
 @Data

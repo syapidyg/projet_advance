@@ -4,7 +4,7 @@ package com.advance.pharmacie.model.lnk;
 import com.advance.pharmacie.model.AuditEntity;
 import com.advance.pharmacie.model.Caisse;
 import com.advance.pharmacie.model.Commande;
-import com.advance.pharmacie.model.Utilisateur;
+import com.advance.pharmacie.model.auth.Utilisateur;
 import lombok.Data;
 
 import javax.persistence.*;

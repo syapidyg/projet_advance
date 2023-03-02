@@ -1,13 +1,14 @@
-package com.advance.pharmacie.model;
+package com.advance.pharmacie.model.auth;
 
+import com.advance.pharmacie.model.AuditEntity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
+
 @Table(name = "APP_ROLE")
 
 public class Role extends AuditEntity {

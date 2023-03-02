@@ -2,8 +2,8 @@ package com.advance.pharmacie.service.Auth;
 
 import com.advance.pharmacie.dto.dtoRequest.UtilisateurRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.UtilisateurResponseDto;
-import com.advance.pharmacie.model.Utilisateur;
-import com.advance.pharmacie.repository.UtilisateurRepository;
+import com.advance.pharmacie.model.auth.Utilisateur;
+import com.advance.pharmacie.repository.auth.UtilisateurRepository;
 import com.advance.pharmacie.util.GeneralUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
