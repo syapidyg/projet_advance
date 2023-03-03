@@ -7,7 +7,7 @@
                         <h5 class="title">Marie Bernard</h5>
                         <ul class="nk-menu">
                             <li class="nk-menu-item">
-                                <a [routerLink]="['']" routerLinkActive="router-link-active" class="nk-menu-link">
+                                <a [routerLink]="['']" class="nk-menu-link">
                                     <span class="nk-menu-icon"><em class="icon ni ni-dashboard-fill"></em></span>
                                     <span class="nk-menu-text">Dashboard</span>
                                 </a>
@@ -68,26 +68,12 @@
                                     </li>
                                 </ul><!-- .nk-menu-sub -->
                             </li><!-- .nk-menu-item -->
-                            <li class="nk-menu-item has-sub">
-                                <a href="#" class="nk-menu-link nk-menu-toggle">
-                                    <span class="nk-menu-icon"><em class="icon ni ni-repeat"></em></span>
+                            <li class="nk-menu-text no-sub ">
+                                <a [routerLink]="['/caisses']" routerLinkActive="router-link-active" class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-icon"><em class="icon ni ni-wallet-fill"></em></span>
                                     <span class="nk-menu-text">Caisses</span>
                                 </a>
-                                <ul class="nk-menu-sub">
-                                    <li class="nk-menu-item">
-                                        <a [routerLink]="['/caisseList']" routerLinkActive="router-link-active"
-                                            class="nk-menu-link"><span class="nk-menu-text">Lister les
-                                                caisses</span></a>
-                                    </li>
-                                    <li class="nk-menu-item">
-                                        <a href="html/pharmacy/add-manufacturer-return.html" class="nk-menu-link"><span
-                                                class="nk-menu-text">Delete Caisse</span></a>
-                                    </li>
-                                    <li class="nk-menu-item">
-                                        <a href="html/pharmacy/manufacturer-return.html" class="nk-menu-link"><span
-                                                class="nk-menu-text">Update Caisse </span></a>
-                                    </li>
-                                </ul><!-- .nk-menu-sub -->
+                                <!-- .nk-menu-sub -->
                             </li><!-- .nk-menu-item -->
                             <li class="nk-menu-item has-sub">
                                 <a href="#" class="nk-menu-link nk-menu-toggle">

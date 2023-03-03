@@ -15,14 +15,15 @@
                     <div class="d-flex flex-row-reverse justify-content-between">
                         <a class="btn btn-l btn-primary " data-bs-toggle="modal" data-bs-target="#modalForm">
                             <em class="icon ni ni-grid-add-c"></em>
-                            <div>Ajouter</div>  
+                            <div>Ajouter</div>
                         </a>
                     </div>
                 </div>
             </div>
 
             <div class="card card-bordered card-preview">
-                <table class="table table-tranx">
+
+                <table class="table table-tranx card-inner">
                     <thead>
                         <tr class="tb-tnx-head">
                             <th class="tb-tnx-id"><span class="">#</span></th>
@@ -30,7 +31,7 @@
                                 <span class="tb-tnx-desc d-none d-sm-inline-block">
                                     <span>Name</span>
                                 </span>
-            
+
                                 <span class="tb-tnx-date d-md-inline-block d-none">
                                     <span class="d-md-none">Date</span>
                                     <span class="d-none d-md-block">
@@ -38,10 +39,27 @@
                                     </span>
                                 </span>
                             </th>
+                            <th class="">
+                                <div class="form-group ">
+                                    <div class="form-control-wrap">
+                                        <select class="form-select"    [(ngModel)]="pageSize">
+                                            <option value=5><span> 05 Items</span>
+                                            </option>
+                                            <option value=10><span> 10 Items</span>
+                                            </option>
+                                            <option value=15><span> 15 Items</span>
+                                            </option>
+                                            <option value=20><span> 20 Items</span>
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let caisse of data ; let i=index" class="tb-tnx-item">
+                        <tr *ngFor="let caisse of data | paginate: { itemsPerPage: pageSize, currentPage: p } ; let i=index "
+                            class="tb-tnx-item">
                             <td class="tb-tnx-id">
                                 <a href="#"><span>{{i+1}}</span></a>
                             </td>
@@ -55,23 +73,31 @@
                             </td>
                             <td class="tb-tnx-action">
                                 <div class="dropdown">
-                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em
-                                            class="icon ni ni-more-h"></em></a>
+                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                        data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
                                         <ul class="link-list-plain">
-                                            <li><a (click)="readOneCaisse(caisse)"><em class="icon ni ni-eye"></em>
-View</a></li>
-                                            <li data-bs-toggle="modal" data-bs-target="#modalForm"><a (click)="editCaisse(caisse)"><em class="icon ni ni-pen2"></em>Edit</a></li>
-                                            <li><a  (click)="deleteCaisse(caisse)"><em class="icon ni ni-trash"></em>Remove</a></li>
+                                            <li data-bs-toggle="modal" data-bs-target="#modalForm"><a
+                                                    (click)="readOneCaisse(caisse)"><em class="icon ni ni-eye"></em>
+                                                    View</a></li>
+                                            <li data-bs-toggle="modal" data-bs-target="#modalForm"><a
+                                                    (click)="editCaisse(caisse)"><em
+                                                        class="icon ni ni-pen2"></em>Edit</a></li>
+                                            <li><a (click)="deleteCaisse(caisse)"><em
+                                                        class="icon ni ni-trash"></em>Remove</a></li>
                                         </ul>
-                                        </div>
                                     </div>
-                                </td>
-                            </tr>           
-                        </tbody>
-                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div><!-- .card-preview -->
-        </div> 
+            <div class="pagination-container pagination">
+                <li> <pagination-controls [directionLinks]="true" (pageChange)="p = $event"
+                        class="bg-primary"></pagination-controls></li>
+            </div>
+        </div>
 
     </div>
 </div>
@@ -90,7 +116,8 @@ View</a></li>
                     <div class="form-group">
                         <label class="form-label" for="nom">Nom de la caisse</label>
                         <div class="form-control-wrap">
-                            <input type="text" class="form-control" formControlName="nom" id="nom" required>
+                            <input type="text" class="form-control" formControlName="nom" id="nom" required
+                                [attr.disabled]="isDisabled? isDisabled: null">
                             <!-- <input type="text" class="form-control" formControlName="nom" id="nom" *ngIf="caisse?.id" value={{caisse?.nom}} required> -->
                             <span *ngIf="(submitted || form.controls.nom.touched) && form.controls.nom.errors "
                                 style="color: rgb(255, 75, 75);">
@@ -101,7 +128,8 @@ View</a></li>
                     <div class="form-group">
                         <label class="form-label" for="description">Description de la caisse</label>
                         <div class="form-control-wrap">
-                            <input type="text" class="form-control" formControlName="description" id="description">
+                            <input type="text" class="form-control" formControlName="description" id="description"
+                                [attr.disabled]="isDisabled? isDisabled: null">
                             <span
                                 *ngIf="(submitted || form.controls.description.touched) && form.controls.description.errors "
                                 style="color: rgb(255, 75, 75);">
@@ -110,7 +138,8 @@ View</a></li>
                         </div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-lg btn-primary" (click)="save()">
+                        <button type="submit" class="btn btn-lg btn-primary" (click)="save()"
+                            [attr.disabled]="isDisabled? isDisabled: null">
                             Sauvegarder
                             <div *ngIf="isLoading" class="d-flex justify-content-center">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">

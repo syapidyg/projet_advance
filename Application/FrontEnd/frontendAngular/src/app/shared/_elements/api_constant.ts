@@ -8,3 +8,4 @@ export const READ_ONE_CAISSE = CAISSE + `/readOne`;
 export const DELETE_CAISSE = CAISSE + `/delete`;
 
 export const AUTH = SERVEUR + `/utilisateur/login`;
+    

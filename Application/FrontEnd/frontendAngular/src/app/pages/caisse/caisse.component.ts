@@ -23,11 +23,14 @@ export class CaisseComponent implements OnInit {
   public data: CaisseResponseModel[] = [];
   currentUser!: any;
   form!: FormGroup;
-  formdr!: FormGroup;
+  formpage!: FormGroup;
   caisse!: any;
   isLoading!: boolean;
   submitted!: boolean;
   i !: number;
+  p = 1; // Page courante
+  pageSize = 5; // Nombre d'éléments par page
+  public isDisabled = false;
 
   constructor(
     private caisseService: CaisseService,
@@ -56,6 +59,8 @@ export class CaisseComponent implements OnInit {
   readOneCaisse(caisse: CaisseResponseModel) {
     this.caisseService.get(READ_ONE_CAISSE + '/' + caisse.id).then((response: any) => {
       console.log(response);
+      this.isDisabled = true;
+      this.initFormLogin(caisse);
     });
   }
 
@@ -99,6 +104,7 @@ export class CaisseComponent implements OnInit {
 
   // tslint:disable-next-line: typedef
   editCaisse(caisse: CaisseResponseModel) {
+    this.isDisabled = false;
     this.initFormLogin(caisse);
   }
 
@@ -110,6 +116,13 @@ export class CaisseComponent implements OnInit {
       description: [data ? data.description : ' ', Validators.required]
     });
   }
+  private initFormPage(data: any) {
+    this.formpage = this.fb.group({
+      5: [data ? data.id : null],
+      10: [data ? data.name : ' ', Validators.required],
+      25: [data ? data.description : ' ', Validators.required]
+    });
+  }
 
   // tslint:disable-next-line: typedef
   get f() { return this.form.controls; }
@@ -118,6 +131,7 @@ export class CaisseComponent implements OnInit {
   save() {
     this.submitted = true;
     this.isLoading = true;
+    this.isDisabled = false;
     if (this.form.invalid) {
       this.isLoading = !this.isLoading;
       return;

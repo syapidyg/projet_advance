@@ -12,7 +12,7 @@ const routes: Routes = [
     path: '', component: MainComponent, canActivate: [UserGuardService],
     children: [
       { path: '', component: DashboardComponent },
-      { path: 'caisseList', component: CaisseComponent }
+      { path: 'caisses', component: CaisseComponent }
     ]
   },
   

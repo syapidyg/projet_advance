@@ -13,6 +13,7 @@ import { LoginComponent } from './session/login/login.component';
 import { ToastrModule } from 'ngx-toastr';
 import { authInterceptorProviders } from './shared/_helpers/auth.interceptor';
 import { UserGuardService } from './shared/_helpers/user-guard.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { UserGuardService } from './shared/_helpers/user-guard.service';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    NgxPaginationModule,
     ToastrModule.forRoot()
   ],
   providers: [
