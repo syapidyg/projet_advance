@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProduitImplementation implements ProduitService {
@@ -28,13 +29,13 @@ public class ProduitImplementation implements ProduitService {
         Famille famille = familleRepository.findById(dtoProduit.getIdfamille())
                 .orElseThrow(() -> new RuntimeException("Inserez la famille"));
 
-        if (dtoProduit.getId() > 0) {
+        if (Objects.nonNull(dtoProduit.getId()) &&  dtoProduit.getId() > 0) {
 
             Produit produit = produitRepository.findById(dtoProduit.getId()).map(p -> {
                 p.setDci(dtoProduit.getDci());
                 p.setDosage(dtoProduit.getDosage());
                 p.setForme(dtoProduit.getForme());
-                p.setRayon(dtoProduit.getRayon());
+                p.setCategorie(dtoProduit.getCategorie());
                 p.setPa(dtoProduit.getPa());
                 p.setPv(dtoProduit.getPv());
                 p.setFamille(famille);
@@ -61,4 +62,11 @@ public class ProduitImplementation implements ProduitService {
 
         produitRepository.deleteById(id);
         return "Produit suprimé avec succès";
-    }}
+    }
+
+    @Override
+    public ProduitResponseDto readOne(Long id) {
+        Produit produit = produitRepository.findById(id).orElseThrow(() -> new RuntimeException("Aucun Produit ne correspond a cet ID"));;
+        return ProduitResponseDto.entityToDto(produit);
+    }
+}

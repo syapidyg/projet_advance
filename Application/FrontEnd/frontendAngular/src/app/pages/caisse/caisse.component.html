@@ -1,102 +1,154 @@
 <div class="nk-content-body">
     <div class="nk-block-head nk-block-head-sm">
-        <div class="nk-block-head-sub"><a class="back-to" href="html/components.html"><em
-                    class="icon ni ni-arrow-left"></em><span>Components</span></a></div>
+        <!-- <div class="nk-block-head-sub"><a class="back-to" href="html/components.html"><em
+                    class="icon ni ni-arrow-left"></em><span>Components</span></a></div> -->
 
 
         <div class="nk-block nk-block-lg">
             <div class="nk-block-head">
                 <div class="nk-block-head-content d-flex justify-content-between">
                     <div>
-                        <h4 class="nk-block-title">Listing des caisses</h4>
-                        <p>Le tableau suivant listes <strong class="text-primary">les caisses et ses differentes
+                        <h4 class="nk-block-title">LISTE DES CAISSES</h4>
+                        <p>Le tableau suivant liste <strong class="text-primary">les caisses et ses differentes
                                 operations</strong>.</p>
+                        <div>
+                            <nav>
+                                <ul class="breadcrumb breadcrumb-arrow">
+                                    <li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Tableau de bord</a>
+                                    </li>
+                                    <li routerLinkActive="router-link-active" class="breadcrumb-item active">Caisses
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
-                    <div class="d-flex flex-row-reverse justify-content-between">
-                        <a class="btn btn-l btn-primary " data-bs-toggle="modal" data-bs-target="#modalForm">
-                            <em class="icon ni ni-grid-add-c"></em>
-                            <div>Ajouter</div>
-                        </a>
-                    </div>
+                </div>
+                <div class="d-flex flex-row-reverse flex-item justify-content-between">
+                    <a class="btn btn-l btn-primary " data-bs-toggle="modal" data-bs-target="#modalForm">
+                        <em class="icon ni ni-grid-add-c"></em>
+                        <div class="p-1">Ajouter</div>
+                    </a>
                 </div>
             </div>
 
             <div class="card card-bordered card-preview">
-
-                <table class="table table-tranx card-inner">
-                    <thead>
-                        <tr class="tb-tnx-head">
-                            <th class="tb-tnx-id"><span class="">#</span></th>
-                            <th class="tb-tnx-info">
-                                <span class="tb-tnx-desc d-none d-sm-inline-block">
-                                    <span>Name</span>
-                                </span>
-
-                                <span class="tb-tnx-date d-md-inline-block d-none">
-                                    <span class="d-md-none">Date</span>
-                                    <span class="d-none d-md-block">
-                                        <span>Description</span>
-                                    </span>
-                                </span>
-                            </th>
-                            <th class="">
-                                <div class="form-group ">
-                                    <div class="form-control-wrap">
-                                        <select class="form-select"    [(ngModel)]="pageSize">
-                                            <option value=5><span> 05 Items</span>
-                                            </option>
-                                            <option value=10><span> 10 Items</span>
-                                            </option>
-                                            <option value=15><span> 15 Items</span>
-                                            </option>
-                                            <option value=20><span> 20 Items</span>
-                                            </option>
-                                        </select>
+                <div class="card-inner">
+                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row justify-between g-2">
+                            <div class="col-7 col-sm-4 text-start">
+                                <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                                    <label>
+                                        <input type="search" class="form-control form-control-sm"
+                                            placeholder="Rechercher" aria-controls="DataTables_Table_0">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-5 col-sm-8 text-end">
+                                <div class="datatable-filter">
+                                    <div class="d-flex justify-content-end g-2">
+                                        <div class="dataTables_length" id="DataTables_Table_0_length">
+                                            <label>
+                                                <span class="d-none d-sm-inline-block">Voir</span>
+                                                <div class="form-control-select">
+                                                    <select name="DataTables_Table_0_length"
+                                                        aria-controls="DataTables_Table_0"
+                                                        class="custom-select custom-select-sm form-control form-control-sm">
+                                                        <option value="10">10</option>
+                                                        <option value="25">25</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                </div>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let caisse of data | paginate: { itemsPerPage: pageSize, currentPage: p } ; let i=index "
-                            class="tb-tnx-item">
-                            <td class="tb-tnx-id">
-                                <a href="#"><span>{{i+1}}</span></a>
-                            </td>
-                            <td class="tb-tnx-info">
-                                <div class="tb-tnx-desc">
-                                    <span class="title">{{caisse?.name}}</span>
+                            </div>
+                        </div>
+                        <div class="datatable-wrap my-3">
+                            <table class="table dataTable no-footer dtr-inline" id="DataTables_Table_0">
+                                <thead>
+                                    <tr>
+                                        <th aria-controls="DataTables_Table_0" rowspan="1" colspan="1">
+                                            #</th>
+                                        <th aria-controls="DataTables_Table_0" rowspan="1" colspan="1">Nom</th>
+                                        <th aria-controls="DataTables_Table_0" rowspan="1" colspan="1">Description</th>
+                                        <th aria-controls="DataTables_Table_0" rowspan="1" colspan="1">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let caisse of data ; let i=index ">
+                                        <td class="odd">
+                                            <a><span>{{i+1}}</span></a>
+                                        </td>
+                                        <td class="even">
+                                            <span class="title">{{caisse?.name}}</span>
+                                        </td>
+                                        <td class="odd">
+                                            <span class="title">{{caisse?.description}}</span>
+                                        </td>
+                                        <td class="tb-tnx-action">
+                                            <div class="dropdown">
+                                                <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                                    data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                                    <ul class="link-list-plain">
+                                                        <li data-bs-toggle="modal" data-bs-target="#modalForm"><a
+                                                                (click)="readOneCaisse(caisse)"><em
+                                                                    class="icon ni ni-eye"></em>
+                                                                View</a></li>
+                                                        <li data-bs-toggle="modal" data-bs-target="#modalForm"><a
+                                                                (click)="editCaisse(caisse)"><em
+                                                                    class="icon ni ni-pen2"></em>Edit</a></li>
+                                                        <li><a (click)="deleteCaisse(caisse)"><em
+                                                                    class="icon ni ni-trash"></em>Remove</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- pagination -->
+                        <!-- <div class="row align-items-center">
+                            <div class="col-7 col-sm-12 col-md-9">
+                                <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                    <ul class="pagination">
+                                        <li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous"><a
+                                                href="#" aria-controls="DataTables_Table_0" data-dt-idx="previous" tabindex="0"
+                                                class="page-link">Prev</a></li>
+                                        <li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_0"
+                                                data-dt-idx="0" tabindex="0" class="page-link">1</a></li>
+                                        <li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0"
+                                                data-dt-idx="1" tabindex="0" class="page-link">2</a></li>
+                                        <li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0"
+                                                data-dt-idx="2" tabindex="0" class="page-link">3</a></li>
+                                        <li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0"
+                                                data-dt-idx="3" tabindex="0" class="page-link">4</a></li>
+                                        <li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0"
+                                                data-dt-idx="4" tabindex="0" class="page-link">5</a></li>
+                                        <li class="paginate_button page-item disabled" id="DataTables_Table_0_ellipsis"><a href="#"
+                                                aria-controls="DataTables_Table_0" data-dt-idx="ellipsis" tabindex="0"
+                                                class="page-link">…</a></li>
+                                        <li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0"
+                                                data-dt-idx="11" tabindex="0" class="page-link">12</a></li>
+                                        <li class="paginate_button page-item next" id="DataTables_Table_0_next"><a href="#"
+                                                aria-controls="DataTables_Table_0" data-dt-idx="next" tabindex="0"
+                                                class="page-link">Next</a></li>
+                                    </ul>
                                 </div>
-                                <div class="tb-tnx-date">
-                                    <span class="title">{{caisse?.description}}</span>
-                                </div>
-                            </td>
-                            <td class="tb-tnx-action">
-                                <div class="dropdown">
-                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
-                                        data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
-                                        <ul class="link-list-plain">
-                                            <li data-bs-toggle="modal" data-bs-target="#modalForm"><a
-                                                    (click)="readOneCaisse(caisse)"><em class="icon ni ni-eye"></em>
-                                                    View</a></li>
-                                            <li data-bs-toggle="modal" data-bs-target="#modalForm"><a
-                                                    (click)="editCaisse(caisse)"><em
-                                                        class="icon ni ni-pen2"></em>Edit</a></li>
-                                            <li><a (click)="deleteCaisse(caisse)"><em
-                                                        class="icon ni ni-trash"></em>Remove</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div><!-- .card-preview -->
-            <div class="pagination-container pagination">
-                <li> <pagination-controls [directionLinks]="true" (pageChange)="p = $event"
-                        class="bg-primary"></pagination-controls></li>
+                            </div>
+                            <div class="col-5 col-sm-12 col-md-3 text-start text-md-end">
+                                <div class="dataTables_info" >1 -10 of 100</div>
+                            </div>
+                        </div> -->
+                        <!-- pagination -->
+                    </div>
+                </div>
             </div>
+
         </div>
 
     </div>

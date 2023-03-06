@@ -17,8 +17,7 @@ public class CommandeRequestDto {
     private Long id;
     private String type;
     private String statut;
-    private Long idFournisseur;
-    private Long idClient;
+    private Long idClientFournisseur;
 
     public static Commande dtoToEntity(CommandeRequestDto dto, Client client, Fournisseur fournisseur) {
         return Commande.CommandeBuilder.aCommande()

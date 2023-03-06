@@ -24,7 +24,6 @@ public class Caisse extends AuditEntity {
     @OneToMany(mappedBy = "caisse")
     private List<Reglement> reglements = new ArrayList<>();
 
-
     public static final class CaisseBuilder {
         private Long id;
         private String name;

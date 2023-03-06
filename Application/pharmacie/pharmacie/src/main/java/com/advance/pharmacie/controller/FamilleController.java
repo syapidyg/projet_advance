@@ -32,7 +32,7 @@ public class FamilleController {
                         .build());
     }
 
-    @ApiOperation("Listing d'une famille de produits")
+    @ApiOperation("Liste des familles de produits")
     @GetMapping("/read")
     public ResponseEntity<ApiResponse<List<FamilleResponseDto>>> read(){
         return ResponseEntity.ok(

@@ -10,12 +10,14 @@ public class FamilleRequestDto {
 
     private Long id;
     private String name;
+    private String rayon;
     private String description;
 
     public static Famille dtoToEntity(FamilleRequestDto dto) {
         return Famille.FamilleBuilder.aFamille()
                 .id(dto.getId())
                 .name(dto.getName())
+                .rayon(dto.getRayon())
                 .description(dto.getDescription())
                 .build();
     }

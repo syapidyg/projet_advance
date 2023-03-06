@@ -6,6 +6,9 @@ import com.advance.pharmacie.model.Fournisseur;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @Builder
 public class CommandeResponseDto {
@@ -24,6 +27,11 @@ public class CommandeResponseDto {
                 .fournisseur(FournisseurResponseDto.entityToDto(commande.getFournisseur()))
                 .client(ClientResponseDto.entityToDto(commande.getClient()))
                 .build();
+
+    }
+
+    public static List<CommandeResponseDto> entityToDtoList(List<Commande> commandes) {
+        return commandes.stream().map(CommandeResponseDto::entityToDto).collect(Collectors.toList());
 
     }
 }

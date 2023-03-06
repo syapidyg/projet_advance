@@ -20,6 +20,8 @@ public class Reglement extends AuditEntity {
 
     private Long montant;
 
+    private String date;
+
     @ManyToOne(targetEntity = Utilisateur.class)
     @JoinColumn(name = "utilisateur_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_utilisateur_reglement"))
     private Utilisateur utilisateur;
@@ -32,13 +34,14 @@ public class Reglement extends AuditEntity {
     @JoinColumn(name = "caisse_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_caisse_reglement"))
     private Caisse caisse;
 
+
     public static final class ReglementBuilder {
         private Long id;
+        private Long montant;
+        private String date;
         private Utilisateur utilisateur;
         private Commande commande;
         private Caisse caisse;
-        private Long montant;
-
 
         private ReglementBuilder() {
         }
@@ -54,6 +57,11 @@ public class Reglement extends AuditEntity {
 
         public ReglementBuilder montant(Long montant) {
             this.montant = montant;
+            return this;
+        }
+
+        public ReglementBuilder date(String date) {
+            this.date = date;
             return this;
         }
 
@@ -76,6 +84,7 @@ public class Reglement extends AuditEntity {
             Reglement reglement = new Reglement();
             reglement.setId(id);
             reglement.setMontant(montant);
+            reglement.setDate(date);
             reglement.setUtilisateur(utilisateur);
             reglement.setCommande(commande);
             reglement.setCaisse(caisse);

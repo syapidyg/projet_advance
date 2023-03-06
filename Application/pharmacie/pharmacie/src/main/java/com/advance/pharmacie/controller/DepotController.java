@@ -31,7 +31,7 @@ public class DepotController {
                         .build());
     }
 
-    @ApiOperation("Listing des depots")
+    @ApiOperation("Liste des depots")
     @GetMapping("/read")
     public ResponseEntity<ApiResponse<List<DepotResponseDto>>> read() {
         return ResponseEntity.ok(

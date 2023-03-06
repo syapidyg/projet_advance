@@ -31,7 +31,7 @@ public class FournisseurController {
                         .build());
     }
 
-    @ApiOperation("Listing des fournisseurs")
+    @ApiOperation("Liste des fournisseurs")
     @GetMapping("/read")
     public ResponseEntity<ApiResponse<List<FournisseurResponseDto>>> read() {
         return ResponseEntity.ok(

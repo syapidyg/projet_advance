@@ -14,12 +14,14 @@ public class FamilleResponseDto {
 
     private Long id;
     private String name;
+    private String rayon;
     private String description;
 
     public static FamilleResponseDto entityToDto(Famille famille) {
         return FamilleResponseDto.builder()
                 .id(famille.getId())
                 .name(famille.getName())
+                .rayon(famille.getRayon())
                 .description(famille.getDescription())
                 .build();
     }

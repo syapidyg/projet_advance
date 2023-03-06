@@ -42,12 +42,16 @@
               "src/styles.scss",
               "src/assets/css/dashlite.css",
               "src/assets/css/theme.css",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/select2/dist/css/select2.min.css"
             ],
+              
+            
             "scripts": [
               "src/assets/js/bundle.js",
               "src/assets/js/scripts.js",
-              "src/assets/js/charts/chart-ecommerce.js"
+              "src/assets/js/charts/chart-ecommerce.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
             ]
           },
           "configurations": {

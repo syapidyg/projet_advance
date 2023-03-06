@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 
@@ -21,10 +22,11 @@ public class FamilleImplementation implements FamilleService {
     @Override
     public FamilleResponseDto createOrUpdate(FamilleRequestDto dtoFamille) {
 
-        if (dtoFamille.getId() > 0) {
+        if (Objects.nonNull(dtoFamille.getId()) && dtoFamille.getId() > 0) {
 
             Famille famille = familleRepository.findById(dtoFamille.getId()).map(p -> {
                 p.setName(dtoFamille.getName());
+                p.setRayon(dtoFamille.getRayon());
                 p.setDescription(dtoFamille.getDescription());
                 return familleRepository.save(p);
             }).orElseThrow(() -> new RuntimeException("Aucune famille trouvé"));

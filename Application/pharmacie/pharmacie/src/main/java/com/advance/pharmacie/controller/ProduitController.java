@@ -33,7 +33,7 @@ public class ProduitController {
                         .build());
     }
 
-    @ApiOperation("Listing de tous les produits")
+    @ApiOperation("Liste de tous les produits")
     @GetMapping("/read")
     public ResponseEntity<ApiResponse<List<ProduitResponseDto>>> read(){
         return ResponseEntity.ok(
@@ -41,6 +41,17 @@ public class ProduitController {
                         .success(true)
                         .message("Opereation reussie")
                         .data(produitService.read())
+                        .build());
+    }
+
+    @ApiOperation("Listing d'un produit")
+    @GetMapping("/readOne/{id}")
+    public ResponseEntity<ApiResponse<ProduitResponseDto>> readOne(@PathVariable Long id){
+        return ResponseEntity.ok(
+                ApiResponse.<ProduitResponseDto>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(produitService.readOne(id))
                         .build());
     }
 

@@ -13,4 +13,7 @@ public interface ProduitService {
 
     String delete(Long id);
 
+    ProduitResponseDto readOne(Long id);
+
+
 }

@@ -16,6 +16,7 @@ public class ProduitResponseDto {
     private Long id;
     private String dci;
     private String forme;
+    private String categorie;
     private String dosage;
     private String rayon;
     private Long pa;
@@ -28,7 +29,7 @@ public class ProduitResponseDto {
                 .dci(produit.getDci())
                 .dosage(produit.getDosage())
                 .forme(produit.getForme())
-                .rayon(produit.getRayon())
+                .categorie(produit.getCategorie())
                 .pa(produit.getPa())
                 .pv(produit.getPv())
                 .famille(FamilleResponseDto.entityToDto(produit.getFamille()))

@@ -7,9 +7,9 @@
                         <h5 class="title">Marie Bernard</h5>
                         <ul class="nk-menu">
                             <li class="nk-menu-item">
-                                <a [routerLink]="['']" class="nk-menu-link">
+                                <a [routerLink]="['/dashboard']" class="nk-menu-link">
                                     <span class="nk-menu-icon"><em class="icon ni ni-dashboard-fill"></em></span>
-                                    <span class="nk-menu-text">Dashboard</span>
+                                    <span class="nk-menu-text">Tableau de bord</span>
                                 </a>
                             </li><!-- .nk-menu-item -->
                             <li class="nk-menu-item has-sub">
@@ -39,16 +39,16 @@
                                 </a>
                                 <ul class="nk-menu-sub">
                                     <li class="nk-menu-item">
-                                        <a href="html/pharmacy/add-medicine.html" class="nk-menu-link"><span
-                                                class="nk-menu-text">Add Medicine</span></a>
+                                        <a [routerLink]="['/produits']" class="nk-menu-link"><span
+                                                class="nk-menu-text">Ajouter un produit</span></a>
                                     </li>
                                     <li class="nk-menu-item">
                                         <a href="html/pharmacy/medicine-list.html" class="nk-menu-link"><span
-                                                class="nk-menu-text">Medicine List</span></a>
+                                                class="nk-menu-text">Liste des produits</span></a>
                                     </li>
                                     <li class="nk-menu-item">
                                         <a href="html/pharmacy/medicine-details.html" class="nk-menu-link"><span
-                                                class="nk-menu-text">Medicine Details</span></a>
+                                                class="nk-menu-text">Modification d'un produit</span></a>
                                     </li>
                                 </ul><!-- .nk-menu-sub -->
                             </li><!-- .nk-menu-item -->
@@ -209,7 +209,7 @@
                             <div class="nk-header-search ms-3 ms-xl-0 d-none d-md-flex">
                                 <em class="icon ni ni-search"></em>
                                 <input type="text" class="form-control border-transparent form-focus-none"
-                                    placeholder="Search anything">
+                                    placeholder="Rechercher">
                             </div><!-- .nk-header-news -->
                             <div class="nk-header-tools">
                                 <ul class="nk-quick-nav">

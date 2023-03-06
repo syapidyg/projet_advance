@@ -31,7 +31,7 @@ public class ClientController {
                         .build());
     }
 
-    @ApiOperation("Listing des clients")
+    @ApiOperation("Liste des clients")
     @GetMapping("/read")
     public ResponseEntity<ApiResponse<List<ClientResponseDto>>> read(){
         return ResponseEntity.ok(

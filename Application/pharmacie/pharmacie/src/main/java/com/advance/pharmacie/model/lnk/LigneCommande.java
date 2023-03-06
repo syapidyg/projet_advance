@@ -18,7 +18,7 @@ public class LigneCommande extends AuditEntity {
 
     private String status;
 
-    private String Quantité;
+    private Long        qte;
 
     @ManyToOne(targetEntity = Commande.class)
     @JoinColumn(name = "commande_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_commande_ligne"))
@@ -29,9 +29,11 @@ public class LigneCommande extends AuditEntity {
     @JoinColumn(name = "produit_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_ligne_produit"))
     private Produit produit;
 
+
     public static final class LigneCommandeBuilder {
         private Long id;
         private String status;
+        private Long qte;
         private Commande commande;
         private Produit produit;
 
@@ -52,6 +54,11 @@ public class LigneCommande extends AuditEntity {
             return this;
         }
 
+        public LigneCommandeBuilder qte(Long qte) {
+            this.qte = qte;
+            return this;
+        }
+
         public LigneCommandeBuilder commande(Commande commande) {
             this.commande = commande;
             return this;
@@ -66,6 +73,7 @@ public class LigneCommande extends AuditEntity {
             LigneCommande ligneCommande = new LigneCommande();
             ligneCommande.setId(id);
             ligneCommande.setStatus(status);
+            ligneCommande.setQte(qte);
             ligneCommande.setCommande(commande);
             ligneCommande.setProduit(produit);
             return ligneCommande;

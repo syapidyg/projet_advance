@@ -19,6 +19,10 @@ public class StockArticle extends AuditEntity {
 
     private Long qteAlerte;
 
+    private Long qteMinimale;
+
+    private Long qteMaximale;
+
 
     @ManyToOne(targetEntity = Depot.class)
     @JoinColumn(name = "depot_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Stock_Article"))
@@ -28,10 +32,13 @@ public class StockArticle extends AuditEntity {
     @JoinColumn(name = "produit_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Produit_Article"))
     private Produit produit;
 
+
     public static final class StockArticleBuilder {
         private Long id;
         private Long qte;
         private Long qteAlerte;
+        private Long qteMinimale;
+        private Long qteMaximale;
         private Depot depot;
         private Produit produit;
 
@@ -57,6 +64,16 @@ public class StockArticle extends AuditEntity {
             return this;
         }
 
+        public StockArticleBuilder qteMinimale(Long qteMinimale) {
+            this.qteMinimale = qteMinimale;
+            return this;
+        }
+
+        public StockArticleBuilder qteMaximale(Long qteMaximale) {
+            this.qteMaximale = qteMaximale;
+            return this;
+        }
+
         public StockArticleBuilder depot(Depot depot) {
             this.depot = depot;
             return this;
@@ -72,6 +89,8 @@ public class StockArticle extends AuditEntity {
             stockArticle.setId(id);
             stockArticle.setQte(qte);
             stockArticle.setQteAlerte(qteAlerte);
+            stockArticle.setQteMinimale(qteMinimale);
+            stockArticle.setQteMaximale(qteMaximale);
             stockArticle.setDepot(depot);
             stockArticle.setProduit(produit);
             return stockArticle;

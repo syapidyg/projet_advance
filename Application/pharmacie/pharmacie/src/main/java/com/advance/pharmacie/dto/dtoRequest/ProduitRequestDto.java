@@ -12,8 +12,8 @@ public class ProduitRequestDto {
     private Long id;
     private String dci;
     private String forme;
+    private String categorie;
     private String dosage;
-    private String rayon;
     private Long pa;
     private Long pv;
     private Long idfamille;
@@ -24,7 +24,7 @@ public class ProduitRequestDto {
                 .dci(dto.getDci())
                 .dosage(dto.getDosage())
                 .forme(dto.getForme())
-                .rayon(dto.getRayon())
+                .categorie(dto.getCategorie())
                 .pa(dto.getPa())
                 .pv(dto.getPv())
                 .famille(famille)

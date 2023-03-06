@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 @Data
 @Table(name = "APP_EMPLOYER")
-public class Employer extends AuditEntity {
+public class Employe extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -93,17 +93,17 @@ public class Employer extends AuditEntity {
             return this;
         }
 
-        public Employer build() {
-            Employer employer = new Employer();
-            employer.setId(id);
-            employer.setNom(nom);
-            employer.setPrenom(prenom);
-            employer.setBirthday(birthday);
-            employer.setEmail(email);
-            employer.setNumber(number);
-            employer.setPassword(password);
-            employer.setUtilisateur(utilisateur);
-            return employer;
+        public Employe build() {
+            Employe employe = new Employe();
+            employe.setId(id);
+            employe.setNom(nom);
+            employe.setPrenom(prenom);
+            employe.setBirthday(birthday);
+            employe.setEmail(email);
+            employe.setNumber(number);
+            employe.setPassword(password);
+            employe.setUtilisateur(utilisateur);
+            return employe;
         }
     }
 }

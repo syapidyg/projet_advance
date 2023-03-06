@@ -15,15 +15,20 @@ public class StockArticleRequestDto {
     private Long idProduit;
     private Long qte;
     private Long qteAlerte;
+    private Long qteMinimale;
+    private Long qteMaximale;
 
-    public StockArticle dtoToEntity(StockArticleRequestDto dto, Depot depot, Produit produit){
+
+    public static StockArticle dtoToEntity(StockArticleRequestDto dto, Depot depot, Produit produit) {
 
         return StockArticle.StockArticleBuilder.aStockArticle()
-                        .id(dto.getId())
-                        .depot(depot)
-                        .produit(produit)
-                        .qte(dto.getQte())
-                        .qteAlerte(dto.getQteAlerte())
-                        .build();
+                .id(dto.getId())
+                .depot(depot)
+                .produit(produit)
+                .qte(dto.getQte())
+                .qteAlerte(dto.getQteAlerte())
+                .qteMaximale(dto.getQteMaximale())
+                .qteMinimale(dto.getQteMinimale())
+                .build();
     }
 }

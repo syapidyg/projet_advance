@@ -17,16 +17,19 @@ public class Famille extends AuditEntity{
 
     private String name;
 
+    private String rayon;
+
     private String description;
 
     @OneToMany(mappedBy = "famille")
     private List<Produit> produits = new ArrayList<>();
 
+
     public static final class FamilleBuilder {
         private Long id;
         private String name;
+        private String rayon;
         private String description;
-        private List<Produit> produits;
 
         private FamilleBuilder() {
         }
@@ -45,13 +48,13 @@ public class Famille extends AuditEntity{
             return this;
         }
 
-        public FamilleBuilder description(String description) {
-            this.description = description;
+        public FamilleBuilder rayon(String rayon) {
+            this.rayon = rayon;
             return this;
         }
 
-        public FamilleBuilder produits(List<Produit> produits) {
-            this.produits = produits;
+        public FamilleBuilder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -59,8 +62,8 @@ public class Famille extends AuditEntity{
             Famille famille = new Famille();
             famille.setId(id);
             famille.setName(name);
+            famille.setRayon(rayon);
             famille.setDescription(description);
-            famille.setProduits(produits);
             return famille;
         }
     }

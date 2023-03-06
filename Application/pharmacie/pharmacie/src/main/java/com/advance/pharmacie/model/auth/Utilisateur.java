@@ -1,7 +1,6 @@
 package com.advance.pharmacie.model.auth;
 
-import com.advance.pharmacie.model.Employer;
-import com.advance.pharmacie.model.auth.Role;
+import com.advance.pharmacie.model.Employe;
 import com.advance.pharmacie.model.AuditEntity;
 import com.advance.pharmacie.model.lnk.Reglement;
 import lombok.Data;
@@ -33,7 +32,7 @@ public class Utilisateur extends AuditEntity {
     @JoinColumn(name = "role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_role_utilisateur"))
     private Role role;
     @OneToOne(mappedBy = "utilisateur")
-    private Employer employer = new Employer();
+    private Employe employe = new Employe();
     @OneToMany(mappedBy = "utilisateur")
     private List<Reglement> reglements = new ArrayList<>();
     public static final class UtilisateurBuilder {
@@ -46,7 +45,7 @@ public class Utilisateur extends AuditEntity {
         private Long number;
         private String password;
         private Role role;
-        private Employer employer;
+        private Employe employe;
         private UtilisateurBuilder() {
         }
         public static UtilisateurBuilder anUtilisateur() {
@@ -90,8 +89,8 @@ public class Utilisateur extends AuditEntity {
             this.role = role;
             return this;
         }
-        public UtilisateurBuilder employer(Employer employer) {
-            this.employer = employer;
+        public UtilisateurBuilder employer(Employe employe) {
+            this.employe = employe;
             return this;
         }
         public Utilisateur build() {
@@ -105,7 +104,7 @@ public class Utilisateur extends AuditEntity {
             utilisateur.setNumber(number);
             utilisateur.setPassword(password);
             utilisateur.setRole(role);
-            utilisateur.setEmployer(employer);
+            utilisateur.setEmploye(employe);
             return utilisateur;
         }
     }

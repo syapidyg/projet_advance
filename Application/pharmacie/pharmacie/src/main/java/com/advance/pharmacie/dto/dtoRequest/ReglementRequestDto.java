@@ -17,13 +17,17 @@ public class ReglementRequestDto {
     private Long idUtilisateur;
     private Long idCommande;
     private Long idCaisse;
+    private Long Montant;
+    private String date;
 
-    public Reglement dtoToEntity(ReglementRequestDto dto, Utilisateur utilisateur, Caisse caisse, Commande commande) {
+    public static Reglement dtoToEntity(ReglementRequestDto dto, Utilisateur utilisateur, Caisse caisse, Commande commande) {
         return Reglement.ReglementBuilder.aReglement()
                 .id(dto.getId())
                 .utilisateur(utilisateur)
                 .caisse(caisse)
                 .commande(commande)
+                .montant(dto.getMontant())
+                .date(dto.getDate())
                 .build();
     }
 

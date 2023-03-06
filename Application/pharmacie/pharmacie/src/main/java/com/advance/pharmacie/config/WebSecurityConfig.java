@@ -33,6 +33,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/depot/**",
                         "/produit/**",
                         "/famille/**",
+                        "/StockArticle/**",
+                        "/reglement/**",
+                        "/fournisseur/**",
+                        "/commande/**",
+                        "/ligneDeCommande/**",
                         "/utilisateur/**")
                 .permitAll()
                 .anyRequest()

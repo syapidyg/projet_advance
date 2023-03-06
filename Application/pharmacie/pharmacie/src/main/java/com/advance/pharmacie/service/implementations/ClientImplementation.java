@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 
@@ -17,11 +18,10 @@ public class ClientImplementation implements ClientService {
     @Autowired
     public ClientRepository clientRepository;
 
-
     @Override
     public ClientResponseDto createOrUpdate(ClientRequestDto dtoClient) {
 
-        if (dtoClient.getId() > 0) {
+        if (Objects.nonNull(dtoClient.getId()) && dtoClient.getId() > 0) {
 
             Client client = clientRepository.findById(dtoClient.getId()).map(p -> {
                 p.setName(dtoClient.getName());

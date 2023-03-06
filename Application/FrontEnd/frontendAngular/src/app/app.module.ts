@@ -11,9 +11,15 @@ import { CaisseComponent } from './pages/caisse/caisse.component';
 import { RegisterComponent } from './session/register/register.component';
 import { LoginComponent } from './session/login/login.component';
 import { ToastrModule } from 'ngx-toastr';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { Select2Module } from 'ng-select2-component';
+
 import { authInterceptorProviders } from './shared/_helpers/auth.interceptor';
 import { UserGuardService } from './shared/_helpers/user-guard.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { AjouterProduitComponent } from './pages/ajouter-produit/ajouter-produit.component';
+import { FamilleComponent } from './pages/famille/famille.component';
+import { ListerProduitComponent } from './pages/lister-produit/lister-produit.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +28,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MainComponent,
     CaisseComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    AjouterProduitComponent,
+    FamilleComponent,
+    ListerProduitComponent
   ],
   imports: [
     BrowserModule,
@@ -32,12 +41,13 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ReactiveFormsModule,
     FormsModule,
     NgxPaginationModule,
+    NgSelectModule,
+    Select2Module,
     ToastrModule.forRoot()
   ],
   providers: [
     UserGuardService,
     authInterceptorProviders,
-    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

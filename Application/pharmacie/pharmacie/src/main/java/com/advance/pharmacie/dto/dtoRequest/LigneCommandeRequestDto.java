@@ -12,6 +12,7 @@ public class LigneCommandeRequestDto {
 
     private Long id;
     private String status;
+    private Long qte;
     private Long idCommande;
     private Long idProduit;
 
@@ -23,6 +24,7 @@ public class LigneCommandeRequestDto {
         return LigneCommande.LigneCommandeBuilder.aLigneCommande()
                 .id(dto.getId())
                 .status(dto.getStatus())
+                .qte(dto.getQte())
                 .commande(commande)
                 .produit(produit)
                 .build();

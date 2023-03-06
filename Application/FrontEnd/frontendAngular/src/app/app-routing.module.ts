@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainComponent } from './main/main.component';
+import { AjouterProduitComponent } from './pages/ajouter-produit/ajouter-produit.component';
 import { CaisseComponent } from './pages/caisse/caisse.component';
 import { LoginComponent } from './session/login/login.component';
 import { UserGuardService } from './shared/_helpers/user-guard.service';
@@ -11,8 +12,9 @@ const routes: Routes = [
   {
     path: '', component: MainComponent, canActivate: [UserGuardService],
     children: [
-      { path: '', component: DashboardComponent },
-      { path: 'caisses', component: CaisseComponent }
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'caisses', component: CaisseComponent },
+      { path: 'produits', component: AjouterProduitComponent }
     ]
   },
   

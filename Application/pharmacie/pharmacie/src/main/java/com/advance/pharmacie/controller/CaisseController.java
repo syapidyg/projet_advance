@@ -33,7 +33,7 @@ public class CaisseController {
                         .build());
     }
 
-    @ApiOperation("Listing des caisses")
+    @ApiOperation("Liste des caisses")
     @GetMapping("/read")
     public ResponseEntity<ApiResponse<List<CaisseResponseDto>>> read(){
         return ResponseEntity.ok(
@@ -44,7 +44,7 @@ public class CaisseController {
                         .build());
     }
 
-    @ApiOperation("Listing d'une caisse")
+    @ApiOperation("Liste d'une caisse")
     @GetMapping("/readOne/{id}")
     public ResponseEntity<ApiResponse<CaisseResponseDto>> readOne(@PathVariable Long id){
         return ResponseEntity.ok(

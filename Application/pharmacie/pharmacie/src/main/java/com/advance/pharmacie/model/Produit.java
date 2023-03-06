@@ -21,9 +21,9 @@ public class Produit extends AuditEntity{
 
     private String forme;
 
-    private String dosage;
+    private String categorie;
 
-    private String rayon;
+    private String dosage;
 
     private Long pa;
 
@@ -41,17 +41,16 @@ public class Produit extends AuditEntity{
     @OneToMany(mappedBy = "produit")
     private List<LigneCommande> ligneCommandes = new ArrayList<>();
 
+
     public static final class ProduitBuilder {
         private Long id;
         private String dci;
         private String forme;
+        private String categorie;
         private String dosage;
-        private String rayon;
         private Long pa;
         private Long pv;
         private Famille famille;
-        private List<StockArticle> stockArticles;
-        private List<LigneCommande> ligneCommandes;
 
         private ProduitBuilder() {
         }
@@ -75,13 +74,13 @@ public class Produit extends AuditEntity{
             return this;
         }
 
-        public ProduitBuilder dosage(String dosage) {
-            this.dosage = dosage;
+        public ProduitBuilder categorie(String categorie) {
+            this.categorie = categorie;
             return this;
         }
 
-        public ProduitBuilder rayon(String rayon) {
-            this.rayon = rayon;
+        public ProduitBuilder dosage(String dosage) {
+            this.dosage = dosage;
             return this;
         }
 
@@ -100,28 +99,16 @@ public class Produit extends AuditEntity{
             return this;
         }
 
-        public ProduitBuilder stockArticles(List<StockArticle> stockArticles) {
-            this.stockArticles = stockArticles;
-            return this;
-        }
-
-        public ProduitBuilder ligneCommandes(List<LigneCommande> ligneCommandes) {
-            this.ligneCommandes = ligneCommandes;
-            return this;
-        }
-
         public Produit build() {
             Produit produit = new Produit();
             produit.setId(id);
             produit.setDci(dci);
             produit.setForme(forme);
+            produit.setCategorie(categorie);
             produit.setDosage(dosage);
-            produit.setRayon(rayon);
             produit.setPa(pa);
             produit.setPv(pv);
             produit.setFamille(famille);
-            produit.setStockArticles(stockArticles);
-            produit.setLigneCommandes(ligneCommandes);
             return produit;
         }
     }
