@@ -11,5 +11,7 @@ public interface ClientService {
 
     List<ClientResponseDto> read();
 
+    ClientResponseDto readOne(Long id);
+
     String delete(Long id);
 }

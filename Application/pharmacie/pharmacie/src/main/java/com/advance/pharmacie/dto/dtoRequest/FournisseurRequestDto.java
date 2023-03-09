@@ -19,6 +19,7 @@ public class FournisseurRequestDto {
     private String name;
     private Long number;
     private String adress;
+    private String city;
 //    private List<Commande> commandes = new ArrayList<>();
 
     public static Fournisseur dtoToEntity(FournisseurRequestDto dto) {
@@ -28,6 +29,7 @@ public class FournisseurRequestDto {
                 .adress(dto.getAdress())
                 .name(dto.getName())
                 .number(dto.getNumber())
+                .city(dto.getCity())
 //                .commandes(dto.getCommandes())
                 .build();
     }

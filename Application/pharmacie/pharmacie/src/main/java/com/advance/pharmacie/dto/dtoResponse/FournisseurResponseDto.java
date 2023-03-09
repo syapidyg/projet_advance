@@ -17,6 +17,7 @@ public class FournisseurResponseDto {
     private String name;
     private Long number;
     private String adress;
+    private String city;
 
     public static FournisseurResponseDto entityToDto(Fournisseur fournisseur) {
         return FournisseurResponseDto.builder()
@@ -25,6 +26,7 @@ public class FournisseurResponseDto {
                 .adress(fournisseur.getAdress())
                 .name(fournisseur.getName())
                 .number(fournisseur.getNumber())
+                .city(fournisseur.getCity())
                 .build();
     }
 

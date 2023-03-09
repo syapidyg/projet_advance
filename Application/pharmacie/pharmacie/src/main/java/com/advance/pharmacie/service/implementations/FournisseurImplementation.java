@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FournisseurImplementation implements FournisseurService {
@@ -19,13 +20,14 @@ public class FournisseurImplementation implements FournisseurService {
     @Override
     public FournisseurResponseDto createOrUpdate(FournisseurRequestDto dtoFournisseur) {
 
-        if (dtoFournisseur.getId() > 0) {
+        if (Objects.nonNull(dtoFournisseur.getId()) && dtoFournisseur.getId() > 0) {
 
             Fournisseur fournisseur = fournisseurRepository.findById(dtoFournisseur.getId()).map(p -> {
                 p.setAdress(dtoFournisseur.getAdress());
                 p.setEmail(dtoFournisseur.getEmail());
                 p.setName(dtoFournisseur.getName());
                 p.setNumber(dtoFournisseur.getNumber());
+                p.setCity(dtoFournisseur.getCity());
 
                 return fournisseurRepository.save(p);
             }).orElseThrow(() -> new RuntimeException("Aucune fournisseur trouvé"));

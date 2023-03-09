@@ -1,7 +1,9 @@
 package com.advance.pharmacie.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ public class Famille extends AuditEntity{
 
     private String description;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ToString.Exclude
     @OneToMany(mappedBy = "famille")
     private List<Produit> produits = new ArrayList<>();
 

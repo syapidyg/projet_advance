@@ -21,7 +21,7 @@ public class ClientController {
     ClientService clientService;
 
     @ApiOperation("Creation et Mise a jour d'une client")
-    @PostMapping("/Create")
+    @PostMapping("/create")
     public ResponseEntity<ApiResponse<ClientResponseDto>> create(@RequestBody ClientRequestDto dto){
         return ResponseEntity.ok(
                 ApiResponse.<ClientResponseDto>builder()
@@ -39,6 +39,17 @@ public class ClientController {
                         .success(true)
                         .message("Opereation reussie")
                         .data(clientService.read())
+                        .build());
+    }
+
+    @ApiOperation("Afficher un client")
+    @GetMapping("/readOne/{id}")
+    public ResponseEntity<ApiResponse<ClientResponseDto>> readOne(@PathVariable Long id){
+        return ResponseEntity.ok(
+                ApiResponse.<ClientResponseDto>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(clientService.readOne(id))
                         .build());
     }
 

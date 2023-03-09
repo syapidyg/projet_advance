@@ -25,6 +25,8 @@ public class Fournisseur extends AuditEntity {
 
     private String adress;
 
+    private String city;
+
     @OneToMany(mappedBy = "fournisseur")
     private List<Commande> commandes = new ArrayList<>();
 
@@ -35,7 +37,7 @@ public class Fournisseur extends AuditEntity {
         private String name;
         private Long number;
         private String adress;
-        private List<Commande> commandes;
+        private String city;
 
         private FournisseurBuilder() {
         }
@@ -69,8 +71,8 @@ public class Fournisseur extends AuditEntity {
             return this;
         }
 
-        public FournisseurBuilder commandes(List<Commande> commandes) {
-            this.commandes = commandes;
+        public FournisseurBuilder city(String city) {
+            this.city = city;
             return this;
         }
 
@@ -81,7 +83,7 @@ public class Fournisseur extends AuditEntity {
             fournisseur.setName(name);
             fournisseur.setNumber(number);
             fournisseur.setAdress(adress);
-            fournisseur.setCommandes(commandes);
+            fournisseur.setCity(city);
             return fournisseur;
         }
     }

@@ -3,7 +3,9 @@ package com.advance.pharmacie.model;
 
 import com.advance.pharmacie.model.lnk.LigneCommande;
 import com.advance.pharmacie.model.lnk.StockArticle;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,12 +31,14 @@ public class Produit extends AuditEntity{
 
     private Long pv;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ManyToOne(targetEntity = Famille.class)
     @JoinColumn(name ="id_famille", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_famille_produit"))
     private Famille famille;
 
-
-    @OneToMany(mappedBy = "produit")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ToString.Exclude
+    @OneToMany(targetEntity = StockArticle.class, mappedBy = "produit")
     private List<StockArticle> stockArticles = new ArrayList<>();
 
 

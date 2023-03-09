@@ -21,7 +21,7 @@ public class FournisseurController {
     FournisseurService fournisseurService;
 
     @ApiOperation("Creation et Mise a jour d'une fournisseur")
-    @PostMapping("/Create")
+    @PostMapping("/create")
     public ResponseEntity<ApiResponse<FournisseurResponseDto>> create(@RequestBody FournisseurRequestDto dto) {
         return ResponseEntity.ok(
                 ApiResponse.<FournisseurResponseDto>builder()

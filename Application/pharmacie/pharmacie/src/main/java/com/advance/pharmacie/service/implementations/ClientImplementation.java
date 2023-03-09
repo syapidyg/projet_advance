@@ -1,7 +1,9 @@
 package com.advance.pharmacie.service.implementations;
 
 import com.advance.pharmacie.dto.dtoRequest.ClientRequestDto;
+import com.advance.pharmacie.dto.dtoResponse.CaisseResponseDto;
 import com.advance.pharmacie.dto.dtoResponse.ClientResponseDto;
+import com.advance.pharmacie.model.Caisse;
 import com.advance.pharmacie.model.Client;
 import com.advance.pharmacie.repository.ClientRepository;
 import com.advance.pharmacie.service.interfaces.ClientService;
@@ -40,6 +42,12 @@ public class ClientImplementation implements ClientService {
     @Override
     public List<ClientResponseDto> read() {
         return ClientResponseDto.entityToDtoList(clientRepository.findAll());
+    }
+
+    @Override
+    public ClientResponseDto readOne(Long id) {
+        Client client = clientRepository.findById(id).orElseThrow(() -> new RuntimeException("Aucune client trouvé"));
+        return ClientResponseDto.entityToDto(client);
     }
 
     @Override

@@ -20,7 +20,7 @@ public class DepotImplementation implements DepotService {
     @Override
     public DepotResponseDto createOrUpdate(DepotRequestDto dtoDepot) {
 
-        if (Objects.nonNull(dtoDepot.getId()) &&dtoDepot.getId() > 0) {
+        if (Objects.nonNull(dtoDepot.getId()) && dtoDepot.getId() > 0) {
 
             Depot depot = depotRepository.findById(dtoDepot.getId()).map(p -> {
                 p.setName(dtoDepot.getName());
