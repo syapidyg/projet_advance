@@ -42,6 +42,18 @@ public class FournisseurController {
                         .build());
     }
 
+    @ApiOperation("Liste des fournisseurs")
+    @GetMapping("/readOne/{id}")
+    public ResponseEntity<ApiResponse<FournisseurResponseDto>> readOne(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                ApiResponse.<FournisseurResponseDto>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(fournisseurService.readOne(id))
+                        .build());
+    }
+
+
     @ApiOperation("Suppression d'une fournisseur")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id) {

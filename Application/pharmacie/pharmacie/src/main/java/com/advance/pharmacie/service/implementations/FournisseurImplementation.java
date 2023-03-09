@@ -1,7 +1,9 @@
 package com.advance.pharmacie.service.implementations;
 
 import com.advance.pharmacie.dto.dtoRequest.FournisseurRequestDto;
+import com.advance.pharmacie.dto.dtoResponse.CaisseResponseDto;
 import com.advance.pharmacie.dto.dtoResponse.FournisseurResponseDto;
+import com.advance.pharmacie.model.Caisse;
 import com.advance.pharmacie.model.Fournisseur;
 import com.advance.pharmacie.repository.FournisseurRepository;
 import com.advance.pharmacie.service.interfaces.FournisseurService;
@@ -45,6 +47,12 @@ public class FournisseurImplementation implements FournisseurService {
         List<Fournisseur> fournisseurs = fournisseurRepository.findAll();
 
         return FournisseurResponseDto.entityToDtoList(fournisseurs);
+    }
+
+    @Override
+    public FournisseurResponseDto readOne(Long id) {
+        Fournisseur fournisseur = fournisseurRepository.findById(id).orElseThrow(() -> new RuntimeException("Aucune caisse trouvé"));
+        return FournisseurResponseDto.entityToDto(fournisseur);
     }
 
     @Override

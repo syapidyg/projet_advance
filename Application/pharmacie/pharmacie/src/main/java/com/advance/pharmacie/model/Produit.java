@@ -38,7 +38,7 @@ public class Produit extends AuditEntity{
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ToString.Exclude
-    @OneToMany(targetEntity = StockArticle.class, mappedBy = "produit")
+    @OneToMany(targetEntity = StockArticle .class, mappedBy = "produit")
     private List<StockArticle> stockArticles = new ArrayList<>();
 
 

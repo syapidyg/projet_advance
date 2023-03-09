@@ -11,5 +11,7 @@ public interface FournisseurService {
 
     List<FournisseurResponseDto> read();
 
+    FournisseurResponseDto readOne(Long id);
+
     String delete(Long id);
 }
