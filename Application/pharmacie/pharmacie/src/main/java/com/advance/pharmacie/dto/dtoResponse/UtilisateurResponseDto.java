@@ -12,23 +12,17 @@ import java.util.Date;
 public class UtilisateurResponseDto {
 
     private Long id;
-    private String nom;
-    private String prenom;
     private String username;
-    private Date birthday;
     private String email;
-    private Long number;
+    private EmployeResponseDto employe;
 
 
     public static UtilisateurResponseDto entityToDto(Utilisateur utilisateur) {
         return UtilisateurResponseDto.builder()
                 .id(utilisateur.getId())
-                .nom(utilisateur.getNom())
-                .prenom(utilisateur.getPrenom())
                 .username(utilisateur.getUsername())
-                .birthday(utilisateur.getBirthday())
                 .email(utilisateur.getEmail())
-                .number(utilisateur.getNumber())
+                .employe(EmployeResponseDto.entityToDto(utilisateur.getEmploye()))
                 .build();
 
     }

@@ -18,7 +18,6 @@ public class EmployeResponseDto {
     private Date birthday;
     private String email;
     private Long number;
-    private UtilisateurResponseDto utilisateur;
 
     public static EmployeResponseDto entityToDto(Employe employe) {
         return EmployeResponseDto.builder()
@@ -28,7 +27,6 @@ public class EmployeResponseDto {
                 .birthday(employe.getBirthday())
                 .email(employe.getEmail())
                 .number(employe.getNumber())
-                .utilisateur(UtilisateurResponseDto.entityToDto(employe.getUtilisateur()))
                 .build();
     }
 

@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "APP_EMPLOYER")
+@Table(name = "APP_EMPLOYE")
 public class Employe extends AuditEntity {
 
     @Id
@@ -19,76 +19,62 @@ public class Employe extends AuditEntity {
     private Long id;
     private String nom;
     private String prenom;
-
     private Date birthday;
-
-
     @Email
     private String email;
-
     @NumberFormat(style = NumberFormat.Style.NUMBER)
     private Long number;
 
-    private String password;
+    @OneToOne(mappedBy = "employe")
+    private Utilisateur utilisateur = new Utilisateur();
 
-    @OneToOne(targetEntity = Utilisateur.class)
-    @JoinColumn(name = "utilisateur_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_employer_utilisateur"))
-    private Utilisateur utilisateur;
-
-
-    public static final class EmployerBuilder {
+    public static final class EmployeBuilder {
         private Long id;
         private String nom;
         private String prenom;
         private Date birthday;
         private @Email String email;
         private Long number;
-        private String password;
         private Utilisateur utilisateur;
 
-        private EmployerBuilder() {
+        private EmployeBuilder() {
         }
 
-        public static EmployerBuilder anEmployer() {
-            return new EmployerBuilder();
+        public static EmployeBuilder anEmploye() {
+            return new EmployeBuilder();
         }
 
-        public EmployerBuilder id(Long id) {
+        public EmployeBuilder id(Long id) {
             this.id = id;
             return this;
         }
 
-        public EmployerBuilder nom(String nom) {
+        public EmployeBuilder nom(String nom) {
             this.nom = nom;
             return this;
         }
 
-        public EmployerBuilder prenom(String prenom) {
+        public EmployeBuilder prenom(String prenom) {
             this.prenom = prenom;
             return this;
         }
 
-        public EmployerBuilder birthday(Date birthday) {
+        public EmployeBuilder birthday(Date birthday) {
             this.birthday = birthday;
             return this;
         }
 
-        public EmployerBuilder email(String email) {
+        public EmployeBuilder email(String email) {
             this.email = email;
             return this;
         }
 
-        public EmployerBuilder number(Long number) {
+        public EmployeBuilder number(Long number) {
             this.number = number;
             return this;
         }
 
-        public EmployerBuilder password(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public EmployerBuilder utilisateur(Utilisateur utilisateur) {
+        public EmployeBuilder utilisateur(Utilisateur utilisateur) {
             this.utilisateur = utilisateur;
             return this;
         }
@@ -101,7 +87,6 @@ public class Employe extends AuditEntity {
             employe.setBirthday(birthday);
             employe.setEmail(email);
             employe.setNumber(number);
-            employe.setPassword(password);
             employe.setUtilisateur(utilisateur);
             return employe;
         }

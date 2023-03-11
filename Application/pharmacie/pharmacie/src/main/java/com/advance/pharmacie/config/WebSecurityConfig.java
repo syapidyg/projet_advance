@@ -33,6 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/depot/**",
                         "/produit/**",
                         "/famille/**",
+                        "/employe/**",
                         "/StockArticle/**",
                         "/reglement/**",
                         "/fournisseur/**",

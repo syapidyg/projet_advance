@@ -2,6 +2,7 @@ package com.advance.pharmacie.dto.dtoRequest;
 
 import com.advance.pharmacie.model.Employe;
 import com.advance.pharmacie.model.auth.Utilisateur;
+import com.advance.pharmacie.util.GeneralUtil;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,7 +10,7 @@ import java.util.Date;
 
 @Data
 @Builder
-public class EmployeRequestDto {
+public class EmployeUtilisateurRequestDto {
 
     private Long id;
     private String nom;
@@ -19,9 +20,9 @@ public class EmployeRequestDto {
     private Long number;
     private String username;
     private String password;
-    private Long idUtilisateur;
 
-    public static Employe dtoToEntity(EmployeRequestDto dto, Utilisateur utilisateur) {
+
+    public static Employe dtoToEntityEmploye(EmployeUtilisateurRequestDto dto) {
         return Employe.EmployeBuilder.anEmploye()
                 .id(dto.getId())
                 .nom(dto.getNom())
@@ -29,7 +30,16 @@ public class EmployeRequestDto {
                 .birthday(dto.getBirthday())
                 .email(dto.getEmail())
                 .number(dto.getNumber())
-                .utilisateur(utilisateur)
+                .build();
+
+    }
+    public static Utilisateur dtoToEntityUtilisateur(EmployeUtilisateurRequestDto dto, Employe employe) {
+        return Utilisateur.UtilisateurBuilder.anUtilisateur()
+                .id(dto.getId())
+                .username(dto.getUsername())
+                .email(dto.getEmail())
+                .password(GeneralUtil.genererPasswordUser(dto.getPassword()))
+                .employe(employe)
                 .build();
 
     }
