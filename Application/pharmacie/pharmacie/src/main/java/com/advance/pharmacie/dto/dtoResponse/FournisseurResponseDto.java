@@ -20,17 +20,20 @@ public class FournisseurResponseDto {
     private String city;
 
     public static FournisseurResponseDto entityToDto(Fournisseur fournisseur) {
-        return FournisseurResponseDto.builder()
-                .id(fournisseur.getId())
-                .email(fournisseur.getEmail())
-                .adress(fournisseur.getAdress())
-                .name(fournisseur.getName())
-                .number(fournisseur.getNumber())
-                .city(fournisseur.getCity())
-                .build();
+        if (fournisseur != null) {
+            return FournisseurResponseDto.builder()
+                    .id(fournisseur.getId())
+                    .email(fournisseur.getEmail())
+                    .adress(fournisseur.getAdress())
+                    .name(fournisseur.getName())
+                    .number(fournisseur.getNumber())
+                    .city(fournisseur.getCity())
+                    .build();
+        }
+        return null;
     }
 
-    public static List<FournisseurResponseDto> entityToDtoList(List<Fournisseur> fournisseurList){
+    public static List<FournisseurResponseDto> entityToDtoList(List<Fournisseur> fournisseurList) {
         return fournisseurList.stream().map(FournisseurResponseDto::entityToDto).collect(Collectors.toList());
     }
 

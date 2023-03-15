@@ -4,6 +4,7 @@ import com.advance.pharmacie.model.lnk.LigneCommande;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,9 +13,9 @@ import java.util.stream.Collectors;
 public class LigneCommandeResponseDto {
 
     private Long id;
-    private String status;
     private Long qte;
-    private CommandeResponseDto commande;
+    private Long idCommande;
+    private Long pt;
     private ProduitResponseDto produit;
 
     public static LigneCommandeResponseDto entityToDto(LigneCommande ligneCommande) {
@@ -24,9 +25,9 @@ public class LigneCommandeResponseDto {
 
         return LigneCommandeResponseDto.builder()
                 .id(ligneCommande.getId())
-                .status(ligneCommande.getStatus())
+                .pt(ligneCommande.getPt())
                 .qte(ligneCommande.getQte())
-                .commande(CommandeResponseDto.entityToDto(ligneCommande.getCommande()))
+                .idCommande(ligneCommande.getCommande().getId())
                 .produit(ProduitResponseDto.entityToDto(ligneCommande.getProduit()))
                 .build();
 
@@ -34,7 +35,8 @@ public class LigneCommandeResponseDto {
     }
 
     public static List<LigneCommandeResponseDto> entityToDtoList(List<LigneCommande> ligneCommandes) {
-        return ligneCommandes.stream().map(LigneCommandeResponseDto::entityToDto).collect(Collectors.toList());
+
+        return ligneCommandes.isEmpty() ? new ArrayList<>(): ligneCommandes.stream().map(LigneCommandeResponseDto::entityToDto).collect(Collectors.toList());
 
     }
 }

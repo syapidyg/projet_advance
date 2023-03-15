@@ -4,12 +4,14 @@ package com.advance.pharmacie.model;
 import com.advance.pharmacie.model.lnk.LigneCommande;
 import com.advance.pharmacie.model.lnk.Reglement;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@ToString
 @Data
 @Table(name = "APP_COMMANDE")
 public class Commande extends  AuditEntity{
@@ -17,6 +19,8 @@ public class Commande extends  AuditEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Long pt;
 
     private String type;
 
@@ -31,7 +35,7 @@ public class Commande extends  AuditEntity{
     private Client client;
 
     @OneToMany(mappedBy = "commande")
-    private List<LigneCommande> ligneCommandesommande = new ArrayList<>();
+    private List<LigneCommande> ligneCommande = new ArrayList<>();
 
     @OneToMany(mappedBy = "commande")
     private List<Reglement> reglements = new ArrayList<>();
@@ -39,11 +43,12 @@ public class Commande extends  AuditEntity{
 
     public static final class CommandeBuilder {
         private Long id;
+        private Long pt;
         private String type;
         private String statut;
         private Fournisseur fournisseur;
         private Client client;
-        private List<LigneCommande> ligneCommandesommande;
+        private List<LigneCommande> ligneCommande;
         private List<Reglement> reglements;
 
         private CommandeBuilder() {
@@ -55,6 +60,11 @@ public class Commande extends  AuditEntity{
 
         public CommandeBuilder id(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public CommandeBuilder pt(Long pt) {
+            this.pt = pt;
             return this;
         }
 
@@ -78,8 +88,8 @@ public class Commande extends  AuditEntity{
             return this;
         }
 
-        public CommandeBuilder ligneCommandesommande(List<LigneCommande> ligneCommandesommande) {
-            this.ligneCommandesommande = ligneCommandesommande;
+        public CommandeBuilder ligneCommande(List<LigneCommande> ligneCommande) {
+            this.ligneCommande = ligneCommande;
             return this;
         }
 
@@ -91,11 +101,12 @@ public class Commande extends  AuditEntity{
         public Commande build() {
             Commande commande = new Commande();
             commande.setId(id);
+            commande.setPt(pt);
             commande.setType(type);
             commande.setStatut(statut);
             commande.setFournisseur(fournisseur);
             commande.setClient(client);
-            commande.setLigneCommandesommande(ligneCommandesommande);
+            commande.setLigneCommande(ligneCommande);
             commande.setReglements(reglements);
             return commande;
         }

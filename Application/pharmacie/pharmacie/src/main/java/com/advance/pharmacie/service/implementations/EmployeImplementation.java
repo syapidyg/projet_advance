@@ -38,7 +38,7 @@ public class EmployeImplementation implements EmployeService {
                 p.setBirthday(dtoEmploye.getBirthday());
                 p.setPrenom(dtoEmploye.getPrenom());
                 p.setEmail(dtoEmploye.getEmail());
-                p.setEmail(dtoEmploye.getEmail());
+                p.setNumber(dtoEmploye.getNumber());
 //                p.setUtilisateur(utilisateur);
                 return employeRepository.save(p);
             }).orElseThrow(() -> new RuntimeException("Aucune employe trouvé"));

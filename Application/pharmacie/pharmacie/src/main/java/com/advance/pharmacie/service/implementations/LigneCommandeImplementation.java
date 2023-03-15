@@ -39,7 +39,7 @@ public class LigneCommandeImplementation implements LigneCommandeService {
         if (Objects.nonNull(dtoLigneCommande.getId()) && dtoLigneCommande.getId() > 0) {
 
             LigneCommande ligneCommande = ligneCommandeRepository.findById(dtoLigneCommande.getId()).map(p -> {
-                p.setStatus(dtoLigneCommande.getStatus());
+                p.setPt(dtoLigneCommande.getPt());
                 p.setQte(dtoLigneCommande.getQte());
                 p.setCommande(commande);
                 p.setProduit(produit);
