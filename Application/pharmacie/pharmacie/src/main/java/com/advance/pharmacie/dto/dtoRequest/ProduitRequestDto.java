@@ -10,6 +10,7 @@ import lombok.Data;
 public class ProduitRequestDto {
 
     private Long id;
+    private String code;
     private String dci;
     private String forme;
     private String categorie;
@@ -21,6 +22,7 @@ public class ProduitRequestDto {
     public static Produit dtoToEntity(ProduitRequestDto dto, Famille famille) {
         return Produit.ProduitBuilder.aProduit()
                 .id(dto.getId())
+                .code(dto.getCode())
                 .dci(dto.getDci())
                 .dosage(dto.getDosage())
                 .forme(dto.getForme())

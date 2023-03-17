@@ -15,6 +15,7 @@ public class ProduitResponseDto {
 
     private Long id;
     private String dci;
+    private String code;
     private String forme;
     private String categorie;
     private String dosage;
@@ -26,6 +27,7 @@ public class ProduitResponseDto {
     public static ProduitResponseDto entityToDto(Produit produit) {
         return ProduitResponseDto.builder()
                 .id(produit.getId())
+                .code(produit.getCode())
                 .dci(produit.getDci())
                 .dosage(produit.getDosage())
                 .forme(produit.getForme())

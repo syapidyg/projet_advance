@@ -27,6 +27,7 @@ public class CommandeRequestDto {
         return Commande.CommandeBuilder.aCommande()
                 .id(dto.getId())
                 .statut(dto.getStatut())
+                .type(dto.getType())
                 .fournisseur(fournisseur)
                 .pt(dto.getPt())
                 .client(client)

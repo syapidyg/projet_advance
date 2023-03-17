@@ -2,15 +2,20 @@ package com.advance.pharmacie.service.implementations;
 
 import com.advance.pharmacie.dto.dtoRequest.ProduitRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.ProduitResponseDto;
+import com.advance.pharmacie.exception.BadRequestException;
 import com.advance.pharmacie.model.Client;
 import com.advance.pharmacie.model.Famille;
+import com.advance.pharmacie.model.Numerotation;
 import com.advance.pharmacie.model.Produit;
 import com.advance.pharmacie.repository.FamilleRepository;
+import com.advance.pharmacie.repository.NumerotationRepository;
 import com.advance.pharmacie.repository.ProduitRepository;
 import com.advance.pharmacie.service.interfaces.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +27,9 @@ public class ProduitImplementation implements ProduitService {
 
     @Autowired
     FamilleRepository familleRepository;
+
+    @Autowired
+    NumerotationRepository numerotationRepository;
 
     @Override
     public ProduitResponseDto createOrUpdate(ProduitRequestDto dtoProduit) {
@@ -45,6 +53,7 @@ public class ProduitImplementation implements ProduitService {
             return ProduitResponseDto.entityToDto(produitRepository.save(produit));
         }
 
+        dtoProduit.setCode(getCodeCourant());
         Produit produit = ProduitRequestDto.dtoToEntity(dtoProduit, famille);
         return ProduitResponseDto.entityToDto(produitRepository.save(produit));
 
@@ -68,5 +77,23 @@ public class ProduitImplementation implements ProduitService {
     public ProduitResponseDto readOne(Long id) {
         Produit produit = produitRepository.findById(id).orElseThrow(() -> new RuntimeException("Aucun Produit ne correspond a cet ID"));;
         return ProduitResponseDto.entityToDto(produit);
+    }
+
+    public String getCodeCourant() {
+        Numerotation numerotation = numerotationRepository.findByCode("PRODUIT").orElse(null);
+        if (Objects.isNull(numerotation))
+            throw new BadRequestException("aucune configuration n'as ete definir pour la souche de numérotation de : ARTICLE");
+        //assert numerotation != null;
+        int fin = numerotation.getSouche().indexOf("00");
+        String codeUser, prefix = ((fin > 0) ? numerotation.getSouche().substring(0, fin) : numerotation.getSouche());
+        codeUser = prefix.concat(new DecimalFormat("00000").format(numerotation.getNumeroIndex())).toUpperCase();
+
+        while (produitRepository.existsByCode(codeUser)) {
+            numerotation.setNumeroIndex(numerotation.getNumeroIndex() + 1);
+            numerotation = numerotationRepository.save(numerotation);
+            codeUser = prefix.concat(new DecimalFormat("00000").format(numerotation.getNumeroIndex())).toUpperCase();
+        }
+
+        return codeUser;
     }
 }

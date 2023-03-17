@@ -22,7 +22,7 @@ public class FamilleController {
     FamilleService familleService;
 
     @ApiOperation("Creation et Mise a jour d'une famille de produits")
-    @PostMapping("/Create")
+    @PostMapping("/create")
     public ResponseEntity<ApiResponse<FamilleResponseDto>> create(@RequestBody FamilleRequestDto dto){
         return ResponseEntity.ok(
                 ApiResponse.<FamilleResponseDto>builder()

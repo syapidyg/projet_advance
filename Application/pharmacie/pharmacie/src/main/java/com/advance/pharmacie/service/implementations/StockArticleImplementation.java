@@ -2,6 +2,9 @@ package com.advance.pharmacie.service.implementations;
 
 import com.advance.pharmacie.dto.dtoRequest.StockArticleRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.StockArticleResponseDto;
+import com.advance.pharmacie.exception.BadRequestException;
+import com.advance.pharmacie.exception.ErrorMessage;
+import com.advance.pharmacie.exception.ResourceNotFoundException;
 import com.advance.pharmacie.model.Depot;
 import com.advance.pharmacie.model.Produit;
 import com.advance.pharmacie.model.lnk.StockArticle;
@@ -74,5 +77,41 @@ public class StockArticleImplementation implements StockArticleService {
         ;
         return StockArticleResponseDto.entityToDto(stockArticle);
     }
+
+    @Override
+    public Long checkEtatStockArticle(Long idProduit, Long idDepot){
+
+        Produit produit = produitRepository.findById(idProduit)
+                .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", idProduit));
+
+        Depot depot = depotRepository.findById(idDepot)
+                .orElseThrow(() -> new ResourceNotFoundException("Depot", "id", idDepot));
+
+        StockArticle stockArticle = stockArticleRepository.findByDepotAndProduit(depot, produit)
+                .orElseThrow(() -> new BadRequestException("Aucune produit en stock ne correspond"));
+
+        return stockArticle.getQte();
+    }
+
+    @Override
+    public Boolean destockArticle(Long idProduit, Long idDepot, Long qte) {
+
+        Produit produit = produitRepository.findById(idProduit)
+                .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", idProduit));
+
+        Depot depot = depotRepository.findById(idDepot)
+                .orElseThrow(() -> new ResourceNotFoundException("Depot", "id", idDepot));
+
+        StockArticle stockArticle = stockArticleRepository.findByDepotAndProduit(depot, produit)
+                .orElseThrow(() -> new BadRequestException("Aucune produit en stock ne correspond"));
+
+        stockArticle.setQte(stockArticle.getQte() - qte);
+
+        stockArticleRepository.save(stockArticle);
+
+        return true;
+
+    }
+
 
 }

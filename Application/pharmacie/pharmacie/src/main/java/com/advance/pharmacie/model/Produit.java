@@ -19,6 +19,9 @@ public class Produit extends AuditEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String code;
+
     private String dci;
 
     private String forme;
@@ -48,6 +51,7 @@ public class Produit extends AuditEntity{
 
     public static final class ProduitBuilder {
         private Long id;
+        private String code;
         private String dci;
         private String forme;
         private String categorie;
@@ -65,6 +69,11 @@ public class Produit extends AuditEntity{
 
         public ProduitBuilder id(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public ProduitBuilder code(String code) {
+            this.code = code;
             return this;
         }
 
@@ -106,6 +115,7 @@ public class Produit extends AuditEntity{
         public Produit build() {
             Produit produit = new Produit();
             produit.setId(id);
+            produit.setCode(code);
             produit.setDci(dci);
             produit.setForme(forme);
             produit.setCategorie(categorie);

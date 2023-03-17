@@ -14,4 +14,8 @@ public interface StockArticleService {
     StockArticleResponseDto readOne(Long id);
 
     String delete(Long id);
+
+    Long checkEtatStockArticle(Long idProduit, Long idDepot);
+
+    Boolean destockArticle(Long idProduit, Long idDepot, Long qte);
 }
