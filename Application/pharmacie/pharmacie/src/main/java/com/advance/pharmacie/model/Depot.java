@@ -18,6 +18,8 @@ public class Depot extends AuditEntity {
 
     private String name;
 
+    private String description;
+
     @OneToMany(mappedBy = "depot")
     private List<StockArticle> stockArticles = new ArrayList<>();
 
@@ -25,7 +27,7 @@ public class Depot extends AuditEntity {
     public static final class DepotBuilder {
         private Long id;
         private String name;
-        private List<StockArticle> stockArticles;
+        private String description;
 
         private DepotBuilder() {
         }
@@ -44,8 +46,8 @@ public class Depot extends AuditEntity {
             return this;
         }
 
-        public DepotBuilder stockArticles(List<StockArticle> stockArticles) {
-            this.stockArticles = stockArticles;
+        public DepotBuilder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -53,7 +55,7 @@ public class Depot extends AuditEntity {
             Depot depot = new Depot();
             depot.setId(id);
             depot.setName(name);
-            depot.setStockArticles(stockArticles);
+            depot.setDescription(description);
             return depot;
         }
     }

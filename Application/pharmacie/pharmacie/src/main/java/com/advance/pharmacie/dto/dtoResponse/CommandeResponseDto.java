@@ -4,9 +4,11 @@ import com.advance.pharmacie.model.Client;
 import com.advance.pharmacie.model.Commande;
 import com.advance.pharmacie.model.Fournisseur;
 import com.advance.pharmacie.model.lnk.LigneCommande;
+import com.advance.pharmacie.util.StatutCommande;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +19,9 @@ public class CommandeResponseDto {
     private Long id;
     private Long pt;
     private String type;
-    private String statut;
+    private StatutCommande statut;
+    private String document;
+    private LocalDateTime date_creation;
     private FournisseurResponseDto fournisseur;
     private ClientResponseDto client;
     private List<LigneCommandeResponseDto> ligneCommandes;
@@ -27,9 +31,11 @@ public class CommandeResponseDto {
                 .id(commande.getId())
                 .pt(commande.getPt())
                 .statut(commande.getStatut())
+                .document(commande.getDocument())
                 .type(commande.getType())
                 .fournisseur(FournisseurResponseDto.entityToDto(commande.getFournisseur()))
                 .client(ClientResponseDto.entityToDto(commande.getClient()))
+                .date_creation(commande.getDate_creation())
                 //.ligneCommandes(LigneCommandeResponseDto.entityToDtoList(commande.getLigneCommande()))
                 .build();
 
@@ -38,10 +44,13 @@ public class CommandeResponseDto {
         return CommandeResponseDto.builder()
                 .id(commande.getId())
                 .statut(commande.getStatut())
+                .pt(commande.getPt())
+                .document(commande.getDocument())
                 .type(commande.getType())
                 .fournisseur(FournisseurResponseDto.entityToDto(commande.getFournisseur()))
                 .client(ClientResponseDto.entityToDto(commande.getClient()))
                 .ligneCommandes(LigneCommandeResponseDto.entityToDtoList(commande.getLigneCommande()))
+                .date_creation(commande.getDate_creation())
                 .build();
 
     }
@@ -50,10 +59,13 @@ public class CommandeResponseDto {
         return CommandeResponseDto.builder()
                 .id(commande.getId())
                 .statut(commande.getStatut())
+                .pt(commande.getPt())
+                .document(commande.getDocument())
                 .type(commande.getType())
                 .fournisseur(FournisseurResponseDto.entityToDto(commande.getFournisseur()))
                 .client(ClientResponseDto.entityToDto(commande.getClient()))
                 .ligneCommandes(LigneCommandeResponseDto.entityToDtoList(ligneCommandes))
+                .date_creation(commande.getDate_creation())
                 .build();
 
     }

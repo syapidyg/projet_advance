@@ -3,6 +3,7 @@ package com.advance.pharmacie.model;
 
 import com.advance.pharmacie.model.lnk.LigneCommande;
 import com.advance.pharmacie.model.lnk.Reglement;
+import com.advance.pharmacie.util.StatutCommande;
 import lombok.Data;
 import lombok.ToString;
 
@@ -24,7 +25,9 @@ public class Commande extends  AuditEntity{
 
     private String type;
 
-    private String statut;
+    private StatutCommande statut;
+
+    private String document;
 
     @ManyToOne(targetEntity = Fournisseur.class)
     @JoinColumn(name ="id_fournisseur", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_fournisseur_commande"))
@@ -45,7 +48,8 @@ public class Commande extends  AuditEntity{
         private Long id;
         private Long pt;
         private String type;
-        private String statut;
+        private StatutCommande statut;
+        private String document;
         private Fournisseur fournisseur;
         private Client client;
         private List<LigneCommande> ligneCommande;
@@ -73,8 +77,13 @@ public class Commande extends  AuditEntity{
             return this;
         }
 
-        public CommandeBuilder statut(String statut) {
+        public CommandeBuilder statut(StatutCommande statut) {
             this.statut = statut;
+            return this;
+        }
+
+        public CommandeBuilder document(String document) {
+            this.document = document;
             return this;
         }
 
@@ -104,6 +113,7 @@ public class Commande extends  AuditEntity{
             commande.setPt(pt);
             commande.setType(type);
             commande.setStatut(statut);
+            commande.setDocument(document);
             commande.setFournisseur(fournisseur);
             commande.setClient(client);
             commande.setLigneCommande(ligneCommande);

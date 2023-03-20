@@ -1,6 +1,7 @@
 package com.advance.pharmacie.controller;
 
 import com.advance.pharmacie.dto.ApiResponse;
+import com.advance.pharmacie.dto.dtoRequest.BonToFactureRequestDto;
 import com.advance.pharmacie.dto.dtoRequest.CommandeRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.CommandeResponseDto;
 import com.advance.pharmacie.service.interfaces.CommandeService;
@@ -43,6 +44,28 @@ public class CommandeController {
                         .build());
     }
 
+    @ApiOperation("Liste des commandes clients")
+    @GetMapping("/readClient")
+    public ResponseEntity<ApiResponse<List<CommandeResponseDto>>> readClient(){
+        return ResponseEntity.ok(
+                ApiResponse.<List<CommandeResponseDto>>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(commandeService.readClient())
+                        .build());
+    }
+
+    @ApiOperation("Liste des commandes clients")
+    @GetMapping("/readFournisseur")
+    public ResponseEntity<ApiResponse<List<CommandeResponseDto>>> readFournisseur(){
+        return ResponseEntity.ok(
+                ApiResponse.<List<CommandeResponseDto>>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(commandeService.readFournisseur())
+                        .build());
+    }
+
     @ApiOperation("Liste d'une comande")
     @GetMapping("/readOne/{id}")
     public ResponseEntity<ApiResponse<CommandeResponseDto>> readOne(@PathVariable Long id){
@@ -62,6 +85,18 @@ public class CommandeController {
                         .success(true)
                         .message("Opereation reussie")
                         .data(commandeService.delete(id))
+                        .build());
+    }
+
+    @ApiOperation("Transformation du bon de commande en facture")
+    @PostMapping("/transform")
+    public ResponseEntity<ApiResponse<CommandeResponseDto>> tBonFacture(@RequestBody BonToFactureRequestDto dto){
+        CommandeResponseDto data = commandeService.tBonFacture(dto);
+        return ResponseEntity.ok(
+                ApiResponse.<CommandeResponseDto>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(data)
                         .build());
     }
 }

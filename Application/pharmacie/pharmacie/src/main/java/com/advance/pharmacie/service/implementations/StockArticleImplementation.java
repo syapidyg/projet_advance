@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class StockArticleImplementation implements StockArticleService {
@@ -110,6 +111,37 @@ public class StockArticleImplementation implements StockArticleService {
         stockArticleRepository.save(stockArticle);
 
         return true;
+
+    }
+
+    @Override
+    public Boolean addStockArticle(Long idProduit, Long idDepot, Long qte) {
+
+        Produit produit = produitRepository.findById(idProduit)
+                .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", idProduit));
+
+        Depot depot = depotRepository.findById(idDepot)
+                .orElseThrow(() -> new ResourceNotFoundException("Depot", "id", idDepot));
+
+       Optional <StockArticle> stockArticle = stockArticleRepository.findByDepotAndProduit(depot, produit);
+
+        if (stockArticle.isPresent()){
+
+            stockArticle.get().setQte(stockArticle.get().getQte()+ qte);
+            stockArticleRepository.save(stockArticle.get());
+            return true;
+        }else {
+            StockArticle stockArticle1 = StockArticleRequestDto.dtoToEntityFromFournisseur(depot, produit, qte);
+            StockArticleResponseDto.entityToDto(stockArticleRepository.save(stockArticle1));
+            return true;
+        }
+
+//        StockArticle stockArticle = stockArticleRepository.findByDepotAndProduit(depot, produit)
+//                .orElseThrow(() -> new BadRequestException("Aucune produit en stock ne correspond"));
+//
+//        stockArticle.setQte(stockArticle.getQte() + qte);
+//
+
 
     }
 

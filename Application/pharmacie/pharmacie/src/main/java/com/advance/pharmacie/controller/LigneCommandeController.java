@@ -54,6 +54,17 @@ public class LigneCommandeController {
                         .build());
     }
 
+   @ApiOperation("Liste des lignes de commande client")
+    @GetMapping("/readClient/{id}")
+    public ResponseEntity<ApiResponse<List<LigneCommandeResponseDto>>> readClient(@PathVariable Long id){
+        return ResponseEntity.ok(
+                ApiResponse.<List<LigneCommandeResponseDto>>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(ligneCommandeService.readClient(id))
+                        .build());
+    }
+
     @ApiOperation("Suppression d'une ligne de commande")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id){

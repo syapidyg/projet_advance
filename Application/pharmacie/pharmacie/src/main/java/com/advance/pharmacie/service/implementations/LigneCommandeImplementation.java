@@ -74,4 +74,10 @@ public class LigneCommandeImplementation implements LigneCommandeService {
         ;
         return LigneCommandeResponseDto.entityToDto(ligneCommande);
     }
+
+    @Override
+    public List<LigneCommandeResponseDto> readClient(Long id) {
+        List<LigneCommande> ligneCommande = ligneCommandeRepository.findByCommandeId(id);
+        return LigneCommandeResponseDto.entityToDtoList(ligneCommande);
+    }
 }

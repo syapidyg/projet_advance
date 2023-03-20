@@ -14,11 +14,13 @@ public class DepotResponseDto {
 
     private Long id;
     private String name;
+    private String description;
 
     public static DepotResponseDto entityToDto(Depot depot) {
         return DepotResponseDto.builder()
                 .id(depot.getId())
                 .name(depot.getName())
+                .description(depot.getDescription())
                 .build();
     }
 

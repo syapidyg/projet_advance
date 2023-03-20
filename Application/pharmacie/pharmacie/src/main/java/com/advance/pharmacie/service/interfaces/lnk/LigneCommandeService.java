@@ -14,4 +14,6 @@ public interface LigneCommandeService {
     LigneCommandeResponseDto readOne(Long id);
 
     String delete(Long id);
+
+    List<LigneCommandeResponseDto> readClient(Long id);
 }

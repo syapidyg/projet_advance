@@ -1,5 +1,6 @@
 package com.advance.pharmacie.service.implementations;
 
+import com.advance.pharmacie.dto.dtoRequest.BonToFactureRequestDto;
 import com.advance.pharmacie.dto.dtoRequest.CommandeRequestDto;
 import com.advance.pharmacie.dto.dtoRequest.LigneCommandeRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.CommandeResponseDto;
@@ -74,7 +75,7 @@ public class CommandeImplementation implements CommandeService {
             Client finalClient = client;
 
             Commande commande = commandeRepository.findById(dtoCommande.getId()).map(p -> {
-                p.setStatut(dtoCommande.getStatut());
+                p.setDocument(dtoCommande.getDocument());
                 p.setPt(dtoCommande.getPt());
                 p.setType(dtoCommande.getType());
                 if (finalClient != null) {
@@ -89,6 +90,7 @@ public class CommandeImplementation implements CommandeService {
         } else {
 
             Commande commandeToSave = CommandeRequestDto.dtoToEntity(dtoCommande, client, fournisseur);
+
             Commande commande = commandeRepository.save(commandeToSave);
 
             if (dtoCommande.getType().equals("client")) {
@@ -104,18 +106,18 @@ public class CommandeImplementation implements CommandeService {
                         LigneCommande ligneCommandeToSave = LigneCommandeRequestDto
                                 .dtoToEntity(ligneCommandedto, commande, produit);
 
-                        if (dtoCommande.getStatut().equals("Bon de commande")) {
+                        if (dtoCommande.getDocument().equals("Bon de commande")) {
 
                             ligneCommandeRepository.save(ligneCommandeToSave);
 
                         } else {
                             //cas de la facture
-                            Long qteTest = stockArticleService.checkEtatStockArticle(ligneCommandeToSave.getProduit().getId(), (long) 1);
+                            Long qteTest = stockArticleService.checkEtatStockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot());
                             //campare la Qte checker a la quantité
                             if (qteTest < ligneCommandeToSave.getQte())
                                 throw new BadRequestException("Stock insuffisant pour ce produit");
 
-                            stockArticleService.destockArticle(ligneCommandeToSave.getProduit().getId(), (long) 1, ligneCommandeToSave.getQte());
+                            stockArticleService.destockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot(), ligneCommandeToSave.getQte());
 
                             ligneCommandeRepository.save(ligneCommandeToSave);
 
@@ -129,7 +131,32 @@ public class CommandeImplementation implements CommandeService {
             } else if (dtoCommande.getType().equals("fournisseur")) {
                 fournisseur = fournisseurRepository.findById(dtoCommande.getIdClientFournisseur())
                         .orElseThrow(() -> new RuntimeException("Fournisseur non existant"));
-                return null;
+
+                if (dtoCommande.getLigneCommandes() != null) {
+
+                    dtoCommande.getLigneCommandes().forEach(ligneCommandedto -> {
+
+                        Produit produit = produitRepository.findById(ligneCommandedto.getIdProduit())
+                                .orElseThrow(
+                                        () -> new RuntimeException("Un Id de produit inseré est invalide"));
+                        LigneCommande ligneCommandeToSave = LigneCommandeRequestDto
+                                .dtoToEntity(ligneCommandedto, commande, produit);
+
+                        if (dtoCommande.getDocument().equals("Bon de commande")) {
+
+                            ligneCommandeRepository.save(ligneCommandeToSave);
+
+                        } else {
+                            //cas de la facture
+                            stockArticleService.addStockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot(), ligneCommandeToSave.getQte());
+
+                            ligneCommandeRepository.save(ligneCommandeToSave);
+
+                        }
+                    });
+                }
+                return CommandeResponseDto.entityToDto(commande, ligneCommandeRepository.findByCommandeId(commande.getId()));
+
             } else {
                 throw new RuntimeException("Choississez un type a inserer et une personne valide");
 
@@ -145,6 +172,20 @@ public class CommandeImplementation implements CommandeService {
     }
 
     @Override
+    public List<CommandeResponseDto> readClient() {
+
+        List<Commande> commandes = commandeRepository.findByType("client");
+        return CommandeResponseDto.entityToDtoList(commandes);
+    }
+
+    @Override
+    public List<CommandeResponseDto> readFournisseur() {
+
+        List<Commande> commandes = commandeRepository.findByType("fournisseur");
+        return CommandeResponseDto.entityToDtoList(commandes);
+    }
+
+    @Override
     public String delete(Long id) {
 
         commandeRepository.deleteById(id);
@@ -155,5 +196,25 @@ public class CommandeImplementation implements CommandeService {
     public CommandeResponseDto readOne(Long id) {
         Commande commande = commandeRepository.findById(id).orElseThrow(() -> new RuntimeException("Aucun Commande ne correspond a cet ID"));
         return CommandeResponseDto.entityToDtoWithLigneCommande(commande);
+    }
+
+    @Override
+    public CommandeResponseDto tBonFacture(BonToFactureRequestDto dto) {
+        Commande commandeToEdit = commandeRepository.findById(dto.getIdCommande())
+                .orElseThrow(() -> new ResourceNotFoundException("Commande", "id", dto.getIdCommande()));
+
+        Long idCF = commandeToEdit.getType().equals("client") ? commandeToEdit.getClient().getId() : commandeToEdit.getFournisseur().getId();
+
+        CommandeRequestDto commandeToSave = CommandeRequestDto.builder()
+                .document("facture")
+                .idClientFournisseur(idCF)
+                .idDepot(dto.getIdDepot())
+                .type(commandeToEdit.getType())
+                .pt(commandeToEdit.getPt())
+                .LigneCommandes(LigneCommandeRequestDto.entityToDtoList(commandeToEdit.getLigneCommande()))
+                .build();
+
+        return createOrUpdate(commandeToSave);
+
     }
 }

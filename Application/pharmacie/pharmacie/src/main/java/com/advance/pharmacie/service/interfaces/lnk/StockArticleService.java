@@ -18,4 +18,6 @@ public interface StockArticleService {
     Long checkEtatStockArticle(Long idProduit, Long idDepot);
 
     Boolean destockArticle(Long idProduit, Long idDepot, Long qte);
+
+    Boolean addStockArticle(Long idProduit, Long idDepot, Long qte);
 }

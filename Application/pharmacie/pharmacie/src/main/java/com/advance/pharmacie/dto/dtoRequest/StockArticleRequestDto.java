@@ -31,4 +31,17 @@ public class StockArticleRequestDto {
                 .qteMinimale(dto.getQteMinimale())
                 .build();
     }
+
+    public static StockArticle dtoToEntityFromFournisseur(Depot depot, Produit produit, Long qte) {
+
+        return StockArticle.StockArticleBuilder.aStockArticle()
+
+                .depot(depot)
+                .produit(produit)
+                .qte(qte)
+                .qteAlerte((long) 10)
+                .qteMaximale((long) 50)
+                .qteMinimale((long) 25)
+                .build();
+    }
 }

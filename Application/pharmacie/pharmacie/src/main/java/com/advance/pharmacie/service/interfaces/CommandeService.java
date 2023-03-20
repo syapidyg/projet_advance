@@ -1,5 +1,6 @@
 package com.advance.pharmacie.service.interfaces;
 
+import com.advance.pharmacie.dto.dtoRequest.BonToFactureRequestDto;
 import com.advance.pharmacie.dto.dtoRequest.CommandeRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.CommandeResponseDto;
 
@@ -13,5 +14,11 @@ public interface CommandeService {
 
     CommandeResponseDto readOne(Long id);
 
+    List<CommandeResponseDto> readClient();
+
+    List<CommandeResponseDto> readFournisseur();
+
     String delete(Long id);
+
+    CommandeResponseDto tBonFacture(BonToFactureRequestDto dto);
 }

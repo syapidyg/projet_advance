@@ -24,6 +24,7 @@ public class DepotImplementation implements DepotService {
 
             Depot depot = depotRepository.findById(dtoDepot.getId()).map(p -> {
                 p.setName(dtoDepot.getName());
+                p.setDescription(dtoDepot.getDescription());
                 return depotRepository.save(p);
             }).orElseThrow(() -> new RuntimeException("Aucun Depot trouvé"));
 

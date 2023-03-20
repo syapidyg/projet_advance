@@ -17,12 +17,15 @@ public class ClientResponseDto {
     private String email;
 
     public static ClientResponseDto entityToDto(Client client) {
-        return ClientResponseDto.builder()
-                .id(client.getId())
-                .name(client.getName())
-                .number(client.getNumber())
-                .email(client.getEmail())
-                .build();
+        if (client != null) {
+            return ClientResponseDto.builder()
+                    .id(client.getId())
+                    .name(client.getName())
+                    .number(client.getNumber())
+                    .email(client.getEmail())
+                    .build();
+        }
+        return null;
     }
 
     public static List<ClientResponseDto> entityToDtoList(List<Client> clientList){

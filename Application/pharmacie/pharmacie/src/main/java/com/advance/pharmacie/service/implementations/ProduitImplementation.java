@@ -53,7 +53,8 @@ public class ProduitImplementation implements ProduitService {
             return ProduitResponseDto.entityToDto(produitRepository.save(produit));
         }
 
-        dtoProduit.setCode(getCodeCourant());
+//        dtoProduit.setCode(getCodeCourant());
+        dtoProduit.setCode(null);
         Produit produit = ProduitRequestDto.dtoToEntity(dtoProduit, famille);
         return ProduitResponseDto.entityToDto(produitRepository.save(produit));
 

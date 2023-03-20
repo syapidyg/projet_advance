@@ -3,6 +3,7 @@ package com.advance.pharmacie.dto.dtoRequest;
 import com.advance.pharmacie.model.Client;
 import com.advance.pharmacie.model.Commande;
 import com.advance.pharmacie.model.Fournisseur;
+import com.advance.pharmacie.util.StatutCommande;
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,16 +20,19 @@ public class CommandeRequestDto {
     private Long id;
     private Long pt;
     private String type;
-    private String statut;
+    private String document;
+    private Long idDepot;
     private Long idClientFournisseur;
     private List<LigneCommandeRequestDto> LigneCommandes = new ArrayList<>();
 
     public static Commande dtoToEntity(CommandeRequestDto dto, Client client, Fournisseur fournisseur) {
         return Commande.CommandeBuilder.aCommande()
                 .id(dto.getId())
-                .statut(dto.getStatut())
+                .statut(dto.getDocument().equals("Bon de commande")? StatutCommande.EN_ATTENTE: StatutCommande.NON_REGLE)
+                .document(dto.getDocument())
                 .type(dto.getType())
                 .fournisseur(fournisseur)
+
                 .pt(dto.getPt())
                 .client(client)
                 .build();

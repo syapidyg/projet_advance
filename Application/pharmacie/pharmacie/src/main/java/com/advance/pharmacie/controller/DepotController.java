@@ -21,7 +21,7 @@ public class DepotController {
     DepotService depotService;
 
     @ApiOperation("Creation et Mise a jour d'une depot")
-    @PostMapping("/Create")
+    @PostMapping("/create")
     public ResponseEntity<ApiResponse<DepotResponseDto>> create(@RequestBody DepotRequestDto dto) {
         return ResponseEntity.ok(
                 ApiResponse.<DepotResponseDto>builder()
