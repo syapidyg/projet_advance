@@ -37,6 +37,10 @@ public class Commande extends  AuditEntity{
     @JoinColumn(name ="id_client", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_client_commande"))
     private Client client;
 
+    @ManyToOne(targetEntity = Depot.class)
+    @JoinColumn(name ="id_depot", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_depot_commande"))
+    private Depot depot;
+
     @OneToMany(mappedBy = "commande")
     private List<LigneCommande> ligneCommande = new ArrayList<>();
 
@@ -52,6 +56,7 @@ public class Commande extends  AuditEntity{
         private String document;
         private Fournisseur fournisseur;
         private Client client;
+        private Depot depot;
         private List<LigneCommande> ligneCommande;
         private List<Reglement> reglements;
 
@@ -97,6 +102,11 @@ public class Commande extends  AuditEntity{
             return this;
         }
 
+        public CommandeBuilder depot(Depot depot) {
+            this.depot = depot;
+            return this;
+        }
+
         public CommandeBuilder ligneCommande(List<LigneCommande> ligneCommande) {
             this.ligneCommande = ligneCommande;
             return this;
@@ -116,6 +126,7 @@ public class Commande extends  AuditEntity{
             commande.setDocument(document);
             commande.setFournisseur(fournisseur);
             commande.setClient(client);
+            commande.setDepot(depot);
             commande.setLigneCommande(ligneCommande);
             commande.setReglements(reglements);
             return commande;

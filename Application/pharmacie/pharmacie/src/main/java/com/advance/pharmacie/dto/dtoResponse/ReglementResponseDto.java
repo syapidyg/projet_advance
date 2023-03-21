@@ -5,6 +5,7 @@ import com.advance.pharmacie.model.lnk.Reglement;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,7 @@ public class ReglementResponseDto {
     private CommandeResponseDto commande;
     private CaisseResponseDto caisse;
     private Long montant;
-    private String date;
+    private LocalDateTime date;
 
     public static ReglementResponseDto entityToDto(Reglement reglement) {
         return ReglementResponseDto.builder()
@@ -27,7 +28,7 @@ public class ReglementResponseDto {
                 .caisse(CaisseResponseDto.entityToDto(reglement.getCaisse()))
                 .commande(CommandeResponseDto.entityToDto(reglement.getCommande()))
                 .montant(reglement.getMontant())
-                .date(reglement.getDate())
+                .date(reglement.getDate_creation())
                 .build();
     }
 

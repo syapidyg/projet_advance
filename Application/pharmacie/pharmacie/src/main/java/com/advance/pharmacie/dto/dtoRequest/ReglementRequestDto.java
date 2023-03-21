@@ -8,17 +8,17 @@ import com.advance.pharmacie.model.auth.Utilisateur;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class ReglementRequestDto {
-
 
     private Long id;
     private Long idUtilisateur;
     private Long idCommande;
     private Long idCaisse;
-    private Long Montant;
-    private String date;
+    private Long montant;
 
     public static Reglement dtoToEntity(ReglementRequestDto dto, Utilisateur utilisateur, Caisse caisse, Commande commande) {
         return Reglement.ReglementBuilder.aReglement()
@@ -27,7 +27,6 @@ public class ReglementRequestDto {
                 .caisse(caisse)
                 .commande(commande)
                 .montant(dto.getMontant())
-                .date(dto.getDate())
                 .build();
     }
 

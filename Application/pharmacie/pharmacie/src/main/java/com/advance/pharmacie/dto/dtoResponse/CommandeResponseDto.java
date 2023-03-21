@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class CommandeResponseDto {
 
     private Long id;
+    private Long idDepot;
     private Long pt;
     private String type;
     private StatutCommande statut;
@@ -29,6 +30,7 @@ public class CommandeResponseDto {
     public static CommandeResponseDto entityToDto(Commande commande) {
         return CommandeResponseDto.builder()
                 .id(commande.getId())
+                .idDepot(commande.getDepot().getId())
                 .pt(commande.getPt())
                 .statut(commande.getStatut())
                 .document(commande.getDocument())
@@ -43,6 +45,7 @@ public class CommandeResponseDto {
     public static CommandeResponseDto entityToDtoWithLigneCommande(Commande commande) {
         return CommandeResponseDto.builder()
                 .id(commande.getId())
+                .idDepot(commande.getDepot().getId())
                 .statut(commande.getStatut())
                 .pt(commande.getPt())
                 .document(commande.getDocument())
@@ -58,6 +61,7 @@ public class CommandeResponseDto {
     public static CommandeResponseDto entityToDto(Commande commande, List<LigneCommande> ligneCommandes) {
         return CommandeResponseDto.builder()
                 .id(commande.getId())
+                .idDepot(commande.getDepot().getId())
                 .statut(commande.getStatut())
                 .pt(commande.getPt())
                 .document(commande.getDocument())

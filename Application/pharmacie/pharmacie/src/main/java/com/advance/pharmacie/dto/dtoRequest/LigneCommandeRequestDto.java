@@ -27,7 +27,7 @@ public class LigneCommandeRequestDto {
 //        ProduitRequestDto produitdto = new ProduitRequestDto();
 
         return LigneCommande.LigneCommandeBuilder.aLigneCommande()
-                .id(dto.getId())
+//                .id(dto.getId())
                 .pt(dto.getPt())
                 .qte(dto.getQte())
                 .commande(commande)
@@ -53,7 +53,26 @@ public class LigneCommandeRequestDto {
 
     }
 
-    public static List<LigneCommandeRequestDto> entityToDtoList(List<LigneCommande> ligneCommandeList){
+    public static LigneCommandeRequestDto entityToDtoT(LigneCommande ligneCommande) {
+
+//        CommandeRequestDto commandedto = new CommandeRequestDto();
+//        ProduitRequestDto produitdto = new ProduitRequestDto();
+
+        return LigneCommandeRequestDto.builder()
+//                .id(ligneCommande.getId())
+                .pt(ligneCommande.getPt())
+                .qte(ligneCommande.getQte())
+                .idProduit(ligneCommande.getProduit().getId())
+                .build();
+
+
+    }
+
+    public static List<LigneCommandeRequestDto> entityToDtoList(List<LigneCommande> ligneCommandeList) {
         return ligneCommandeList.stream().map(LigneCommandeRequestDto::entityToDto).collect(Collectors.toList());
+    }
+
+    public static List<LigneCommandeRequestDto> entityToDtoListT(List<LigneCommande> ligneCommandeList) {
+        return ligneCommandeList.stream().map(LigneCommandeRequestDto::entityToDtoT).collect(Collectors.toList());
     }
 }

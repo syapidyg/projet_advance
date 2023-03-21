@@ -9,10 +9,7 @@ import com.advance.pharmacie.exception.BadRequestException;
 import com.advance.pharmacie.exception.ResourceNotFoundException;
 import com.advance.pharmacie.model.*;
 import com.advance.pharmacie.model.lnk.LigneCommande;
-import com.advance.pharmacie.repository.ClientRepository;
-import com.advance.pharmacie.repository.CommandeRepository;
-import com.advance.pharmacie.repository.FournisseurRepository;
-import com.advance.pharmacie.repository.ProduitRepository;
+import com.advance.pharmacie.repository.*;
 import com.advance.pharmacie.repository.lnk.LigneCommandeRepository;
 import com.advance.pharmacie.service.interfaces.CommandeService;
 import com.advance.pharmacie.service.interfaces.lnk.StockArticleService;
@@ -48,12 +45,19 @@ public class CommandeImplementation implements CommandeService {
     @Autowired
     LigneCommandeRepository ligneCommandeRepository;
 
+  @Autowired
+    DepotRepository depotRepository;
+
     @Transactional
     @Override
     public CommandeResponseDto createOrUpdate(CommandeRequestDto dtoCommande) {
 
         Client client = null;
         Fournisseur fournisseur = null;
+
+        Depot depot = depotRepository.findById(dtoCommande.getIdDepot())
+                .orElseThrow(() -> new ResourceNotFoundException("depot", "id", dtoCommande.getIdDepot()));
+
 
         if (dtoCommande.getType().equals("client")) {
 
@@ -78,6 +82,7 @@ public class CommandeImplementation implements CommandeService {
                 p.setDocument(dtoCommande.getDocument());
                 p.setPt(dtoCommande.getPt());
                 p.setType(dtoCommande.getType());
+                p.setDepot(depot);
                 if (finalClient != null) {
                     p.setClient(finalClient);
                 } else if (finalFournisseur != null) {
@@ -89,7 +94,7 @@ public class CommandeImplementation implements CommandeService {
             return CommandeResponseDto.entityToDto(commandeRepository.save(commande));
         } else {
 
-            Commande commandeToSave = CommandeRequestDto.dtoToEntity(dtoCommande, client, fournisseur);
+            Commande commandeToSave = CommandeRequestDto.dtoToEntity(dtoCommande, client, fournisseur, depot);
 
             Commande commande = commandeRepository.save(commandeToSave);
 
@@ -110,7 +115,7 @@ public class CommandeImplementation implements CommandeService {
 
                             ligneCommandeRepository.save(ligneCommandeToSave);
 
-                        } else {
+                        } else if (dtoCommande.getDocument().equals("Facture"))  {
                             //cas de la facture
                             Long qteTest = stockArticleService.checkEtatStockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot());
                             //campare la Qte checker a la quantité
@@ -121,6 +126,8 @@ public class CommandeImplementation implements CommandeService {
 
                             ligneCommandeRepository.save(ligneCommandeToSave);
 
+                        } else{
+                            throw new BadRequestException("Choississez le type de document");
                         }
                     });
                 }
@@ -203,15 +210,17 @@ public class CommandeImplementation implements CommandeService {
         Commande commandeToEdit = commandeRepository.findById(dto.getIdCommande())
                 .orElseThrow(() -> new ResourceNotFoundException("Commande", "id", dto.getIdCommande()));
 
+        List<LigneCommande> ligneCommandes  = commandeToEdit.getLigneCommande();
+
         Long idCF = commandeToEdit.getType().equals("client") ? commandeToEdit.getClient().getId() : commandeToEdit.getFournisseur().getId();
 
         CommandeRequestDto commandeToSave = CommandeRequestDto.builder()
-                .document("facture")
+                .document("Facture")
                 .idClientFournisseur(idCF)
                 .idDepot(dto.getIdDepot())
                 .type(commandeToEdit.getType())
                 .pt(commandeToEdit.getPt())
-                .LigneCommandes(LigneCommandeRequestDto.entityToDtoList(commandeToEdit.getLigneCommande()))
+                .LigneCommandes(LigneCommandeRequestDto.entityToDtoListT(commandeToEdit.getLigneCommande()))
                 .build();
 
         return createOrUpdate(commandeToSave);

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class BonToFactureRequestDto {
+public class  BonToFactureRequestDto {
 
     Long idCommande;
     Long idDepot;

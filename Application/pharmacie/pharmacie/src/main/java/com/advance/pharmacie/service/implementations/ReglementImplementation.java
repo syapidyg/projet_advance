@@ -1,6 +1,7 @@
 package com.advance.pharmacie.service.implementations;
 
 import com.advance.pharmacie.dto.dtoRequest.ReglementRequestDto;
+import com.advance.pharmacie.dto.dtoResponse.CommandeResponseDto;
 import com.advance.pharmacie.dto.dtoResponse.ReglementResponseDto;
 import com.advance.pharmacie.model.Caisse;
 import com.advance.pharmacie.model.Commande;
@@ -11,6 +12,7 @@ import com.advance.pharmacie.repository.CommandeRepository;
 import com.advance.pharmacie.repository.auth.UtilisateurRepository;
 import com.advance.pharmacie.repository.lnk.ReglementRepository;
 import com.advance.pharmacie.service.interfaces.lnk.ReglementService;
+import com.advance.pharmacie.util.StatutCommande;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +51,6 @@ public class ReglementImplementation implements ReglementService {
 
             Reglement reglement = reglementRepository.findById(dtoReglement.getId()).map(p -> {
                 p.setMontant(dtoReglement.getMontant());
-                p.setDate(dtoReglement.getDate());
                 p.setCaisse(caisse);
                 p.setUtilisateur(utilisateur);
                 p.setCommande(commande);
@@ -58,6 +59,9 @@ public class ReglementImplementation implements ReglementService {
 
             return ReglementResponseDto.entityToDto(reglementRepository.save(reglement));
         }
+
+        commande.setStatut(StatutCommande.REGLE);
+        commandeRepository.save(commande);
 
         Reglement reglement = ReglementRequestDto.dtoToEntity(dtoReglement, utilisateur, caisse, commande);
         return ReglementResponseDto.entityToDto(reglementRepository.save(reglement));

@@ -8,6 +8,7 @@ import com.advance.pharmacie.model.auth.Utilisateur;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -19,8 +20,6 @@ public class Reglement extends AuditEntity {
     private Long id;
 
     private Long montant;
-
-    private String date;
 
     @ManyToOne(targetEntity = Utilisateur.class)
     @JoinColumn(name = "utilisateur_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_utilisateur_reglement"))
@@ -38,7 +37,6 @@ public class Reglement extends AuditEntity {
     public static final class ReglementBuilder {
         private Long id;
         private Long montant;
-        private String date;
         private Utilisateur utilisateur;
         private Commande commande;
         private Caisse caisse;
@@ -60,11 +58,6 @@ public class Reglement extends AuditEntity {
             return this;
         }
 
-        public ReglementBuilder date(String date) {
-            this.date = date;
-            return this;
-        }
-
         public ReglementBuilder utilisateur(Utilisateur utilisateur) {
             this.utilisateur = utilisateur;
             return this;
@@ -80,11 +73,12 @@ public class Reglement extends AuditEntity {
             return this;
         }
 
+
+
         public Reglement build() {
             Reglement reglement = new Reglement();
             reglement.setId(id);
             reglement.setMontant(montant);
-            reglement.setDate(date);
             reglement.setUtilisateur(utilisateur);
             reglement.setCommande(commande);
             reglement.setCaisse(caisse);
