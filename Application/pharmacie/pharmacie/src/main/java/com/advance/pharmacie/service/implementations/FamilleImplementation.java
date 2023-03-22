@@ -1,7 +1,9 @@
 package com.advance.pharmacie.service.implementations;
 
 import com.advance.pharmacie.dto.dtoRequest.FamilleRequestDto;
+import com.advance.pharmacie.dto.dtoResponse.CaisseResponseDto;
 import com.advance.pharmacie.dto.dtoResponse.FamilleResponseDto;
+import com.advance.pharmacie.model.Caisse;
 import com.advance.pharmacie.model.Famille;
 import com.advance.pharmacie.repository.FamilleRepository;
 import com.advance.pharmacie.service.interfaces.FamilleService;
@@ -51,5 +53,11 @@ public class FamilleImplementation implements FamilleService {
 
         familleRepository.deleteById(id);
         return "Famille supprimée avec succès";
+    }
+
+    @Override
+    public FamilleResponseDto readOne(Long id) {
+        Famille famille = familleRepository.findById(id).orElseThrow(() -> new RuntimeException("Aucune famille trouvé"));
+        return FamilleResponseDto.entityToDto(famille);
     }
 }

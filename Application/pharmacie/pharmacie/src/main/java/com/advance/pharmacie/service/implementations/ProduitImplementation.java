@@ -53,8 +53,8 @@ public class ProduitImplementation implements ProduitService {
             return ProduitResponseDto.entityToDto(produitRepository.save(produit));
         }
 
-//        dtoProduit.setCode(getCodeCourant());
-        dtoProduit.setCode(null);
+        dtoProduit.setCode(getCodeCourant());
+//        dtoProduit.setCode(null);
         Produit produit = ProduitRequestDto.dtoToEntity(dtoProduit, famille);
         return ProduitResponseDto.entityToDto(produitRepository.save(produit));
 
@@ -82,19 +82,32 @@ public class ProduitImplementation implements ProduitService {
 
     public String getCodeCourant() {
         Numerotation numerotation = numerotationRepository.findByCode("PRODUIT").orElse(null);
-        if (Objects.isNull(numerotation))
-            throw new BadRequestException("aucune configuration n'as ete definir pour la souche de numérotation de : ARTICLE");
-        //assert numerotation != null;
-        int fin = numerotation.getSouche().indexOf("00");
-        String codeUser, prefix = ((fin > 0) ? numerotation.getSouche().substring(0, fin) : numerotation.getSouche());
-        codeUser = prefix.concat(new DecimalFormat("00000").format(numerotation.getNumeroIndex())).toUpperCase();
-
-        while (produitRepository.existsByCode(codeUser)) {
-            numerotation.setNumeroIndex(numerotation.getNumeroIndex() + 1);
-            numerotation = numerotationRepository.save(numerotation);
-            codeUser = prefix.concat(new DecimalFormat("00000").format(numerotation.getNumeroIndex())).toUpperCase();
+        if (Objects.isNull(numerotation)) {
+            // Si la souche de numérotation n'existe pas, créer une nouvelle souche avec un numéro d'index initial de 1
+            numerotation = new Numerotation();
+            numerotation.setCode("PRODUIT");
+            numerotation.setSouche("PRE");
+            numerotation.setNumeroIndex(1L);
+            numerotationRepository.save(numerotation);
         }
 
-        return codeUser;
+        // Récupérer la souche et le numéro d'index courants
+        String souche = numerotation.getSouche();
+        Long numeroIndex = numerotation.getNumeroIndex();
+
+        // Générer le code avec la souche et le numéro d'index courants
+        String code = souche.concat(String.format("%05d", numeroIndex));
+
+        // Vérifier si le code existe déjà dans la base de données
+        while (produitRepository.existsByCode(code)) {
+            // Si le code existe, incrémenter le numéro d'index et générer un nouveau code
+            numeroIndex++;
+            numerotation.setNumeroIndex(numeroIndex);
+            numerotation = numerotationRepository.save(numerotation);
+            code = souche.concat(String.format("%05d", numeroIndex));
+        }
+
+        // Retourner le code généré
+        return code;
     }
 }

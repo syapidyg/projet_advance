@@ -55,7 +55,7 @@ public class CommandeController {
                         .build());
     }
 
-    @ApiOperation("Liste des commandes clients")
+    @ApiOperation("Liste des commandes fournisseur")
     @GetMapping("/readFournisseur")
     public ResponseEntity<ApiResponse<List<CommandeResponseDto>>> readFournisseur(){
         return ResponseEntity.ok(

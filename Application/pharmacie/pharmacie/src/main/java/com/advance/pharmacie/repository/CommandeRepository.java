@@ -8,5 +8,6 @@ import java.util.List;
 public interface CommandeRepository extends JpaRepository<Commande, Long> {
 
     List<Commande> findByType(String type);
+    Boolean existsByCode(String code);
 
 }

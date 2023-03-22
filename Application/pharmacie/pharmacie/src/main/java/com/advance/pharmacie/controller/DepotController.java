@@ -55,5 +55,15 @@ public class DepotController {
 
     }
 
+    @ApiOperation("Liste d'une caisse")
+    @GetMapping("/readOne/{id}")
+    public ResponseEntity<ApiResponse<DepotResponseDto>> readOne(@PathVariable Long id){
+        return ResponseEntity.ok(
+                ApiResponse.<DepotResponseDto>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(depotService.readOne(id))
+                        .build());
+    }
 
 }

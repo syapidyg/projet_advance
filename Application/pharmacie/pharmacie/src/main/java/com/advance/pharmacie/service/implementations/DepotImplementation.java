@@ -2,6 +2,7 @@ package com.advance.pharmacie.service.implementations;
 
 import com.advance.pharmacie.dto.dtoRequest.DepotRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.DepotResponseDto;
+import com.advance.pharmacie.model.Caisse;
 import com.advance.pharmacie.model.Depot;
 import com.advance.pharmacie.repository.DepotRepository;
 import com.advance.pharmacie.service.interfaces.DepotService;
@@ -45,5 +46,11 @@ public class DepotImplementation implements DepotService {
     public String delete(Long id) {
         depotRepository.deleteById(id);
         return "Depot supprimé avec succès";
+    }
+
+    @Override
+    public DepotResponseDto readOne(Long id) {
+        Depot depot = depotRepository.findById(id).orElseThrow(() -> new RuntimeException("Aucun depot trouvé"));
+        return DepotResponseDto.entityToDto(depot);
     }
 }

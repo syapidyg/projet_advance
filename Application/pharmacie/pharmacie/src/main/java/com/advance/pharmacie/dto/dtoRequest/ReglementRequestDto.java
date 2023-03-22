@@ -19,6 +19,8 @@ public class ReglementRequestDto {
     private Long idCommande;
     private Long idCaisse;
     private Long montant;
+    private Long rendu;
+    private Long reste;
 
     public static Reglement dtoToEntity(ReglementRequestDto dto, Utilisateur utilisateur, Caisse caisse, Commande commande) {
         return Reglement.ReglementBuilder.aReglement()
@@ -27,6 +29,8 @@ public class ReglementRequestDto {
                 .caisse(caisse)
                 .commande(commande)
                 .montant(dto.getMontant())
+                .rendu(dto.getRendu())
+                .reste(dto.getReste())
                 .build();
     }
 

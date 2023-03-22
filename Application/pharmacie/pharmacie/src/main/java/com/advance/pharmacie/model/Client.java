@@ -1,7 +1,6 @@
 package com.advance.pharmacie.model;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;

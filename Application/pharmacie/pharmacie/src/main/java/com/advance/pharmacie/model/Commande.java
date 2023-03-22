@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class Commande extends  AuditEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String code;
 
     private Long pt;
 
@@ -50,6 +53,7 @@ public class Commande extends  AuditEntity{
 
     public static final class CommandeBuilder {
         private Long id;
+        private String code;
         private Long pt;
         private String type;
         private StatutCommande statut;
@@ -69,6 +73,11 @@ public class Commande extends  AuditEntity{
 
         public CommandeBuilder id(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public CommandeBuilder code(String code) {
+            this.code = code;
             return this;
         }
 
@@ -117,9 +126,12 @@ public class Commande extends  AuditEntity{
             return this;
         }
 
+
+
         public Commande build() {
             Commande commande = new Commande();
             commande.setId(id);
+            commande.setCode(code);
             commande.setPt(pt);
             commande.setType(type);
             commande.setStatut(statut);

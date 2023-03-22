@@ -19,6 +19,8 @@ public class ReglementResponseDto {
     private CommandeResponseDto commande;
     private CaisseResponseDto caisse;
     private Long montant;
+    private Long rendu;
+    private Long reste;
     private LocalDateTime date;
 
     public static ReglementResponseDto entityToDto(Reglement reglement) {
@@ -28,6 +30,8 @@ public class ReglementResponseDto {
                 .caisse(CaisseResponseDto.entityToDto(reglement.getCaisse()))
                 .commande(CommandeResponseDto.entityToDto(reglement.getCommande()))
                 .montant(reglement.getMontant())
+                .rendu(reglement.getRendu())
+                .reste(reglement.getReste())
                 .date(reglement.getDate_creation())
                 .build();
     }

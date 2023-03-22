@@ -14,5 +14,7 @@ public interface FamilleService {
     List<FamilleResponseDto> read();
 
     String delete(Long id);
+
+    FamilleResponseDto readOne(Long id);
 }
 

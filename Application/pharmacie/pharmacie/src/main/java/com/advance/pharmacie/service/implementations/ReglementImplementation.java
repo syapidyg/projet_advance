@@ -51,6 +51,8 @@ public class ReglementImplementation implements ReglementService {
 
             Reglement reglement = reglementRepository.findById(dtoReglement.getId()).map(p -> {
                 p.setMontant(dtoReglement.getMontant());
+                p.setRendu(dtoReglement.getRendu());
+                p.setReste(dtoReglement.getReste());
                 p.setCaisse(caisse);
                 p.setUtilisateur(utilisateur);
                 p.setCommande(commande);
@@ -83,8 +85,23 @@ public class ReglementImplementation implements ReglementService {
     }
 
     @Override
+    public List<ReglementResponseDto> readFournisseur() {
+        List<Reglement> reglements = reglementRepository.findByCommandeType("fournisseur");
+        return ReglementResponseDto.entityToDtoList(reglements);
+    }
+
+    @Override
+    public List<ReglementResponseDto> readClient() {
+        List<Reglement> reglements = reglementRepository.findByCommandeType("client");
+        return ReglementResponseDto.entityToDtoList(reglements);
+    }
+
+    @Override
     public ReglementResponseDto readOne(Long id) {
         Reglement reglement = reglementRepository.findById(id).orElseThrow(() -> new RuntimeException("Aucun Reglement ne correspond a cet ID"));;
         return ReglementResponseDto.entityToDto(reglement);
     }
+
+
+
 }

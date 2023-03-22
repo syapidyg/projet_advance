@@ -14,4 +14,6 @@ public interface DepotService {
     List<DepotResponseDto> read();
 
     String delete(Long id);
+
+    DepotResponseDto readOne(Long id);
 }

@@ -3,6 +3,7 @@ package com.advance.pharmacie.controller;
 
 import com.advance.pharmacie.dto.ApiResponse;
 import com.advance.pharmacie.dto.dtoRequest.FamilleRequestDto;
+import com.advance.pharmacie.dto.dtoResponse.CaisseResponseDto;
 import com.advance.pharmacie.dto.dtoResponse.FamilleResponseDto;
 import com.advance.pharmacie.service.interfaces.FamilleService;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +44,17 @@ public class FamilleController {
                         .build());
     }
 
+    @ApiOperation("Liste d'une famille")
+    @GetMapping("/readOne/{id}")
+    public ResponseEntity<ApiResponse<FamilleResponseDto>> readOne(@PathVariable Long id){
+        return ResponseEntity.ok(
+                ApiResponse.<FamilleResponseDto>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(familleService.readOne(id))
+                        .build());
+    }
+
     @ApiOperation("Suppression d'une famille de produits")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id){
@@ -52,9 +64,6 @@ public class FamilleController {
                         .message("Opereation reussie")
                         .data(familleService.delete(id))
                         .build());
-
-
-
 
     }
 

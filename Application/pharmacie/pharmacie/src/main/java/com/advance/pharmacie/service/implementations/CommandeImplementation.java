@@ -33,7 +33,7 @@ public class CommandeImplementation implements CommandeService {
     @Autowired
     ClientRepository clientRepository;
 
-    @Autowired
+     @Autowired
     ProduitRepository produitRepository;
 
     @Autowired
@@ -45,8 +45,11 @@ public class CommandeImplementation implements CommandeService {
     @Autowired
     LigneCommandeRepository ligneCommandeRepository;
 
-  @Autowired
+    @Autowired
     DepotRepository depotRepository;
+
+   @Autowired
+    NumerotationRepository numerotationRepository;
 
     @Transactional
     @Override
@@ -95,7 +98,7 @@ public class CommandeImplementation implements CommandeService {
         } else {
 
             Commande commandeToSave = CommandeRequestDto.dtoToEntity(dtoCommande, client, fournisseur, depot);
-
+            commandeToSave.setCode(getCodeCourant());
             Commande commande = commandeRepository.save(commandeToSave);
 
             if (dtoCommande.getType().equals("client")) {
@@ -115,7 +118,7 @@ public class CommandeImplementation implements CommandeService {
 
                             ligneCommandeRepository.save(ligneCommandeToSave);
 
-                        } else if (dtoCommande.getDocument().equals("Facture"))  {
+                        } else if (dtoCommande.getDocument().equals("Facture")) {
                             //cas de la facture
                             Long qteTest = stockArticleService.checkEtatStockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot());
                             //campare la Qte checker a la quantité
@@ -126,7 +129,7 @@ public class CommandeImplementation implements CommandeService {
 
                             ligneCommandeRepository.save(ligneCommandeToSave);
 
-                        } else{
+                        } else {
                             throw new BadRequestException("Choississez le type de document");
                         }
                     });
@@ -210,7 +213,7 @@ public class CommandeImplementation implements CommandeService {
         Commande commandeToEdit = commandeRepository.findById(dto.getIdCommande())
                 .orElseThrow(() -> new ResourceNotFoundException("Commande", "id", dto.getIdCommande()));
 
-        List<LigneCommande> ligneCommandes  = commandeToEdit.getLigneCommande();
+        List<LigneCommande> ligneCommandes = commandeToEdit.getLigneCommande();
 
         Long idCF = commandeToEdit.getType().equals("client") ? commandeToEdit.getClient().getId() : commandeToEdit.getFournisseur().getId();
 
@@ -226,4 +229,36 @@ public class CommandeImplementation implements CommandeService {
         return createOrUpdate(commandeToSave);
 
     }
+
+    public String getCodeCourant() {
+        Numerotation numerotation = numerotationRepository.findByCode("COMMANDE").orElse(null);
+        if (Objects.isNull(numerotation)) {
+            // Si la souche de numérotation n'existe pas, créer une nouvelle souche avec un numéro d'index initial de 1
+            numerotation = new Numerotation();
+            numerotation.setCode("COMMANDE");
+            numerotation.setSouche("CMD");
+            numerotation.setNumeroIndex(1L);
+            numerotationRepository.save(numerotation);
+        }
+
+        // Récupérer la souche et le numéro d'index courants
+        String souche = numerotation.getSouche();
+        Long numeroIndex = numerotation.getNumeroIndex();
+
+        // Générer le code avec la souche et le numéro d'index courants
+        String code = souche.concat(String.format("%03d", numeroIndex));
+
+        // Vérifier si le code existe déjà dans la base de données
+        while (commandeRepository.existsByCode(code)) {
+            // Si le code existe, incrémenter le numéro d'index et générer un nouveau code
+            numeroIndex++;
+            numerotation.setNumeroIndex(numeroIndex);
+            numerotation = numerotationRepository.save(numerotation);
+            code = souche.concat(String.format("%03d", numeroIndex));
+        }
+
+        // Retourner le code généré
+        return code;
+    }
+
 }

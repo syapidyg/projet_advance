@@ -2,6 +2,7 @@ package com.advance.pharmacie.controller;
 
 import com.advance.pharmacie.dto.ApiResponse;
 import com.advance.pharmacie.dto.dtoRequest.ReglementRequestDto;
+import com.advance.pharmacie.dto.dtoResponse.CommandeResponseDto;
 import com.advance.pharmacie.dto.dtoResponse.ReglementResponseDto;
 import com.advance.pharmacie.service.interfaces.lnk.ReglementService;
 import io.swagger.annotations.ApiOperation;
@@ -52,6 +53,29 @@ public class ReglementController {
                         .data(reglementService.readOne(id))
                         .build());
     }
+
+    @ApiOperation("Liste des reglements fournisseur")
+    @GetMapping("/read/readFournisseur")
+    public ResponseEntity<ApiResponse<List<ReglementResponseDto>>> readFournisseur(){
+        return ResponseEntity.ok(
+                ApiResponse.<List<ReglementResponseDto>>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(reglementService.readFournisseur())
+                        .build());
+    }
+
+ @ApiOperation("Liste des reglements client")
+    @GetMapping("/read/readClient")
+    public ResponseEntity<ApiResponse<List<ReglementResponseDto>>> readClient(){
+        return ResponseEntity.ok(
+                ApiResponse.<List<ReglementResponseDto>>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(reglementService.readClient())
+                        .build());
+    }
+
 
     @ApiOperation("Suppression d'un reglement")
     @DeleteMapping("/delete/{id}")

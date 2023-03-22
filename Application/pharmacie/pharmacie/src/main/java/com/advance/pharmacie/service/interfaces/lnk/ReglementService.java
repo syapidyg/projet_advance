@@ -14,4 +14,8 @@ public interface ReglementService {
     ReglementResponseDto readOne(Long id);
 
     String delete(Long id);
+
+    List<ReglementResponseDto> readFournisseur();
+
+    List<ReglementResponseDto> readClient();
 }

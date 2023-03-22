@@ -19,6 +19,7 @@ import java.util.List;
 public class CommandeRequestDto {
 
     private Long id;
+    private String code;
     private Long pt;
     private String type;
     private String document;
