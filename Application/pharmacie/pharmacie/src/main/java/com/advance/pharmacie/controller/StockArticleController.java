@@ -14,7 +14,7 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/StockArticle")
+@RequestMapping("/stockArticle")
 
 public class StockArticleController {
 
@@ -23,15 +23,20 @@ public class StockArticleController {
 
     @ApiOperation("Creation et Mise a jour des produits dans un depot donné")
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<StockArticleResponseDto>> create(@RequestBody StockArticleRequestDto dto){
+    public void create(@RequestBody List<StockArticleRequestDto> dto){
 
-        return ResponseEntity.ok(
-                ApiResponse.<StockArticleResponseDto>builder()
-                        .success(true)
-                        .message("Opereation reussie")
-                        .data(stockArticleService.createOrUpdate(dto))
-                        .build());
+        stockArticleService.createOrUpdate(dto);
     }
+
+//    public ResponseEntity<ApiResponse<StockArticleResponseDto>> create(@RequestBody StockArticleRequestDto dto){
+//
+//        return ResponseEntity.ok(
+//                ApiResponse.<StockArticleResponseDto>builder()
+//                        .success(true)
+//                        .message("Opereation reussie")
+//                        .data(stockArticleService.createOrUpdate(dto))
+//                        .build());
+//    }
 
     @ApiOperation("Liste de tous les articles dans un stock")
     @GetMapping("/read")

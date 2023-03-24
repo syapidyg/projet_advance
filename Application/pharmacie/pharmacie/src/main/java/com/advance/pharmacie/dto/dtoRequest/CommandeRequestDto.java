@@ -24,6 +24,7 @@ public class CommandeRequestDto {
     private String type;
     private String document;
     private Long idDepot;
+    private Long idDepotDestination;
     private Long idClientFournisseur;
     private List<LigneCommandeRequestDto> LigneCommandes = new ArrayList<>();
 

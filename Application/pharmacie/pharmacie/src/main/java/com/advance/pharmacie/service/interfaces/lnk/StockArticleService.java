@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface StockArticleService {
 
-    StockArticleResponseDto createOrUpdate(StockArticleRequestDto dtoCaisse);
+//    StockArticleResponseDto createOrUpdate(StockArticleRequestDto dtoCaisse);
+
+    void createOrUpdate(List<StockArticleRequestDto> dtoStockArticles);
 
     List<StockArticleResponseDto> read();
 
@@ -19,5 +21,7 @@ public interface StockArticleService {
 
     Boolean destockArticle(Long idProduit, Long idDepot, Long qte);
 
-    Boolean addStockArticle(Long idProduit, Long idDepot, Long qte);
+    StockArticleResponseDto addStockArticle(Long idProduit, Long idDepot, Long qte);
+
+    StockArticleResponseDto addStockArticle(StockArticleRequestDto dtoStockArticle);
 }

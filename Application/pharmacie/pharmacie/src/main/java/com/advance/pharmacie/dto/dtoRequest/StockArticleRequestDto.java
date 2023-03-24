@@ -32,16 +32,16 @@ public class StockArticleRequestDto {
                 .build();
     }
 
-    public static StockArticle dtoToEntityFromFournisseur(Depot depot, Produit produit, Long qte) {
+    public static StockArticle dtoToEntityFromFournisseur(Depot depot, Produit produit, Long qte, Long qteMAX, Long qteMIN, Long qteALERTE) {
 
         return StockArticle.StockArticleBuilder.aStockArticle()
 
                 .depot(depot)
                 .produit(produit)
                 .qte(qte)
-                .qteAlerte((long) 10)
-                .qteMaximale((long) 50)
-                .qteMinimale((long) 25)
+                .qteAlerte(qteALERTE)
+                .qteMaximale(qteMAX)
+                .qteMinimale(qteMIN)
                 .build();
     }
 }

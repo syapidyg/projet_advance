@@ -3,13 +3,13 @@ package com.advance.pharmacie.service.implementations;
 import com.advance.pharmacie.dto.dtoRequest.StockArticleRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.StockArticleResponseDto;
 import com.advance.pharmacie.exception.BadRequestException;
-import com.advance.pharmacie.exception.ErrorMessage;
 import com.advance.pharmacie.exception.ResourceNotFoundException;
 import com.advance.pharmacie.model.Depot;
 import com.advance.pharmacie.model.Produit;
 import com.advance.pharmacie.model.lnk.StockArticle;
 import com.advance.pharmacie.repository.DepotRepository;
 import com.advance.pharmacie.repository.ProduitRepository;
+import com.advance.pharmacie.repository.VariableGlobaleRepository;
 import com.advance.pharmacie.repository.lnk.StockArticleRepository;
 import com.advance.pharmacie.service.interfaces.lnk.StockArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,41 +28,35 @@ public class StockArticleImplementation implements StockArticleService {
     DepotRepository depotRepository;
     @Autowired
     ProduitRepository produitRepository;
+    @Autowired
+    VariableGlobaleRepository variableGlobaleRepository;
 
     @Override
-    public StockArticleResponseDto createOrUpdate(StockArticleRequestDto dtoStockArticle) {
+    public void createOrUpdate(List<StockArticleRequestDto> dtoStockArticles) {
 
-        Depot depot = depotRepository.findById(dtoStockArticle.getIdDepot())
-                .orElseThrow(() -> new RuntimeException("Depot non existant"));
+        dtoStockArticles.forEach(stockArticleRequestDto -> {
 
-        Produit produit = produitRepository.findById(dtoStockArticle.getIdProduit())
-                .orElseThrow(() -> new RuntimeException("Produit non existant"));
+            if (Objects.nonNull(stockArticleRequestDto)) {
 
-        if (Objects.nonNull(dtoStockArticle.getId()) && dtoStockArticle.getId() > 0) {
+                addStockArticle(stockArticleRequestDto);
 
-            StockArticle stockArticle = stockArticleRepository.findById(dtoStockArticle.getId()).map(p -> {
-                p.setQte(dtoStockArticle.getQte());
-                p.setQteAlerte(dtoStockArticle.getQteAlerte());
-                p.setQteMaximale(dtoStockArticle.getQteMaximale());
-                p.setQteMinimale(dtoStockArticle.getQteMinimale());
-                p.setDepot(depot);
-                p.setProduit(produit);
-                return stockArticleRepository.save(p);
-            }).orElseThrow(() -> new RuntimeException(("StockArticle introuvable")));
+            } else {
+                throw new BadRequestException("Inserez des lignes de stockArticle");
+            }
 
-            return StockArticleResponseDto.entityToDto(stockArticleRepository.save(stockArticle));
-        }
+        });
 
-        StockArticle stockArticle = StockArticleRequestDto.dtoToEntity(dtoStockArticle, depot, produit);
-        return StockArticleResponseDto.entityToDto(stockArticleRepository.save(stockArticle));
 
     }
 
     @Override
     public List<StockArticleResponseDto> read() {
 
+        Long qteMAX = Long.parseLong(variableGlobaleRepository.findByCle("MAX").getValeur());
+        Long qteMIN = Long.parseLong(variableGlobaleRepository.findByCle("MIN").getValeur());
+        Long qteALERTE = Long.parseLong(variableGlobaleRepository.findByCle("ALERTE").getValeur());
         List<StockArticle> stockArticles = stockArticleRepository.findAll();
-        return StockArticleResponseDto.entityToDtoList(stockArticles);
+        return StockArticleResponseDto.entityToDtoListStatut(stockArticles, qteMAX, qteALERTE, qteMIN);
     }
 
     @Override
@@ -75,12 +69,12 @@ public class StockArticleImplementation implements StockArticleService {
     @Override
     public StockArticleResponseDto readOne(Long id) {
         StockArticle stockArticle = stockArticleRepository.findById(id).orElseThrow(() -> new RuntimeException("Aucun StockArticle ne correspond a cet ID"));
-        ;
+
         return StockArticleResponseDto.entityToDto(stockArticle);
     }
 
     @Override
-    public Long checkEtatStockArticle(Long idProduit, Long idDepot){
+    public Long checkEtatStockArticle(Long idProduit, Long idDepot) {
 
         Produit produit = produitRepository.findById(idProduit)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", idProduit));
@@ -115,7 +109,7 @@ public class StockArticleImplementation implements StockArticleService {
     }
 
     @Override
-    public Boolean addStockArticle(Long idProduit, Long idDepot, Long qte) {
+    public StockArticleResponseDto addStockArticle(Long idProduit, Long idDepot, Long qte) {
 
         Produit produit = produitRepository.findById(idProduit)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", idProduit));
@@ -123,27 +117,48 @@ public class StockArticleImplementation implements StockArticleService {
         Depot depot = depotRepository.findById(idDepot)
                 .orElseThrow(() -> new ResourceNotFoundException("Depot", "id", idDepot));
 
-       Optional <StockArticle> stockArticle = stockArticleRepository.findByDepotAndProduit(depot, produit);
+        Optional<StockArticle> stockArticle = stockArticleRepository.findByDepotAndProduit(depot, produit);
 
-        if (stockArticle.isPresent()){
+        if (stockArticle.isPresent()) {
 
-            stockArticle.get().setQte(stockArticle.get().getQte()+ qte);
-            stockArticleRepository.save(stockArticle.get());
-            return true;
-        }else {
-            StockArticle stockArticle1 = StockArticleRequestDto.dtoToEntityFromFournisseur(depot, produit, qte);
-            StockArticleResponseDto.entityToDto(stockArticleRepository.save(stockArticle1));
-            return true;
+            stockArticle.get().setQte(stockArticle.get().getQte() + qte);
+            return StockArticleResponseDto.entityToDto(stockArticleRepository.save(stockArticle.get()));
+        } else {
+            Long qteMAX = Long.parseLong(variableGlobaleRepository.findByCle("MAX").getValeur());
+            Long qteMIN = Long.parseLong(variableGlobaleRepository.findByCle("MIN").getValeur());
+            Long qteALERTE = Long.parseLong(variableGlobaleRepository.findByCle("ALERTE").getValeur());
+            StockArticle stockArticle1 = StockArticleRequestDto.dtoToEntityFromFournisseur(depot, produit, qte, qteMAX, qteMIN, qteALERTE);
+            return StockArticleResponseDto.entityToDto(stockArticleRepository.save(stockArticle1));
+
         }
-
-//        StockArticle stockArticle = stockArticleRepository.findByDepotAndProduit(depot, produit)
-//                .orElseThrow(() -> new BadRequestException("Aucune produit en stock ne correspond"));
-//
-//        stockArticle.setQte(stockArticle.getQte() + qte);
-//
-
 
     }
 
+    @Override
+    public StockArticleResponseDto addStockArticle(StockArticleRequestDto dtoStockArticle) {
+
+        Produit produit = produitRepository.findById(dtoStockArticle.getIdProduit())
+                .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", dtoStockArticle.getIdProduit()));
+
+        Depot depot = depotRepository.findById(dtoStockArticle.getIdDepot())
+                .orElseThrow(() -> new ResourceNotFoundException("Depot", "id", dtoStockArticle.getIdDepot()));
+
+        Optional<StockArticle> stockArticle = stockArticleRepository.findByDepotAndProduit(depot, produit);
+
+        if (stockArticle.isPresent()) {
+
+            stockArticle.get().setQte(stockArticle.get().getQte() + dtoStockArticle.getQte());
+
+            return StockArticleResponseDto.entityToDto(stockArticleRepository.save(stockArticle.get()));
+        } else {
+            Long qteMAX = Long.parseLong(variableGlobaleRepository.findByCle("MAX").getValeur());
+            Long qteMIN = Long.parseLong(variableGlobaleRepository.findByCle("MIN").getValeur());
+            Long qteALERTE = Long.parseLong(variableGlobaleRepository.findByCle("ALERTE").getValeur());
+            StockArticle stockArticle1 = StockArticleRequestDto.dtoToEntity(dtoStockArticle, depot, produit);
+            return StockArticleResponseDto.entityToDtoStatut(stockArticleRepository.save(stockArticle1), qteMAX, qteMIN, qteALERTE );
+        }
+
+
+    }
 
 }

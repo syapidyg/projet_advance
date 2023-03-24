@@ -4,13 +4,14 @@ import com.advance.pharmacie.dto.dtoRequest.BonToFactureRequestDto;
 import com.advance.pharmacie.dto.dtoRequest.CommandeRequestDto;
 import com.advance.pharmacie.dto.dtoRequest.LigneCommandeRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.CommandeResponseDto;
-import com.advance.pharmacie.dto.dtoResponse.LigneCommandeResponseDto;
 import com.advance.pharmacie.exception.BadRequestException;
 import com.advance.pharmacie.exception.ResourceNotFoundException;
 import com.advance.pharmacie.model.*;
 import com.advance.pharmacie.model.lnk.LigneCommande;
+import com.advance.pharmacie.model.lnk.StockArticle;
 import com.advance.pharmacie.repository.*;
 import com.advance.pharmacie.repository.lnk.LigneCommandeRepository;
+import com.advance.pharmacie.repository.lnk.StockArticleRepository;
 import com.advance.pharmacie.service.interfaces.CommandeService;
 import com.advance.pharmacie.service.interfaces.lnk.StockArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static com.advance.pharmacie.dto.dtoRequest.LigneCommandeRequestDto.dtoToEntity;
 
 @Service
 public class CommandeImplementation implements CommandeService {
@@ -33,7 +36,7 @@ public class CommandeImplementation implements CommandeService {
     @Autowired
     ClientRepository clientRepository;
 
-     @Autowired
+    @Autowired
     ProduitRepository produitRepository;
 
     @Autowired
@@ -48,8 +51,12 @@ public class CommandeImplementation implements CommandeService {
     @Autowired
     DepotRepository depotRepository;
 
-   @Autowired
+    @Autowired
     NumerotationRepository numerotationRepository;
+
+    @Autowired
+    StockArticleRepository stockArticleRepository;
+
 
     @Transactional
     @Override
@@ -57,35 +64,36 @@ public class CommandeImplementation implements CommandeService {
 
         Client client = null;
         Fournisseur fournisseur = null;
-
-        Depot depot = depotRepository.findById(dtoCommande.getIdDepot())
+        Depot depotDestination = null;
+        Depot depot = null;
+        depot = depotRepository.findById(dtoCommande.getIdDepot())
                 .orElseThrow(() -> new ResourceNotFoundException("depot", "id", dtoCommande.getIdDepot()));
 
-
         if (dtoCommande.getType().equals("client")) {
-
             client = clientRepository.findById(dtoCommande.getIdClientFournisseur())
                     .orElseThrow(() -> new ResourceNotFoundException("client", "id", dtoCommande.getIdClientFournisseur()));
-
-
         } else if (dtoCommande.getType().equals("fournisseur")) {
             fournisseur = fournisseurRepository.findById(dtoCommande.getIdClientFournisseur())
                     .orElseThrow(() -> new RuntimeException("Fournisseur non existant"));
+        } else if (dtoCommande.getType().equals("stock") && dtoCommande.getDocument().equals("Entree en stock")) {
+
+            depot = depotRepository.findById(dtoCommande.getIdDepot())
+                    .orElseThrow(() -> new ResourceNotFoundException("depot", "id", dtoCommande.getIdDepot()));
         } else {
-            new RuntimeException("Choississez un type a inserer et une personne valide");
+            depotDestination = depotRepository.findById(dtoCommande.getIdDepotDestination())
+                    .orElseThrow(() -> new ResourceNotFoundException("depot destination", "idDepotDestination", dtoCommande.getIdDepotDestination()));
+
         }
 
-
         if (Objects.nonNull(dtoCommande.getId()) && dtoCommande.getId() > 0) {
-
             Fournisseur finalFournisseur = fournisseur;
             Client finalClient = client;
-
+            Depot finalDepot = depot;
             Commande commande = commandeRepository.findById(dtoCommande.getId()).map(p -> {
                 p.setDocument(dtoCommande.getDocument());
                 p.setPt(dtoCommande.getPt());
                 p.setType(dtoCommande.getType());
-                p.setDepot(depot);
+                p.setDepot(finalDepot);
                 if (finalClient != null) {
                     p.setClient(finalClient);
                 } else if (finalFournisseur != null) {
@@ -93,7 +101,6 @@ public class CommandeImplementation implements CommandeService {
                 }
                 return commandeRepository.save(p);
             }).orElseThrow(() -> new RuntimeException(("Commande introuvable")));
-
             return CommandeResponseDto.entityToDto(commandeRepository.save(commande));
         } else {
 
@@ -101,74 +108,107 @@ public class CommandeImplementation implements CommandeService {
             commandeToSave.setCode(getCodeCourant());
             Commande commande = commandeRepository.save(commandeToSave);
 
-            if (dtoCommande.getType().equals("client")) {
+            switch (dtoCommande.getType()) {
+                case "client":
+                    if (dtoCommande.getLigneCommandes() != null) {
+                        dtoCommande.getLigneCommandes().forEach(ligneCommandedto -> {
+                            Produit produit = produitRepository.findById(ligneCommandedto.getIdProduit())
+                                    .orElseThrow(
+                                            () -> new RuntimeException("Un Id de produit inseré est invalide"));
+                            LigneCommande ligneCommandeToSave = dtoToEntity(ligneCommandedto, commande, produit);
 
+                            if (dtoCommande.getDocument().equals("Bon de commande")) {
+                                ligneCommandeRepository.save(ligneCommandeToSave);
+                            } else if (dtoCommande.getDocument().equals("Facture")) {
+                                //cas de la facture
+                                Long qteTest = stockArticleService.checkEtatStockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot());
+                                //campare la Qte checker a la quantité
+                                if (qteTest < ligneCommandeToSave.getQte())
+                                    throw new BadRequestException("Stock insuffisant pour ce produit");
+                                stockArticleService.destockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot(), ligneCommandeToSave.getQte());
+                                ligneCommandeRepository.save(ligneCommandeToSave);
+                            } else {
+                                throw new BadRequestException("Choississez le type de document");
+                            }
+                        });
+                    }
+                    return CommandeResponseDto.entityToDto(commande, ligneCommandeRepository.findByCommandeId(commande.getId()));
 
-                if (dtoCommande.getLigneCommandes() != null) {
+                case "fournisseur":
+                    fournisseur = fournisseurRepository.findById(dtoCommande.getIdClientFournisseur())
+                            .orElseThrow(() -> new RuntimeException("Fournisseur non existant"));
 
-                    dtoCommande.getLigneCommandes().forEach(ligneCommandedto -> {
+                    if (dtoCommande.getLigneCommandes() != null) {
+                        dtoCommande.getLigneCommandes().forEach(ligneCommandedto -> {
+                            Produit produit = produitRepository.findById(ligneCommandedto.getIdProduit())
+                                    .orElseThrow(
+                                            () -> new RuntimeException("Un Id de produit inseré est invalide"));
+                            LigneCommande ligneCommandeToSave = dtoToEntity(ligneCommandedto, commande, produit);
 
-                        Produit produit = produitRepository.findById(ligneCommandedto.getIdProduit())
-                                .orElseThrow(
-                                        () -> new RuntimeException("Un Id de produit inseré est invalide"));
-                        LigneCommande ligneCommandeToSave = LigneCommandeRequestDto
-                                .dtoToEntity(ligneCommandedto, commande, produit);
-
-                        if (dtoCommande.getDocument().equals("Bon de commande")) {
-
+                            if (!dtoCommande.getDocument().equals("Bon de commande")) {
+                                //cas de la facture
+                                stockArticleService.addStockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot(), ligneCommandeToSave.getQte());
+                            }
                             ligneCommandeRepository.save(ligneCommandeToSave);
+                        });
+                    }
+                    return CommandeResponseDto.entityToDto(commande, ligneCommandeRepository.findByCommandeId(commande.getId()));
 
-                        } else if (dtoCommande.getDocument().equals("Facture")) {
-                            //cas de la facture
-                            Long qteTest = stockArticleService.checkEtatStockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot());
-                            //campare la Qte checker a la quantité
-                            if (qteTest < ligneCommandeToSave.getQte())
-                                throw new BadRequestException("Stock insuffisant pour ce produit");
+                case "stock":
+                    if (dtoCommande.getDocument().equals("Entree en stock")) {
+                        if (dtoCommande.getLigneCommandes() != null) {
+                            Depot finalDepot1 = depot;
+                            dtoCommande.getLigneCommandes().forEach(ligneCommandedto -> {
+                                Produit produit = produitRepository.findById(ligneCommandedto.getIdProduit())
+                                        .orElseThrow(
+                                                () -> new RuntimeException("Un Id de produit inseré est invalide"));
+                                Optional<StockArticle> stockArticle = stockArticleRepository.findByDepotAndProduit(finalDepot1, produit);
 
-                            stockArticleService.destockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot(), ligneCommandeToSave.getQte());
+                                if (stockArticle.isPresent()) {
+                                    stockArticle.get().setQte(stockArticle.get().getQte() + ligneCommandedto.getQte());
+                                    ligneCommandedto.setPt((long) 0);
+                                    LigneCommande ligneCommandeToSave = dtoToEntity(ligneCommandedto, commande, produit);
+                                    ligneCommandeRepository.save(ligneCommandeToSave);
 
-                            ligneCommandeRepository.save(ligneCommandeToSave);
+                                } else {
+                                    ligneCommandedto.setPt((long) 0);
+                                    LigneCommande ligneCommandeToSave = dtoToEntity(ligneCommandedto, commande, produit);
+                                    ligneCommandeRepository.save(ligneCommandeToSave);
+                                    stockArticleService.addStockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot(), ligneCommandeToSave.getQte());
+                                    ligneCommandeRepository.save(ligneCommandeToSave);
+                                }
+
+                            });
+                            return CommandeResponseDto.entityToDto(commande, ligneCommandeRepository.findByCommandeId(commande.getId()));
+                        }
+                    } else {
+                        if (dtoCommande.getLigneCommandes() != null) {
+                            Depot finalDepotDestination = depotDestination;
+                            Depot finalDepot2 = depot;
+                            dtoCommande.getLigneCommandes().forEach(ligneCommandedto -> {
+                                Produit produit = produitRepository.findById(ligneCommandedto.getIdProduit())
+                                        .orElseThrow(
+                                                () -> new RuntimeException("Un Id de produit inseré est invalide"));
+
+                                StockArticle stockArticle = stockArticleRepository.findByDepotAndProduit(finalDepot2, produit)
+                                        .orElseThrow(
+                                                () -> new RuntimeException("Cet article n'existe pas dans ce depot"));
+
+                                ligneCommandedto.setPt((long) 0);
+                                LigneCommande ligneCommandeToSave = dtoToEntity(ligneCommandedto, commande, produit);
+                                ligneCommandeRepository.save(ligneCommandeToSave);
+                                stockArticleService.destockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot(), ligneCommandeToSave.getQte());
+                                stockArticleService.addStockArticle(produit.getId(), finalDepotDestination.getId(), ligneCommandedto.getQte());
+                            });
+                            return CommandeResponseDto.entityToDtoDepot(commande, ligneCommandeRepository.findByCommandeId(commande.getId()), depotDestination.getId());
 
                         } else {
-                            throw new BadRequestException("Choississez le type de document");
+                            throw new BadRequestException("Aucune ligne inséréer!");
                         }
-                    });
-                }
+                    }
 
-                return CommandeResponseDto.entityToDto(commande, ligneCommandeRepository.findByCommandeId(commande.getId()));
-
-
-            } else if (dtoCommande.getType().equals("fournisseur")) {
-                fournisseur = fournisseurRepository.findById(dtoCommande.getIdClientFournisseur())
-                        .orElseThrow(() -> new RuntimeException("Fournisseur non existant"));
-
-                if (dtoCommande.getLigneCommandes() != null) {
-
-                    dtoCommande.getLigneCommandes().forEach(ligneCommandedto -> {
-
-                        Produit produit = produitRepository.findById(ligneCommandedto.getIdProduit())
-                                .orElseThrow(
-                                        () -> new RuntimeException("Un Id de produit inseré est invalide"));
-                        LigneCommande ligneCommandeToSave = LigneCommandeRequestDto
-                                .dtoToEntity(ligneCommandedto, commande, produit);
-
-                        if (dtoCommande.getDocument().equals("Bon de commande")) {
-
-                            ligneCommandeRepository.save(ligneCommandeToSave);
-
-                        } else {
-                            //cas de la facture
-                            stockArticleService.addStockArticle(ligneCommandeToSave.getProduit().getId(), dtoCommande.getIdDepot(), ligneCommandeToSave.getQte());
-
-                            ligneCommandeRepository.save(ligneCommandeToSave);
-
-                        }
-                    });
-                }
-                return CommandeResponseDto.entityToDto(commande, ligneCommandeRepository.findByCommandeId(commande.getId()));
-
-            } else {
-                throw new RuntimeException("Choississez un type a inserer et une personne valide");
+                default:
+                    throw new RuntimeException("Choississez un type a inserer et une personne valide");
 
             }
         }

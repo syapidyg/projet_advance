@@ -19,6 +19,7 @@ public class CommandeResponseDto {
     private Long id;
     private String code;
     private Long idDepot;
+    private Long idDepotDestination;
     private Long pt;
     private String type;
     private StatutCommande statut;
@@ -44,6 +45,25 @@ public class CommandeResponseDto {
                 .build();
 
     }
+
+    public static CommandeResponseDto entityToDtoDepotDestination(Commande commande) {
+        return CommandeResponseDto.builder()
+                .id(commande.getId())
+                .code(commande.getCode())
+                .idDepot(commande.getDepot().getId())
+                .idDepotDestination(commande.getDepot().getId())
+                .pt(commande.getPt())
+                .statut(commande.getStatut())
+                .document(commande.getDocument())
+                .type(commande.getType())
+                .fournisseur(FournisseurResponseDto.entityToDto(commande.getFournisseur()))
+                .client(ClientResponseDto.entityToDto(commande.getClient()))
+                .date_creation(commande.getDate_creation())
+                //.ligneCommandes(LigneCommandeResponseDto.entityToDtoList(commande.getLigneCommande()))
+                .build();
+
+    }
+
     public static CommandeResponseDto entityToDtoWithLigneCommande(Commande commande) {
         return CommandeResponseDto.builder()
                 .id(commande.getId())
@@ -66,6 +86,23 @@ public class CommandeResponseDto {
                 .id(commande.getId())
                 .code(commande.getCode())
                 .idDepot(commande.getDepot().getId())
+                .statut(commande.getStatut())
+                .pt(commande.getPt())
+                .document(commande.getDocument())
+                .type(commande.getType())
+                .fournisseur(FournisseurResponseDto.entityToDto(commande.getFournisseur()))
+                .client(ClientResponseDto.entityToDto(commande.getClient()))
+                .ligneCommandes(LigneCommandeResponseDto.entityToDtoList(ligneCommandes))
+                .date_creation(commande.getDate_creation())
+                .build();
+
+    }
+public static CommandeResponseDto entityToDtoDepot(Commande commande, List<LigneCommande> ligneCommandes, Long idDepotDestination) {
+        return CommandeResponseDto.builder()
+                .id(commande.getId())
+                .code(commande.getCode())
+                .idDepot(commande.getDepot().getId())
+                .idDepotDestination(idDepotDestination)
                 .statut(commande.getStatut())
                 .pt(commande.getPt())
                 .document(commande.getDocument())
