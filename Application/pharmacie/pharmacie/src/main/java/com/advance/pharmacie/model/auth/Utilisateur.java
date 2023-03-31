@@ -1,9 +1,13 @@
 package com.advance.pharmacie.model.auth;
 
+import com.advance.pharmacie.model.Activite;
 import com.advance.pharmacie.model.Employe;
 import com.advance.pharmacie.model.AuditEntity;
+import com.advance.pharmacie.model.Produit;
 import com.advance.pharmacie.model.lnk.Reglement;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.format.annotation.NumberFormat;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -30,6 +34,9 @@ public class Utilisateur extends AuditEntity {
     @OneToOne(targetEntity = Employe.class)
     @JoinColumn(name = "employe_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_employer_utilisateur"))
     private Employe employe;
+
+//    @OneToMany(mappedBy = "utilisateur")
+//    private List<Activite> activite = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "utilisateur")

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class Commande extends  AuditEntity{
     private StatutCommande statut;
 
     private String document;
-
+    private LocalDate date;
     @ManyToOne(targetEntity = Fournisseur.class)
     @JoinColumn(name ="id_fournisseur", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_fournisseur_commande"))
     private Fournisseur fournisseur;

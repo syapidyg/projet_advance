@@ -65,6 +65,28 @@ public class LigneCommandeController {
                         .build());
     }
 
+    @ApiOperation("Liste des lignes de commande fournisseur")
+    @GetMapping("/readFournisseur/{id}")
+    public ResponseEntity<ApiResponse<List<LigneCommandeResponseDto>>> readFournisseur(@PathVariable Long id){
+        return ResponseEntity.ok(
+                ApiResponse.<List<LigneCommandeResponseDto>>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(ligneCommandeService.readFournisseur(id))
+                        .build());
+    }
+
+    @ApiOperation("Liste des lignes de commande stock")
+    @GetMapping("/readStock/{id}")
+    public ResponseEntity<ApiResponse<List<LigneCommandeResponseDto>>> readStock(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                ApiResponse.<List<LigneCommandeResponseDto>>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(ligneCommandeService.readStock(id))
+                        .build());
+    }
+
     @ApiOperation("Suppression d'une ligne de commande")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id){

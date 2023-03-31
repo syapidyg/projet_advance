@@ -12,8 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/utilisateur")
@@ -37,24 +42,27 @@ public class UtilisateurController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthenticationResponseDto>> login(@RequestBody AuthenticationRequestDto request){
         try {
-            authenticationManager.authenticate(
+            Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getUsername(),
                             request.getPassword()
                     )
             );
 
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             final UserDetails userDetails = utilisateurService.loadUserByUsername(request.getUsername());
-            final String jwt = JwtUtil.generateToken(userDetails.getUsername());
-
-            utilisateurService.findByUsername(request.getUsername());
+            UtilisateurResponseDto user = utilisateurService.findByUsername(request.getUsername());
+            Map<String, Object> claims =  new HashMap<>();
+            claims.put("id", user.getId());
+            claims.put("nomUser", user.getUsername());
+            final String jwt = JwtUtil.generateToken(userDetails.getUsername(), claims);
             AuthenticationResponseDto data = AuthenticationResponseDto
                     .builder()
                     .token(jwt)
-                    .utilisateur(utilisateurService.findByUsername(request.getUsername()))
+                    .utilisateur(user)
                     .build();
             return ResponseEntity.ok(ApiResponse
-                   .< AuthenticationResponseDto>
+                   .<AuthenticationResponseDto>
                             builder()
                             .success(true)
                             .message("Authentification reuissie")

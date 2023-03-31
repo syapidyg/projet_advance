@@ -29,9 +29,26 @@ public class CommandeRequestDto {
     private List<LigneCommandeRequestDto> LigneCommandes = new ArrayList<>();
 
     public static Commande dtoToEntity(CommandeRequestDto dto, Client client, Fournisseur fournisseur, Depot depot) {
+
+        StatutCommande statutToSave;
+        switch (dto.getDocument()) {
+            case "Bon de commande":
+                statutToSave = StatutCommande.EN_ATTENTE;
+                break;
+            case "Facture":
+                statutToSave = StatutCommande.NON_REGLE;
+                break;
+            case "Entree en stock":
+                statutToSave = StatutCommande.ENTREE;
+                break;
+            default:
+                statutToSave = StatutCommande.TRANSFERT;
+                break;
+        }
+
         return Commande.CommandeBuilder.aCommande()
                 .id(dto.getId())
-                .statut(dto.getDocument().equals("Bon de commande")? StatutCommande.EN_ATTENTE: StatutCommande.NON_REGLE)
+                .statut(statutToSave)
                 .document(dto.getDocument())
                 .type(dto.getType())
                 .fournisseur(fournisseur)

@@ -2,6 +2,8 @@ package com.advance.pharmacie.service.interfaces.lnk;
 
 import com.advance.pharmacie.dto.dtoRequest.StockArticleRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.StockArticleResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -11,9 +13,10 @@ public interface StockArticleService {
 
     void createOrUpdate(List<StockArticleRequestDto> dtoStockArticles);
 
-    List<StockArticleResponseDto> read();
 
     StockArticleResponseDto readOne(Long id);
+
+    Page<StockArticleResponseDto> read(String token, Pageable pageable);
 
     String delete(Long id);
 

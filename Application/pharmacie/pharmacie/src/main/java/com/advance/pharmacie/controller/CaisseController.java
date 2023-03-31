@@ -3,12 +3,17 @@ package com.advance.pharmacie.controller;
 import com.advance.pharmacie.dto.ApiResponse;
 import com.advance.pharmacie.dto.dtoRequest.CaisseRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.CaisseResponseDto;
+import com.advance.pharmacie.service.interfaces.ActiviteService;
 import com.advance.pharmacie.service.interfaces.CaisseService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -19,11 +24,14 @@ public class CaisseController {
 
     @Autowired
     CaisseService caisseService;
+    @Autowired
+    ActiviteService activiteService;
 
 
     @ApiOperation("Creation et Mise a jour d'une caisse")
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<CaisseResponseDto>> create(@RequestBody CaisseRequestDto dto){
+    public ResponseEntity<ApiResponse<CaisseResponseDto>> create(@RequestBody CaisseRequestDto dto, HttpServletRequest request){
+        activiteService.create(request, "Creation d'une caisse", "dto", "CaisseController |  create | chemin : /caisse/create");
        CaisseResponseDto data = caisseService.createOrUpdate(dto);
         return ResponseEntity.ok(
                 ApiResponse.<CaisseResponseDto>builder()

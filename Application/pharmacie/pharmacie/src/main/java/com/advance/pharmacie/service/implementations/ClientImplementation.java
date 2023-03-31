@@ -1,16 +1,15 @@
 package com.advance.pharmacie.service.implementations;
 
 import com.advance.pharmacie.dto.dtoRequest.ClientRequestDto;
-import com.advance.pharmacie.dto.dtoResponse.CaisseResponseDto;
 import com.advance.pharmacie.dto.dtoResponse.ClientResponseDto;
-import com.advance.pharmacie.model.Caisse;
 import com.advance.pharmacie.model.Client;
 import com.advance.pharmacie.repository.ClientRepository;
 import com.advance.pharmacie.service.interfaces.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -40,8 +39,8 @@ public class ClientImplementation implements ClientService {
     }
 
     @Override
-    public List<ClientResponseDto> read() {
-        return ClientResponseDto.entityToDtoList(clientRepository.findAll());
+    public Page<ClientResponseDto> read(String token, Pageable pageable) {
+        return ClientResponseDto.entityToDtoList(clientRepository.findAllClient("%"+token+"%", pageable));
     }
 
     @Override

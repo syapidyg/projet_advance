@@ -1,6 +1,7 @@
 package com.advance.pharmacie.service.implementations;
 
 import com.advance.pharmacie.dto.dtoRequest.ProduitRequestDto;
+import com.advance.pharmacie.dto.dtoResponse.CommandeResponseDto;
 import com.advance.pharmacie.dto.dtoResponse.ProduitResponseDto;
 import com.advance.pharmacie.exception.BadRequestException;
 import com.advance.pharmacie.model.Client;
@@ -12,6 +13,8 @@ import com.advance.pharmacie.repository.NumerotationRepository;
 import com.advance.pharmacie.repository.ProduitRepository;
 import com.advance.pharmacie.service.interfaces.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -61,10 +64,10 @@ public class ProduitImplementation implements ProduitService {
     }
 
     @Override
-    public List<ProduitResponseDto> read() {
+    public Page<ProduitResponseDto> read(String token, Pageable pageable) {
 
-        List<Produit> produits = produitRepository.findAll();
-        return ProduitResponseDto.entityToDtoList(produits);
+        return ProduitResponseDto.entityToDtoList(produitRepository.findAllProduit("%"+token+"%", pageable));
+
     }
 
     @Override

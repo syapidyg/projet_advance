@@ -6,6 +6,9 @@ import com.advance.pharmacie.dto.dtoResponse.ClientResponseDto;
 import com.advance.pharmacie.service.interfaces.ClientService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,12 +36,15 @@ public class ClientController {
 
     @ApiOperation("Liste des clients")
     @GetMapping("/read")
-    public ResponseEntity<ApiResponse<List<ClientResponseDto>>> read(){
+    public ResponseEntity<ApiResponse<Page<ClientResponseDto>>> read(@RequestParam(name = "token", defaultValue = "") String token,
+                                                                     @RequestParam(name = "page", defaultValue = "0") int page,
+                                                                     @RequestParam(name = "size", defaultValue = "10") int size){
+        Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(
-                ApiResponse.<List<ClientResponseDto>>builder()
+                ApiResponse.<   Page<ClientResponseDto>>builder()
                         .success(true)
                         .message("Opereation reussie")
-                        .data(clientService.read())
+                        .data(clientService.read(token, pageable))
                         .build());
     }
 

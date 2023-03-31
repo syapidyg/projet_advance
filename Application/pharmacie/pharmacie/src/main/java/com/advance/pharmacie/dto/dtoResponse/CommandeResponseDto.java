@@ -7,6 +7,7 @@ import com.advance.pharmacie.model.lnk.LigneCommande;
 import com.advance.pharmacie.util.StatutCommande;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -117,6 +118,10 @@ public static CommandeResponseDto entityToDtoDepot(Commande commande, List<Ligne
 
     public static List<CommandeResponseDto> entityToDtoList(List<Commande> commandes) {
         return commandes.stream().map(CommandeResponseDto::entityToDto).collect(Collectors.toList());
+    }
+
+    public static Page<CommandeResponseDto> entityToDtoList(Page<Commande> commandeList){
+        return commandeList.map(CommandeResponseDto::entityToDto);
     }
 
 }

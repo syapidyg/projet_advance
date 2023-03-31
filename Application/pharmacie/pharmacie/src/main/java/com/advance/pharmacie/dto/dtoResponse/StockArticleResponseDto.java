@@ -1,9 +1,11 @@
 package com.advance.pharmacie.dto.dtoResponse;
 
+import com.advance.pharmacie.model.Commande;
 import com.advance.pharmacie.model.Produit;
 import com.advance.pharmacie.model.lnk.StockArticle;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Objects;
@@ -70,6 +72,10 @@ public class StockArticleResponseDto {
 
     public static List<StockArticleResponseDto> entityToDtoListStatut(List<StockArticle> stockArticleList, Long qteMaximale, Long qteAlerte, Long qteMinimale) {
         return stockArticleList.stream().map( stockArticle ->  StockArticleResponseDto.entityToDtoStatut(stockArticle, qteMaximale, qteAlerte, qteMinimale)).collect(Collectors.toList());
+    }
+
+    public static Page<StockArticleResponseDto> entityToDtoListStatut(Page<StockArticle> stockArticleList, Long qteMaximale, Long qteAlerte, Long qteMinimale){
+        return stockArticleList.map( stockArticle ->  StockArticleResponseDto.entityToDtoStatut(stockArticle, qteMaximale, qteAlerte, qteMinimale));
     }
 }
 

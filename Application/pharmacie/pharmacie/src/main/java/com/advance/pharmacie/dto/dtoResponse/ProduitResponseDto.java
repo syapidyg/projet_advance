@@ -1,10 +1,10 @@
 package com.advance.pharmacie.dto.dtoResponse;
 
-import com.advance.pharmacie.model.Caisse;
-import com.advance.pharmacie.model.Famille;
+
 import com.advance.pharmacie.model.Produit;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,5 +40,9 @@ public class ProduitResponseDto {
 
     public static List<ProduitResponseDto> entityToDtoList(List<Produit> produitList){
         return produitList.stream().map(ProduitResponseDto::entityToDto).collect(Collectors.toList());
+    }
+
+    public static Page<ProduitResponseDto> entityToDtoList(Page<Produit> produitList){
+        return produitList.map(ProduitResponseDto::entityToDto);
     }
 }

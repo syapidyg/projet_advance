@@ -1,9 +1,11 @@
 package com.advance.pharmacie.dto.dtoResponse;
 
 
+import com.advance.pharmacie.model.Client;
 import com.advance.pharmacie.model.lnk.Reglement;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,5 +40,9 @@ public class ReglementResponseDto {
 
     public static List<ReglementResponseDto> entityToDtoList(List<Reglement> reglements) {
         return reglements.stream().map(ReglementResponseDto::entityToDto).collect(Collectors.toList());
+    }
+
+    public static Page<ReglementResponseDto> entityToDtoList(Page<Reglement> reglements){
+        return reglements.map(ReglementResponseDto::entityToDto);
     }
 }

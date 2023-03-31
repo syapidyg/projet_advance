@@ -16,4 +16,8 @@ public interface LigneCommandeService {
     String delete(Long id);
 
     List<LigneCommandeResponseDto> readClient(Long id);
+
+    List<LigneCommandeResponseDto> readFournisseur(Long id);
+
+    List<LigneCommandeResponseDto> readStock(Long id);
 }

@@ -1,6 +1,7 @@
 package com.advance.pharmacie.service.implementations;
 
 import com.advance.pharmacie.dto.dtoRequest.StockArticleRequestDto;
+import com.advance.pharmacie.dto.dtoResponse.CommandeResponseDto;
 import com.advance.pharmacie.dto.dtoResponse.StockArticleResponseDto;
 import com.advance.pharmacie.exception.BadRequestException;
 import com.advance.pharmacie.exception.ResourceNotFoundException;
@@ -13,6 +14,8 @@ import com.advance.pharmacie.repository.VariableGlobaleRepository;
 import com.advance.pharmacie.repository.lnk.StockArticleRepository;
 import com.advance.pharmacie.service.interfaces.lnk.StockArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,13 +53,13 @@ public class StockArticleImplementation implements StockArticleService {
     }
 
     @Override
-    public List<StockArticleResponseDto> read() {
+    public Page<StockArticleResponseDto> read(String token, Pageable pageable) {
 
         Long qteMAX = Long.parseLong(variableGlobaleRepository.findByCle("MAX").getValeur());
         Long qteMIN = Long.parseLong(variableGlobaleRepository.findByCle("MIN").getValeur());
         Long qteALERTE = Long.parseLong(variableGlobaleRepository.findByCle("ALERTE").getValeur());
-        List<StockArticle> stockArticles = stockArticleRepository.findAll();
-        return StockArticleResponseDto.entityToDtoListStatut(stockArticles, qteMAX, qteALERTE, qteMIN);
+        return StockArticleResponseDto.entityToDtoListStatut(stockArticleRepository.findAllStockArticle("%"+token+"%", pageable), qteMAX, qteALERTE, qteMIN);
+
     }
 
     @Override

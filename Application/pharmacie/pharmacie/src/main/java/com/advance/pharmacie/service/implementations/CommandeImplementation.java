@@ -15,9 +15,14 @@ import com.advance.pharmacie.repository.lnk.StockArticleRepository;
 import com.advance.pharmacie.service.interfaces.CommandeService;
 import com.advance.pharmacie.service.interfaces.lnk.StockArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -215,23 +220,33 @@ public class CommandeImplementation implements CommandeService {
     }
 
     @Override
-    public List<CommandeResponseDto> read() {
+    public Page<CommandeResponseDto> read(String type, String token, Pageable pageable) {
+        return CommandeResponseDto.entityToDtoList(commandeRepository.findAllCommande("%"+type+"%","%"+token+"%", pageable));
+    }
 
-        List<Commande> commandes = commandeRepository.findAll();
+    @Override
+    public Page<CommandeResponseDto> readClient(String type, String document, String token, Pageable pageable) {
+        Page<Commande> commandes = commandeRepository.findAllCommandeTypeClient(type, "%"+document+"%","%"+token+"%", pageable);
         return CommandeResponseDto.entityToDtoList(commandes);
     }
 
     @Override
-    public List<CommandeResponseDto> readClient() {
+    public Page<CommandeResponseDto> readFournisseur(String type, String token, Pageable pageable) {
+        Page<Commande> commandes = commandeRepository.findAllCommandeTypeFournisseur(type,"%"+token+"%", pageable);
+        return CommandeResponseDto.entityToDtoList(commandes);
+    }
 
-        List<Commande> commandes = commandeRepository.findByType("client");
+  @Override
+    public Page<CommandeResponseDto> readStock(String type, String token, Pageable pageable) {
+        Page<Commande> commandes = commandeRepository.findAllCommandeTypeStock(type,"%"+token+"%", pageable);
         return CommandeResponseDto.entityToDtoList(commandes);
     }
 
     @Override
-    public List<CommandeResponseDto> readFournisseur() {
+    public Page<CommandeResponseDto> readByType(String type, String document, String dateDebut, String dateFin, String token, Pageable pageable, int sizeOf) {
 
-        List<Commande> commandes = commandeRepository.findByType("fournisseur");
+
+        Page<Commande> commandes = commandeRepository.findAllCommandeTypeOrTypeAndDocument(type,"%"+document+"%", "%"+token+"%", dateDebut, dateFin, pageable, sizeOf);
         return CommandeResponseDto.entityToDtoList(commandes);
     }
 
@@ -269,6 +284,8 @@ public class CommandeImplementation implements CommandeService {
         return createOrUpdate(commandeToSave);
 
     }
+
+
 
     public String getCodeCourant() {
         Numerotation numerotation = numerotationRepository.findByCode("COMMANDE").orElse(null);

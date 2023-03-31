@@ -1,7 +1,6 @@
 package com.advance.pharmacie.service.implementations;
 
 import com.advance.pharmacie.dto.dtoRequest.ReglementRequestDto;
-import com.advance.pharmacie.dto.dtoResponse.CommandeResponseDto;
 import com.advance.pharmacie.dto.dtoResponse.ReglementResponseDto;
 import com.advance.pharmacie.model.Caisse;
 import com.advance.pharmacie.model.Commande;
@@ -14,9 +13,10 @@ import com.advance.pharmacie.repository.lnk.ReglementRepository;
 import com.advance.pharmacie.service.interfaces.lnk.ReglementService;
 import com.advance.pharmacie.util.StatutCommande;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -47,7 +47,7 @@ public class ReglementImplementation implements ReglementService {
                 .orElseThrow(() -> new RuntimeException("Commande non renseignée"));
 
 
-        if (Objects.nonNull(dtoReglement.getId()) &&  dtoReglement.getId() > 0) {
+        if (Objects.nonNull(dtoReglement.getId()) && dtoReglement.getId() > 0) {
 
             Reglement reglement = reglementRepository.findById(dtoReglement.getId()).map(p -> {
                 p.setMontant(dtoReglement.getMontant());
@@ -71,9 +71,9 @@ public class ReglementImplementation implements ReglementService {
     }
 
     @Override
-    public List<ReglementResponseDto> read() {
+    public Page<ReglementResponseDto> read(String token, Pageable pageable) {
 
-        List<Reglement> reglements = reglementRepository.findAll();
+        Page<Reglement> reglements = reglementRepository.findAllReglement(token, pageable);
         return ReglementResponseDto.entityToDtoList(reglements);
     }
 
@@ -85,23 +85,23 @@ public class ReglementImplementation implements ReglementService {
     }
 
     @Override
-    public List<ReglementResponseDto> readFournisseur() {
-        List<Reglement> reglements = reglementRepository.findByCommandeType("fournisseur");
+    public Page<ReglementResponseDto> readFournisseur(String token, Pageable pageable) {
+        Page<Reglement> reglements = reglementRepository.findAllReglementType("fournisseur", token, pageable);
         return ReglementResponseDto.entityToDtoList(reglements);
     }
 
     @Override
-    public List<ReglementResponseDto> readClient() {
-        List<Reglement> reglements = reglementRepository.findByCommandeType("client");
+    public Page<ReglementResponseDto> readClient(String token, Pageable pageable) {
+        Page<Reglement> reglements = reglementRepository.findAllReglementType("client", token, pageable);
         return ReglementResponseDto.entityToDtoList(reglements);
     }
 
     @Override
     public ReglementResponseDto readOne(Long id) {
-        Reglement reglement = reglementRepository.findById(id).orElseThrow(() -> new RuntimeException("Aucun Reglement ne correspond a cet ID"));;
+        Reglement reglement = reglementRepository.findById(id).orElseThrow(() -> new RuntimeException("Aucun Reglement ne correspond a cet ID"));
+        ;
         return ReglementResponseDto.entityToDto(reglement);
     }
-
 
 
 }

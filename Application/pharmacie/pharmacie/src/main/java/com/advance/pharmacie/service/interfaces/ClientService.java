@@ -2,14 +2,14 @@ package com.advance.pharmacie.service.interfaces;
 
 import com.advance.pharmacie.dto.dtoRequest.ClientRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.ClientResponseDto;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ClientService {
 
     ClientResponseDto createOrUpdate(ClientRequestDto dtoClient);
 
-    List<ClientResponseDto> read();
+    Page<ClientResponseDto> read(String token, Pageable pageable);
 
     ClientResponseDto readOne(Long id);
 
