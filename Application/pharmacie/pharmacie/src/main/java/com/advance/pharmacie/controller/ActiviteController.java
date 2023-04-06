@@ -2,6 +2,7 @@ package com.advance.pharmacie.controller;
 
 import com.advance.pharmacie.dto.ApiResponse;
 import com.advance.pharmacie.dto.dtoResponse.ActiviteResponseDto;
+import com.advance.pharmacie.dto.dtoResponse.CaisseResponseDto;
 import com.advance.pharmacie.dto.dtoResponse.ClientResponseDto;
 import com.advance.pharmacie.service.interfaces.ActiviteService;
 import com.advance.pharmacie.service.interfaces.ClientService;
@@ -25,8 +26,8 @@ public class ActiviteController {
 
 
     @ApiOperation("Liste des activites")
-    @GetMapping("/read")
-    public ResponseEntity<ApiResponse<Page<ActiviteResponseDto>>> read(@RequestParam(name = "name") String name,
+    @GetMapping("/read/{name}")
+    public ResponseEntity<ApiResponse<Page<ActiviteResponseDto>>> read(@PathVariable(name = "name") String name,
                                                                        @RequestParam(name = "page", defaultValue = "0") int page,
                                                                        @RequestParam(name = "size", defaultValue = "10") int size){
         Pageable pageable = PageRequest.of(page, size);
@@ -35,6 +36,31 @@ public class ActiviteController {
                         .success(true)
                         .message("Opereation reussie")
                         .data(activiteService.readByUsername(name, pageable))
+                        .build());
+    }
+
+//    @ApiOperation("derniere connexion")
+//    @GetMapping("/lastConnexion")
+//    public ResponseEntity<ApiResponse<Page<ActiviteResponseDto>>> lastConnexion(@RequestParam(name = "name") String name,
+//                                                                       @RequestParam(name = "page", defaultValue = "0") int page,
+//                                                                       @RequestParam(name = "size", defaultValue = "10") int size){
+//        Pageable pageable = PageRequest.of(page, size);
+//        return ResponseEntity.ok(
+//                ApiResponse.<Page<ActiviteResponseDto>>builder()
+//                        .success(true)
+//                        .message("Opereation reussie")
+//                        .data(activiteService.lastConnexion(name, pageable))
+//                        .build());
+//    }
+
+    @ApiOperation("derniere connexion")
+    @GetMapping("/lastConnexion/{name}")
+    public ResponseEntity<ApiResponse<ActiviteResponseDto>> lastConnexion(@PathVariable String name){
+        return ResponseEntity.ok(
+                ApiResponse.<ActiviteResponseDto>builder()
+                        .success(true)
+                        .message("Opereation reussie")
+                        .data(activiteService.lastConnexion(name))
                         .build());
     }
 }

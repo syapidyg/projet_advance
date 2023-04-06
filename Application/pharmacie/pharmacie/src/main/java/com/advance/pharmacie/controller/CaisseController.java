@@ -31,7 +31,7 @@ public class CaisseController {
     @ApiOperation("Creation et Mise a jour d'une caisse")
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<CaisseResponseDto>> create(@RequestBody CaisseRequestDto dto, HttpServletRequest request){
-        activiteService.create(request, "Creation d'une caisse", "dto", "CaisseController |  create | chemin : /caisse/create");
+        activiteService.create(request, "Creation d'une caisse", dto.toString(), "CaisseController |  create | chemin : /caisse/create");
        CaisseResponseDto data = caisseService.createOrUpdate(dto);
         return ResponseEntity.ok(
                 ApiResponse.<CaisseResponseDto>builder()
@@ -65,7 +65,8 @@ public class CaisseController {
 
     @ApiOperation("Suppression d'une caisse")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id){
+    public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id, HttpServletRequest request){
+        activiteService.create(request, "Suppression d'une caisse", id.toString(), "CaisseController |  delete | chemin : /caisse/delete");
         return ResponseEntity.ok(
                 ApiResponse.<String>builder()
                         .success(true)

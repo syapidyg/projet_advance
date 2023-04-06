@@ -8,6 +8,7 @@ import com.advance.pharmacie.repository.EtatImprimableRepository;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -35,8 +36,7 @@ public class SimpleReportImplementation  {
      */
 //    private final ReportGeneratorTools generatorTools;
 
-//    @Autowired
-    protected JdbcTemplate jdbcTemplate;
+    protected final JdbcTemplate jdbcTemplate;
 
     private final EtatImprimableRepository etatImprimableRepository;
 //    private final WindowAppRepository windowsRepository;
@@ -57,8 +57,9 @@ public class SimpleReportImplementation  {
 //     */
 //    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    public SimpleReportImplementation(EtatImprimableRepository etatImprimableRepository) {
+    public SimpleReportImplementation(EtatImprimableRepository etatImprimableRepository, JdbcTemplate jdbcTemplate) {
         this.etatImprimableRepository = etatImprimableRepository;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
 //    /**

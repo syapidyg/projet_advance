@@ -54,4 +54,9 @@ public class UtilisateurService implements UserDetailsService {
         Utilisateur utilisateur = utilsateurRepository.save(UtilisateurRequestDto.dtoToEntity(signinDto));
         return UtilisateurResponseDto.entityToDto(utilisateur);
     }
+
+    public void lastConnexion(String statut){
+
+    }
+
 }

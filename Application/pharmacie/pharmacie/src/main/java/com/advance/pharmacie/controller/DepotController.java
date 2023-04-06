@@ -3,12 +3,14 @@ package com.advance.pharmacie.controller;
 import com.advance.pharmacie.dto.ApiResponse;
 import com.advance.pharmacie.dto.dtoRequest.DepotRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.DepotResponseDto;
+import com.advance.pharmacie.service.interfaces.ActiviteService;
 import com.advance.pharmacie.service.interfaces.DepotService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -19,10 +21,13 @@ public class DepotController {
 
     @Autowired
     DepotService depotService;
+    @Autowired
+    ActiviteService activiteService;
 
     @ApiOperation("Creation et Mise a jour d'une depot")
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<DepotResponseDto>> create(@RequestBody DepotRequestDto dto) {
+    public ResponseEntity<ApiResponse<DepotResponseDto>> create(@RequestBody DepotRequestDto dto, HttpServletRequest request) {
+        activiteService.create(request, "Creation d'un depot", dto.toString(), "depotController |  create | chemin : /depot/create");
         return ResponseEntity.ok(
                 ApiResponse.<DepotResponseDto>builder()
                         .success(true)
@@ -44,7 +49,8 @@ public class DepotController {
 
     @ApiOperation("Suppression d'une depot")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id, HttpServletRequest request) {
+        activiteService.create(request, "suppression d'un depôt", id.toString(), "depotController |  delete | chemin : /depot/delete");
         return ResponseEntity.ok(
                 ApiResponse.<String>builder()
                         .success(true)

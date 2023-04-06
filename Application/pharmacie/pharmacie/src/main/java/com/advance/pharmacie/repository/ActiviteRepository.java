@@ -11,7 +11,14 @@ import java.util.List;
 
 public interface ActiviteRepository extends JpaRepository<Activite, Long> {
 
-    Page<Activite> findByNomUtilisateur(String nomUtilisateur, Pageable page);
+    Page<Activite> findByNomUtilisateurOrderByDateEvenementDesc(String nomUtilisateur, Pageable page);
+    Activite findByNomUtilisateurAndDetails(String nomUtilisateur, String statut);
+
+    @Query("SELECT a FROM Activite a JOIN Utilisateur u WHERE a.details = 'deconnexion' AND u.username = :username ORDER BY a.id DESC")
+    Page<Activite> trouverDerniereDeconnexion( String username, Pageable pageable);
+
+    List<Activite> findByDetailsAndNomUtilisateurOrderByDateEvenementDesc(String statut, String nomUtilisateur);
+
 
 //    SELECT a FROM Activite a JOIN u.activites a WHERE a.utilisateur.nomUtilisateur = :nomUtilisateur
 //

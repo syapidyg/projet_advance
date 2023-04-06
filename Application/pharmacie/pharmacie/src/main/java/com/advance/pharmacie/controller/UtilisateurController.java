@@ -5,8 +5,8 @@ import com.advance.pharmacie.dto.dtoAuth.AuthenticationRequestDto;
 import com.advance.pharmacie.dto.dtoAuth.AuthenticationResponseDto;
 import com.advance.pharmacie.dto.dtoRequest.UtilisateurRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.UtilisateurResponseDto;
-
 import com.advance.pharmacie.service.Auth.UtilisateurService;
+import com.advance.pharmacie.service.interfaces.ActiviteService;
 import com.advance.pharmacie.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +33,9 @@ public class UtilisateurController {
 
     @Autowired
     private UtilisateurService utilisateurService;
+
+    @Autowired
+    private ActiviteService activiteService;
 
 
     @Autowired
@@ -86,5 +90,11 @@ public class UtilisateurController {
                         .data(utilisateurService.register(user))
                         .build()
         );
+    }
+
+    @PostMapping("/signout")
+    private void signOut(String statut, HttpServletRequest request){
+        activiteService.create(request, "deconnexion", statut, "utilisateurController |  signOut | chemin : /utilisateur/signOut");
+
     }
 }

@@ -15,4 +15,8 @@ public interface ActiviteService {
 //    ActiviteResponseDto readByUsername(String name);
 
     Page<ActiviteResponseDto> readByUsername(String name, Pageable pageable);
+
+//    Page<ActiviteResponseDto> lastConnexion(String name, Pageable pageable);
+
+    ActiviteResponseDto lastConnexion(String name);
 }

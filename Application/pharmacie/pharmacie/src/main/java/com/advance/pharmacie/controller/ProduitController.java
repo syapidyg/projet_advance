@@ -4,6 +4,7 @@ import com.advance.pharmacie.dto.ApiResponse;
 import com.advance.pharmacie.dto.dtoRequest.ProduitRequestDto;
 import com.advance.pharmacie.dto.dtoResponse.ProduitResponseDto;
 import com.advance.pharmacie.dto.dtoResponse.ProduitResponseDto;
+import com.advance.pharmacie.service.interfaces.ActiviteService;
 import com.advance.pharmacie.service.interfaces.ProduitService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 @CrossOrigin("*")
@@ -23,10 +26,13 @@ public class ProduitController {
     @Autowired
     private ProduitService produitService;
 
+   @Autowired
+    private ActiviteService activiteService;
+
     @ApiOperation("Creation et Mise a jour d'un produit")
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<ProduitResponseDto>> create(@RequestBody ProduitRequestDto dto){
-
+    public ResponseEntity<ApiResponse<ProduitResponseDto>> create(@RequestBody ProduitRequestDto dto, HttpServletRequest request){
+        activiteService.create(request, "Creation d'un produit", dto.toString(), "produitController |  create | chemin : /produit/create");
         return ResponseEntity.ok(
                 ApiResponse.<ProduitResponseDto>builder()
                         .success(true)
@@ -62,7 +68,8 @@ public class ProduitController {
 
     @ApiOperation("Suppression d'un produit")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id){
+    public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id, HttpServletRequest request){
+        activiteService.create(request, "suppression d'un produit", id.toString(), "produitController |  delete | chemin : /produit/delete");
         return ResponseEntity.ok(
                 ApiResponse.<String>builder()
                         .success(true)
